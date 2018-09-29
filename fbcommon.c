@@ -47,8 +47,6 @@
 #endif
 #include <linux/vt.h>
 #include <linux/fb.h>
-//#include <asm/page.h>
-#define PAGE_MASK ~(0xfff) // FIXME: use sysconf(_SC_PAGESIZE).
 
 #include "mytypes.h"
 #include "fbcommon.h"
@@ -56,6 +54,9 @@
 #include "util.h"
 
 #include "fbdpsp.h"
+
+#define PAGE_SIZE (sysconf(_SC_PAGESIZE))
+#define PAGE_MASK (~(PAGE_SIZE - 1))
 
 static int tfbm_select_visual(  TFrameBufferMemory* p,
 				struct fb_var_screeninfo* fbvs,
