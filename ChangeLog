@@ -495,199 +495,199 @@
 2000-01-23  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
         * Version 0.3.10
-	    $BG'<12DG=$JJ8;z=89g$rBgI}$KDI2C$7$?!#(B	(Masuichi)
-	    $B4Z9q8l(B(KSC5601-1987)$B$KBP1~$G$-$J$/$J$C$F$$$?$N$r(B
-	  $B=$@5$7$?!#(B					(Masuichi)
+	    認識可能な文字集合を大幅に追加した。	(Masuichi)
+	    韓国語(KSC5601-1987)に対応できなくなっていたのを
+	  修正した。					(Masuichi)
 
 2000-01-11  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
-        * Version 0.3.9 ($B7gHV$G$9!#(B)
+        * Version 0.3.9 (欠番です。)
 
 2000-01-11  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
         * Version 0.3.8
-	    --help $B%*%W%7%g%s$rDI2C$7$?!#(B		(Masuichi)
-	    --exec(--shell) $B%*%W%7%g%s$rDI2C$7$?!#$"$^$N(B $B$5$s$N(B
-	  $B%P%C%A$r85$K:n@.$7$?!#(B			(Amano)
+	    --help オプションを追加した。		(Masuichi)
+	    --exec(--shell) オプションを追加した。あまの さんの
+	  バッチを元に作成した。			(Amano)
 
 1999-11-28  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
         * Version 0.3.7
-            $B%3%s%Q%$%k;~$N7Y9p$r87$7$/$?!#(B
-          $B0J2<$N4D6-$G!"H/@8$9$k7Y9p$r=|5n$7$?!#(B
+            コンパイル時の警告を厳しくた。
+          以下の環境で、発生する警告を除去した。
                 A. AMD K6 233MHz
                    linux kernel 2.2.13ac2
                    gcc 2.3.2.3
                    libc 5.4.46
-          $B0J2<$N4D6-$G$O!"(Bioperm() $B$N%W%m%H%?%$%W$,L5$$$H7Y9p$5$l$k!#(B
+          以下の環境では、ioperm() のプロトタイプが無いと警告される。
                 B. AMD K6-2 300MHz
                    linux kernel 2.2.13
                    egcs 2.91.66 19990314 (egcs-1.1.2 release)
                    glibc 2.0.7
-          $B0J2<$N4D6-$G$O!"(Bvoid* $B7?$N%]%$%s%?$r7W;;$K;HMQ$7$F$$$k$H$$$&!"7Y9p$,(B
-          $BB??t$G$k!#$?$@$7!"I8=`%$%s%/%k!<%I%U%!%$%kCf$G$=$N$[$H$s$I$,H/@8$9$k!#(B
-          ioperm() $B$N%W%m%H%?%$%W$,L5$$$H$b7Y9p$5$l$k!#(B
+          以下の環境では、void* 型のポインタを計算に使用しているという、警告が
+          多数でる。ただし、標準インクルードファイル中でそのほとんどが発生する。
+          ioperm() のプロトタイプが無いとも警告される。
                 B. AMD K6-2 300MHz
                    linux kernel 2.2.13ac3
                    gcc 2.95.2 19991024 (release)
                    glibc 2.1.2
 
-          ioperm() $B$N7Y9p$O(B libc $B$N0c$$$,860x$N$h$&$G$"$k!#(B
+          ioperm() の警告は libc の違いが原因のようである。
 
-          $B$J$*!"(B./configure $B$K$O%*%W%7%g%s$r$D$1$F$$$J$$!#(B
+          なお、./configure にはオプションをつけていない。
                                                         (Masuichi)
 
 1999-11-24  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.3.6.
-	    jfbterm$B$N=*N;<j=g$r2~A1$7$?!#(B		(Amano)
-	    brmove@vtermlow.c $B$N(B x86 $BBeBX%3!<%I$r=$@5$7$?!#(B
+	    jfbtermの終了手順を改善した。		(Amano)
+	    brmove@vtermlow.c の x86 代替コードを修正した。
 							(Amano)
-	    DIRECTCOLOR$B$N;~$K6/@)E*$K(B 8bpp$B$K$9$k$?$a$N%3!<%I$rDI2C$7$?!#(B
-	  ./configure --enable-force-8bit $B$GM-8z$K$J$k!#(B
+	    DIRECTCOLORの時に強制的に 8bppにするためのコードを追加した。
+	  ./configure --enable-force-8bit で有効になる。
 							(Amano)(Oe)
-	    $BFbIt=hM}$NLdBj$G$9$,!"3F<o$N@)8f%3!<%I$N(B define $BCM$r(B ISO $BIw$K(B
-	  $B2~$a$^$7$?!#(B					(Masuichi)
+	    内部処理の問題ですが、各種の制御コードの define 値を ISO 風に
+	  改めました。					(Masuichi)
 
 1999-11-17  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.3.5.
-	    $B0lHL%f!<%6$,%k!<%H8"8B$GG$0U$N%3%^%s%I$r<B9T$G$-$F$7$^$&$H$$$&(B
-	  $B%;%-%e%j%F%#%[!<%k$r:I$$$@!#(B			(Mausichi)
+	    一般ユーザがルート権限で任意のコマンドを実行できてしまうという
+	  セキュリティホールを塞いだ。			(Mausichi)
 
 1999-11-07  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.3.4.
-	    0.3.3 $B$G$N(B w3m $B$N$?$a$N2sHr:v$,IT==J,$G$"$k$h$&$J$N$G=$@5!#(B
+	    0.3.3 での w3m のための回避策が不十分であるようなので修正。
 							(Oike)
 
 1999-10-30  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.3.3.
-	    jfbterm.conf.sample $B$N%$%s%9%H!<%k@h$r(B /etc $B8GDj$+$i(B
-	  $(sysconfdir)$B$G;XDj$G$-$k$h$&$KJQ99$7$?!#(B($B1-;t$5$s$+$i(B
-	    $B<(:6$rD:$-$^$7$?!#$"$o$;$F!"<B9T%U%!%$%k$,!"(Bjfbterm.conf $B$r(B
-	  $BFI$_<h$k%G%#%l%/%H%j$rJQ99$7$?!#(B		(Masuichi)
-	    void main(..) $B$H$J$C$F$$$?$N$r!"(Bint main(..)$B$KD{@5!#(B
-	  egcs $B$G%3%s%Q%$%k;~$KH/3P!#(Bgcc 2.7.2.3 $B$@$H7Y9p$5$l$J$+$C$?!#(B
+	    jfbterm.conf.sample のインストール先を /etc 固定から
+	  $(sysconfdir)で指定できるように変更した。(鵜飼さんから
+	    示唆を頂きました。あわせて、実行ファイルが、jfbterm.conf を
+	  読み取るディレクトリを変更した。		(Masuichi)
+	    void main(..) となっていたのを、int main(..)に訂正。
+	  egcs でコンパイル時に発覚。gcc 2.7.2.3 だと警告されなかった。
 							(Masuichi)
-	    main.c $B$N2~9T%3!<%I$,(B DOS $BE*$G$"$C$?$ND{@5$7$?!#(B
+	    main.c の改行コードが DOS 的であったの訂正した。
 							(Ukai)
-	    $BFH<+$KDj5A$7$F$$$?(B major() $B$HF1MM$N$b$N$,(B sys/sysmacros.h $B$K(B
-	  $B$"$k$N$G$=$A$i$r;HMQ$9$k$h$&$K$7$?!#(B		(Ukai)
-	    tvterm_final $B$,(B2$B2s(B(sigchld->tterm_final->tvterm_final $B$H(B
-	  exit()->atexit$B$5$l$F$k(Bapplication_final->tterm_final->tvterm_final)
-	  $B8F$P$l$k$N$G(B p->savedPen, p->savedPenSL $B$,(B2$B2s(Bfree()$B$9$k$3$H$K(B
-	  $B$J$C$F$7$^$$(B($B1?$,$o$k$$$H(B)seg fault$B$9$k;v$,$"$k$N$r=$@5!#(B
+	    独自に定義していた major() と同様のものが sys/sysmacros.h に
+	  あるのでそちらを使用するようにした。		(Ukai)
+	    tvterm_final が2回(sigchld->tterm_final->tvterm_final と
+	  exit()->atexitされてるapplication_final->tterm_final->tvterm_final)
+	  呼ばれるので p->savedPen, p->savedPenSL が2回free()することに
+	  なってしまい(運がわるいと)seg faultする事があるのを修正。
 							(Ukai)
-	    w3m$B$G(Bmouse $B$rM-8z$K$7$F$$$?>l9g$K;H$o$l$k%(%9%1!<%W%7!<%1%s%9$K(B
-	  $BBP1~$7$F$$$J$$;v$K$h$kIT6q9g$r2sHr!#(B		(Ukai)
-	  $B!D8=:_$O2sHr=hCV$G$9$,!">-MhE*$K$O@5$7$/2r<a$9$k$h$&$K$9$kM=Dj!#(B
+	    w3mでmouse を有効にしていた場合に使われるエスケープシーケンスに
+	  対応していない事による不具合を回避。		(Ukai)
+	  …現在は回避処置ですが、将来的には正しく解釈するようにする予定。
 							(Masuichi)
-	    Version 0.3.2 $B$N=$@5$G$O!"$d$O$j(B gcc2.95$B0J9_$G%3%s%Q%$%k$G$-$J$$(B
-	  $B$N$G!"$=$N=$@5!#(B				(Ukai) (Hatta)
-	    $B4D6-JQ?t(B TERM $B$K@_Dj$9$kCM$r!"(Bjfbterm.conf $B$G;XDj$G$-$k$h$&$K(B
-	  $BD{@5!#(B					(Masuichi)
-	    $B%(%s%3!<%G%#%s%0$r;XDj$G$-$J$+$C$?$N$r=$@5!#(B(Masuichi)
+	    Version 0.3.2 の修正では、やはり gcc2.95以降でコンパイルできない
+	  ので、その修正。				(Ukai) (Hatta)
+	    環境変数 TERM に設定する値を、jfbterm.conf で指定できるように
+	  訂正。					(Masuichi)
+	    エンコーディングを指定できなかったのを修正。(Masuichi)
 
 1999-10-24  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.3.2.
-	    vga16fb $BBP1~(B($B2#I}$,(B 8 $B$NG\?t$N>l9g0J30$OIT40A4(B)$B!"(B
+	    vga16fb 対応(横幅が 8 の倍数の場合以外は不完全)、
 							(Nagano)
-	    $B>e5-$N(B vga16fb $BMQ$N%3!<%I$N2~NI!#(B		(Noritoshi Masuichi)
-	    gcc2.95$B0J9_$G%3%s%Q%$%k$G$-$J$$;v$N;XE&$H!"=$@5!#(B
+	    上記の vga16fb 用のコードの改良。		(Noritoshi Masuichi)
+	    gcc2.95以降でコンパイルできない事の指摘と、修正。
 							(Yoshii) (Hatta)
-		($BF1;~4|$K$*Fs?M$NJ}$+$iD:$-$^$7$?!#=gITF1(B)
+		(同時期にお二人の方から頂きました。順不同)
 					
 
 1999-10-18  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.3.1.
-	    tvterm_coord_to_index() $B$,(B $B:G2<9T1&C<(B+1 $B$NCM$r(B 1$B9TL\:8C<$H(B
-	  $B8mG'$9$kLdBj$r=$@5$7$?!#(BTVterm::xcap4 $B$r(B $B<c43Bg$-$/$H$k$h$&$K(B
-	  $B=$@5$9$k$3$H$K$h$jBP=h$7$?!#(B			(Noritoshi Masuichi)
-	    ISO-2022-* $BAjEv$KBP1~$7$?!#$?$@$7!"%"%J%&%s%5$KL$BP1~!#(B
-	  $B$^$?!"=i4|>uBV$O(B ISO-2022-JP $B$H(B EUC-JP $B$N:.9g>uBV$G8GDj!#(B
-	  $B<!%P!<%8%g%s$G=i4|>uBV$r2DJQ$K$9$kM=Dj!#(B	(Noritoshi Masuichi)
-	    jfbterm.conf $BFb$N%U%)%s%H;XDj$N=q<0$rJQ99$7$?!#(B
+	    tvterm_coord_to_index() が 最下行右端+1 の値を 1行目左端と
+	  誤認する問題を修正した。TVterm::xcap4 を 若干大きくとるように
+	  修正することにより対処した。			(Noritoshi Masuichi)
+	    ISO-2022-* 相当に対応した。ただし、アナウンサに未対応。
+	  また、初期状態は ISO-2022-JP と EUC-JP の混合状態で固定。
+	  次バージョンで初期状態を可変にする予定。	(Noritoshi Masuichi)
+	    jfbterm.conf 内のフォント指定の書式を変更した。
 							(Noritoshi Masuichi)
-            FB_VISUAL_DIRECT $B$H%G%U%!%$%sCML>$,$^$A$,$C$F$$$?$N$rD{@5!#(B
+            FB_VISUAL_DIRECT とデファイン値名がまちがっていたのを訂正。
 							(Amano)
-            vga16fb$B$NL5$$8E$$%+!<%M%k%X%C%@$KBP1~$9$k$?$a$N(B#if - #endif $B$rDI2C!#(B
+            vga16fbの無い古いカーネルヘッダに対応するための#if - #endif を追加。
 							(Amano)
-            $B%U%)%s%H$r(Bcompress$B$G05=L$7$F$$$k>l9g$X$NBP=h!#(B
+            フォントをcompressで圧縮している場合への対処。
 							(Amamo)
 							
 
 1999-09-26  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.2.0.
-	  autoconf/automake $B2=$7$^$7$?!#(B
-	  RGB $B$N3FJ,?'$N%5%$%:$r$-$A$s$HD4$Y$k$h$&$K$7$^$7$?!#(B
+	  autoconf/automake 化しました。
+	  RGB の各分色のサイズをきちんと調べるようにしました。
 
 1999-09-15  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.1.0-pre-6.
-	  $B%3!<%I$r<c438+D>$7$^$7$?!#(B
-	  $B%U%l!<%`%P%C%U%!$NH=Dj$r87$7$/$7$^$7$?(B(pre-5 $B$^$G$O!"(BDIRECTCOLOR
-	  $B$G$b5/F0$7$F$$$^$7$?$,(BTRUECOLOR$B$@$H$7$FF0$$$F$$$^$7$?(B)$B!#(B
-	  32bpp PACKED-PIXELS TRUECOLOR $B$KBP1~$7$^$7$?!#(B
+	  コードを若干見直しました。
+	  フレームバッファの判定を厳しくしました(pre-5 までは、DIRECTCOLOR
+	  でも起動していましたがTRUECOLORだとして動いていました)。
+	  32bpp PACKED-PIXELS TRUECOLOR に対応しました。
 
 1999-09-15  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.1.0-pre-5.
-	  mmap(mmio)$B$N%3!<%I$rJQ99$7$F$_$^$7$?!#(B 
-	  $B?eJ?2rA|EY$H(B1$B%i%$%s$N%P%$%H?t$r:.F1$7$F$$$?$N$r=$@5$7$^$7$?!#(B
+	  mmap(mmio)のコードを変更してみました。 
+	  水平解像度と1ラインのバイト数を混同していたのを修正しました。
     
 1999-08-31  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.1.0-pre-4.
-	  "Cannot mmap(mmio)."$B$,H/@8$7$F$bL5;k$9$k;v$,$G$-$k$h$&$K$7$F$_(B
-	  $B$^$7$?!#(Bjfbterm $B$G$O3NJ]$7$?NN0h$K%"%/%;%9$7$F$$$^$;$s$N$G!"$*(B
-	  $B$=$i$/ITMW$J%3!<%I$@$H;W$&$N$G$9!#(B 
-	  popen("...", "r<B>b</B>") $B$H$J$C$F$$$F!"I8=`E*$J;EMM$N(Bpopen(3)
-	  $B$G$O%Q%$%W$r%*!<%W%s$G$-$J$$$H$$$&IT6q9g$r=$@5$7$^$7$?!#(B
+	  "Cannot mmap(mmio)."が発生しても無視する事ができるようにしてみ
+	  ました。jfbterm では確保した領域にアクセスしていませんので、お
+	  そらく不要なコードだと思うのです。 
+	  popen("...", "r<B>b</B>") となっていて、標準的な仕様のpopen(3)
+	  ではパイプをオープンできないという不具合を修正しました。
     
 1999-08-25  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.1.0-pre-3.
-	  15,16,24bpp $BBP1~$N%Q%C%A$r$$$?$@$-$^$7$?$N$G!"<h$j9~$_$^$7$?!#(B
-	  $BF0:n3NG'$O$7$F$$$^$;$s!#%Q%C%A$r:n$i$l$?J}$K$h$k$H!"(B
-		  15$B!"(B16$B!"(B24 bpp $B$O(B TRUECOLOR $B$H$7$F7h$aBG$A$K$J$C$F$$$^$9!#(B
-		  16 bpp $B$N(B bitfield $B$r(B (r,g,b)=(5,6,5) $B$H$7$F7h$aBG$A$K$J$C(B
-		  $B$F$$$^$9!#(B
-		  VESA $B%b!<%I$N$_$N%F%9%H$7$+$G$-$F$$$^$;$s!#(B
-		  bpp $BKh$N4X?t?6$jJ,$1$rL5M}LpM}$d$C$F$$$^$9!#(B
-		  16 $B?'$N%F!<%V%k$,E,Ev$G!"I=<($5$l$k$Y$-?'$,=P$J$$$3$H$,(B
-		  $B$"$j$^$9!#(B
-	  $B$H$N$3$H$G$9!#(B
+	  15,16,24bpp 対応のパッチをいただきましたので、取り込みました。
+	  動作確認はしていません。パッチを作られた方によると、
+		  15、16、24 bpp は TRUECOLOR として決め打ちになっています。
+		  16 bpp の bitfield を (r,g,b)=(5,6,5) として決め打ちになっ
+		  ています。
+		  VESA モードのみのテストしかできていません。
+		  bpp 毎の関数振り分けを無理矢理やっています。
+		  16 色のテーブルが適当で、表示されるべき色が出ないことが
+		  あります。
+	  とのことです。
     
 1999-??-??  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.1.0-pre-2.
-	  pre-1$B$N%"!<%+%$%V$,4V0c$C$F$$$?$N$G:n$jD>$7$^$7$?!#(B
+	  pre-1のアーカイブが間違っていたので作り直しました。
 
 1999-??-??  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.1.0-pre-1.
-	  Virtual Console $B$KBP1~$7$^$7$?!#(BX $B>e$N(B kterm $B$+$i5/F0$7$F$b(B
-	  $BJL$N2>A[%3%s%=!<%k$GF0:n$7$^$9!#(B($B;d$N$H$3$m$N3+H/4D6-$G$N$_3NG'(B)
-	  /etc/jfbterm.conf $B$+$i@_Dj$rFI$_9~$`$h$&$K$7$^$7$?!#(B
+	  Virtual Console に対応しました。X 上の kterm から起動しても
+	  別の仮想コンソールで動作します。(私のところの開発環境でのみ確認)
+	  /etc/jfbterm.conf から設定を読み込むようにしました。
 
 1999-??-??  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.1.0-alpha-3.
-	  Linux/PPC $B$G$b(B make $B$G$-$k$h$&$K$J$j$^$7$?!#(B
+	  Linux/PPC でも make できるようになりました。
 
 1999-??-??  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.1.0-alpha-2.
-	  $B%U%)%s%H%U%!%$%k$G(B *.pcf.gz $B$J$b$N$,FI$a$k$h$&$K$J$j$^$7$?!#(B
-	  ($BMW!"(Bgzip)
-	  $B@)8f%3!<%I$NIT6q9g$r=$@5$7$^$7$?!#(B(jvim $B$,F0$-$^$9!#(B)
+	  フォントファイルで *.pcf.gz なものが読めるようになりました。
+	  (要、gzip)
+	  制御コードの不具合を修正しました。(jvim が動きます。)
 
 1999-??-??  Noritoshi Masuichi <nmasu@ma3.justnet.ne.jp>
 
 	* Version 0.1.0-alpha-1.
-	  $B;n838x3+=iHG(B
+	  試験公開初版

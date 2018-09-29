@@ -583,7 +583,7 @@ static int tvterm_put_normal_char(TVterm* p, u_char ch)
 		p->wrap = FALSE;
 		return -1;
 	}
-	if (p->knj1) { /* ´Á»ú Âè 2 ¥Ð¥¤¥È */
+	if (p->knj1) { /* æ¼¢å­— ç¬¬ 2 ãƒã‚¤ãƒˆ */
 		INSERT_N_CHARS_IF_NEEDED(p, 2);
 		tvterm_wput(p, p->knj1idx,
 			p->knj1h == FH_RIGHT ? p->knj1 | 0x80 : p->knj1 & 0x7F,
@@ -1216,7 +1216,7 @@ static void tvterm_esc_bracket(TVterm* p, u_char ch)
 	if (ch >= '0' && ch <= '9') {
 		varg[narg] = (varg[narg] * 10) + (ch - '0');
 	} else if (ch == ';') {
-		/* °ú¿ô¤Ï MAX_NARG ¤Þ¤Ç¤·¤«¥µ¥Ý¡¼¥È¤·¤Ê¤¤!! */
+		/* å¼•æ•°ã¯ MAX_NARG ã¾ã§ã—ã‹ã‚µãƒãƒ¼ãƒˆã—ãªã„!! */
 		if (narg < MAX_NARG) {
 			narg ++;
 			varg[narg] = 0;

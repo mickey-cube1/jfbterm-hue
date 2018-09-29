@@ -1,7 +1,7 @@
 
-jfbterm ¤Ï¡¢Version 0.2.0 °Ê¹ß¤«¤é autoconf/automake ²½¤µ¤ì¤Æ¤¤¤Þ¤¹¡£
+jfbterm ã¯ã€Version 0.2.0 ä»¥é™ã‹ã‚‰ autoconf/automake åŒ–ã•ã‚Œã¦ã„ã¾ã™ã€‚
 
-¥¤¥ó¥¹¥È¡¼¥ë¤Ï¡¢
+ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã¯ã€
 
 	./configure
 	make
@@ -9,10 +9,10 @@ jfbterm ¤Ï¡¢Version 0.2.0 °Ê¹ß¤«¤é autoconf/automake ²½¤µ¤ì¤Æ¤¤¤Þ¤¹¡£
 	make install
 	exit
 
-¤Ç¤ª¤³¤Ê¤¨¤Þ¤¹¡£
+ã§ãŠã“ãªãˆã¾ã™ã€‚
 
-¤¿¤À¤·¡¢ÀßÄê¥Õ¥¡¥¤¥ë /etc/jfbterm.conf ¤ÏÊÌÅÓÍÑ°Õ¤¹¤ëÉ¬Í×¤¬¤¢¤ê¤Þ¤¹¡£
-Æ±º­¤Î jfbterm.conf.sample ¤ò»²¹Í¤ËºîÀ®¤·¤Æ¤¯¤À¤µ¤¤¡£
+ãŸã ã—ã€è¨­å®šãƒ•ã‚¡ã‚¤ãƒ« /etc/jfbterm.conf ã¯åˆ¥é€”ç”¨æ„ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
+åŒæ¢±ã® jfbterm.conf.sample ã‚’å‚è€ƒã«ä½œæˆã—ã¦ãã ã•ã„ã€‚
 
-¤Þ¤¿¡¢¥Õ¥©¥ó¥È¥Õ¥¡¥¤¥ë¤âÊÌÅÓÍÑ°Õ¤·¤Æ¤¯¤À¤µ¤¤¡£
+ã¾ãŸã€ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚‚åˆ¥é€”ç”¨æ„ã—ã¦ãã ã•ã„ã€‚
 
