@@ -41,6 +41,7 @@
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
+#include <sys/sysmacros.h>
 #ifdef JFB_VGA16FB
 #include <sys/io.h>
 #endif
