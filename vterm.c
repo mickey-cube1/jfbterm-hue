@@ -375,10 +375,8 @@ void tvterm_set_default_encoding(TVterm* p, const char* en)
 	int i;
 	int idx[6];
 	TCsv farg;
-	int ncap;
 
 	tcsv_init(&farg, en);
-	ncap = farg.cap;
 	/* first token */
 	g = tcsv_get_token(&farg);
 #ifdef JFB_OTHER_CODING_SYSTEM
