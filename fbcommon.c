@@ -46,7 +46,8 @@
 #endif
 #include <linux/vt.h>
 #include <linux/fb.h>
-#include <asm/page.h>
+//#include <asm/page.h>
+#define PAGE_MASK ~(0xfff) // FIXME: use sysconf(_SC_PAGESIZE).
 
 #include "mytypes.h"
 #include "fbcommon.h"
