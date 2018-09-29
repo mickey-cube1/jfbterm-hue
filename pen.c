@@ -62,7 +62,7 @@ void tpen_copy(TPen* p, TPen* q)
 	p->attr = q->attr;
 }
 
-inline void tpen_off_all_attribute(TPen* p)
+void tpen_off_all_attribute(TPen* p)
 {
 	p->bcol = 0;
 	p->fcol = 7;

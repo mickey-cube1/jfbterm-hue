@@ -58,7 +58,7 @@ typedef struct Raw_TPen {
 void tpen_init(TPen* p);
 void tpen_final(TPen* p);
 void tpen_copy(TPen* p, TPen* q);
-inline void tpen_off_all_attribute(TPen* p);
+void tpen_off_all_attribute(TPen* p);
 void tpen_higlight(TPen* p);
 void tpen_dehiglight(TPen* p);
 void tpen_underline(TPen* p);
