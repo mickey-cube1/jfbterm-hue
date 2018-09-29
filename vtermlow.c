@@ -254,7 +254,6 @@ void tvterm_refresh(TVterm* p)
 	u_int	i;
 	u_int	x, y;
 	u_int lang;
-	u_char	ch, ch2;
 	u_int	chlw;
 	u_char	fc, bc, fg;
 	TFont* pf;
@@ -286,8 +285,6 @@ void tvterm_refresh(TVterm* p)
 			fc = p->attr[i] & 0xf;
 			bc = p->attr[i] >> 4;
 			chlw = p->text[i];
-			ch2 = (chlw >> 8) & 0xFF;
-			ch  = chlw & 0xFF;
 			lang = (chlw >> 24) & 0xFF;
 			p->flag[i] |= CLEAN_S;
 
