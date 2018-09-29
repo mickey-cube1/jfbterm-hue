@@ -1,7 +1,9 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(fbcommon.c)
+AC_INIT([jfbterm],[0.4.7])
+AC_CONFIG_SRCDIR([fbcommon.c])
+AM_INIT_AUTOMAKE
+
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(jfbterm, 0.4.7)
 
 dnl Checks for programs.
 AC_PROG_CC
