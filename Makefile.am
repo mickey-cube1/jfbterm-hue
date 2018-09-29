@@ -1,5 +1,5 @@
-bin_PROGRAMS = jfbterm
-jfbterm_SOURCES = \
+bin_PROGRAMS = jfbterm-hue
+jfbterm_hue_SOURCES = \
 		main.c main.h \
 		mytypes.h sequence.h \
 		fbcommon.c fbcommon.h \
@@ -14,17 +14,19 @@ jfbterm_SOURCES = \
 		util.c util.h \
 		csv.c csv.h \
 		vterm.c vtermlow.c vterm.h
-jfbterm_LDADD = -lutil
+jfbterm_hue_LDADD = -lutil
 
 JFBTERM_CONFIG_FILE = jfbterm.conf.sample
 
-EXTRA_DIST = $(JFBTERM_CONFIG_FILE)
+sysconf_DATA = jfbterm.conf
 
-install-exec-hook:
-	chown root:utmp $(DESTDIR)$(bindir)/jfbterm
-	chmod ug+s $(DESTDIR)$(bindir)/jfbterm
+EXTRA_DIST = $(JFBTERM_CONFIG_FILE) $(sysconf_DATA)
 
-install-data-local:
-	$(INSTALL_DATA) $(srcdir)/$(JFBTERM_CONFIG_FILE) $(DESTDIR)$(sysconfdir)/$(JFBTERM_CONFIG_FILE)
-	$(INSTALL_DATA) $(srcdir)/fonts/*.pcf.gz $(DESTDIR)$(datadir)/fonts/jfbterm
+#install-exec-hook:
+#	chown root:utmp $(DESTDIR)$(bindir)/jfbterm-hue
+#	chmod ug+s $(DESTDIR)$(bindir)/jfbterm-hue
+
+#install-data-local:
+#	$(INSTALL_DATA) $(srcdir)/$(JFBTERM_CONFIG_FILE) $(DESTDIR)$(sysconfdir)/$(JFBTERM_CONFIG_FILE)
+#	$(INSTALL_DATA) $(srcdir)/fonts/*.pcf.gz $(DESTDIR)$(datadir)/fonts/jfbterm-hue
 

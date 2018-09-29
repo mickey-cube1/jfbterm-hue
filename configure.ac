@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([jfbterm],[0.4.7])
+AC_INIT([jfbterm-hue],[0.4.7])
 AC_CONFIG_SRCDIR([fbcommon.c])
 AM_INIT_AUTOMAKE
 
@@ -26,14 +26,32 @@ AC_C_CONST
 AC_C_INLINE
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
-AC_STRUCT_ST_RDEV
+AC_DIAGNOSE([obsolete],[your code should no longer depend upon `HAVE_ST_RDEV', but
+`HAVE_STRUCT_STAT_ST_RDEV'.  Remove this warning and
+the `AC_DEFINE' when you adjust the code.])dnl
+AC_CHECK_MEMBERS([struct stat.st_rdev],[AC_DEFINE(HAVE_ST_RDEV, 1,
+			    [Define to 1 if your `struct stat' has `st_rdev'.
+			     Deprecated, use `HAVE_STRUCT_STAT_ST_RDEV'
+			     instead.])])
+
 AC_HEADER_TIME
 
 dnl Checks for library functions.
 AC_PROG_GCC_TRADITIONAL
 AC_HEADER_MAJOR
 AC_FUNC_MMAP
-AC_TYPE_SIGNAL
+AC_DIAGNOSE([obsolete],[your code may safely assume C89 semantics that RETSIGTYPE is void.
+Remove this warning and the `AC_CACHE_CHECK' when you adjust the code.])dnl
+AC_CACHE_CHECK([return type of signal handlers],[ac_cv_type_signal],[AC_COMPILE_IFELSE(
+[AC_LANG_PROGRAM([#include <sys/types.h>
+#include <signal.h>
+],
+		 [return *(signal (0, 0)) (0) == 1;])],
+		   [ac_cv_type_signal=int],
+		   [ac_cv_type_signal=void])])
+AC_DEFINE_UNQUOTED([RETSIGTYPE],[$ac_cv_type_signal],[Define as the return type of signal handlers
+		    (`int' or `void').])
+
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS(select strdup strerror ioperm)
 
@@ -247,4 +265,5 @@ else
 	AC_DEFINE_UNQUOTED(SYSCONFDIR, "${sysconfdir}")
 fi
 
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
