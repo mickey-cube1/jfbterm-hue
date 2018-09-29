@@ -827,8 +827,9 @@ void tfbm_reverse_32bpp_packed(
 
 #ifdef JFB_VGA16FB
 
-#include <asm/io.h>
-#include <asm/system.h>
+//#include <asm/io.h>
+#include <sys/io.h>
+//#include <asm/system.h>
 
 #define GRAPHICS_ADDR_REG 0x3ce         /* Graphics address register. */
 #define GRAPHICS_DATA_REG 0x3cf         /* Graphics data register. */
@@ -945,12 +946,12 @@ void tfbm_overlay_vga16(
 	u_int xds8 = xd/8;
 	u_int xde8 = (xd+lx+7)/8;
 	unsigned char emask;
-	unsigned char smask;
+//	unsigned char smask;
 	u_int ix;
 
 	eofs = eofs ? eofs : 8;
 	emask = 0xff00 >> eofs;
-	smask = 0xff << sofs;
+//	smask = 0xff << sofs;
 
 	setmode(0);
 	setop(0);
