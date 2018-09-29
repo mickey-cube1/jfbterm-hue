@@ -43,7 +43,7 @@
 #include <iconv.h>
 #endif
 
-#define	LEN_REPORT	9
+#define	LEN_REPORT	32
 
 
 typedef struct Raw_TFontSpec {

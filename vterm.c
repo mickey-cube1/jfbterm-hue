@@ -49,8 +49,6 @@
 #include	"sequence.h"
 #include	"message.h"
 
-#define	LEN_REPORT	9
-
 static void tvterm_set_default_encoding(TVterm* p, const char* en);
 static void tvterm_esc_start(TVterm* p, u_char ch);
 static void tvterm_esc_bracket(TVterm*, u_char);
