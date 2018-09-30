@@ -339,6 +339,7 @@ static TVterm* sig_obj = NULL;
 
 void tvterm_unregister_signal(void)
 {
+        int ret;
         struct vt_mode vtm;
 
         signal(SIGUSR1, SIG_DFL);
@@ -348,13 +349,21 @@ void tvterm_unregister_signal(void)
         vtm.waitv = 0;
         vtm.relsig = 0;
         vtm.acqsig = 0;
-        ioctl(0, VT_SETMODE, &vtm);
+        vtm.frsig = 0;
+        ret = ioctl(0, VT_SETMODE, &vtm);
+	if (ret == -1) {
+		fprintf(stderr, "VT_SETMODE failed @ tvterm_unregister_signal().\n");
+	}
 
-        ioctl(0, TIOCCONS, NULL);
+        ret = ioctl(0, TIOCCONS, NULL);
+	if (ret == -1) {
+		fprintf(stderr, "TIOCCONS failed @ tvterm_unregister_signal().\n");
+	}
 }
 
 void tvterm_register_signal(TVterm* p)
 {
+        int ret;
         struct vt_mode vtm;
 
         sig_obj = p;
@@ -366,9 +375,16 @@ void tvterm_register_signal(TVterm* p)
         vtm.waitv = 0;
         vtm.relsig = SIGUSR1;
         vtm.acqsig = SIGUSR2;
-        ioctl(0, VT_SETMODE, &vtm);
+        vtm.frsig = 0;
+        ret = ioctl(0, VT_SETMODE, &vtm);
+	if (ret == -1) {
+		fprintf(stderr, "VT_SETMODE failed @ tvterm_register_signal().\n");
+	}
 
-        ioctl(sig_obj->term->ttyfd, TIOCCONS, NULL);
+        ret = ioctl(sig_obj->term->ttyfd, TIOCCONS, NULL);
+	if (ret == -1) {
+		fprintf(stderr, "VT_SETMODE failed @ tvterm_register_signal().\n");
+	}
 
         llatch(p->flag, p->tsize);
         p->textClear = TRUE;

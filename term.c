@@ -55,7 +55,8 @@
 
 #include "config.h"
 
-int gChildProcessId = 0;
+volatile int gChildProcessId = 0;
+volatile int gExitReq = 0;
 
 TTerm gTerm;
 
@@ -73,14 +74,19 @@ void send_hangup(
 	}
 }
 
-void sigchld(sig) int sig; {
+void sigchld(int sig) {
 	int st;
 	int ret;
-	ret = wait(&st);
-	if (ret == gChildProcessId || ret == ECHILD) {
-		tvterm_unregister_signal();
-		tterm_final(&gTerm);
-		exit(EXIT_SUCCESS);
+	ret = waitpid(-1, &st, WNOHANG);
+//	ret = wait(&st);
+	if (ret == 0) {
+		// nothing to do.
+	}
+	if (ret == gChildProcessId || (ret == -1 && errno == ECHILD)) {
+		gExitReq = 1;
+//		tvterm_unregister_signal();
+//		tterm_final(&gTerm);
+//		exit(EXIT_SUCCESS);
 	}
 	signal(SIGCHLD, sigchld);
 }
@@ -190,6 +196,9 @@ void tterm_start(TTerm* p, const char* tn, const char* en)
 		FD_SET(p->ptyfd,&fds);
 		if (p->ptyfd > max) max = p->ptyfd;
 		ret = select(max+1, &fds, NULL, NULL, &tv);
+		if (gExitReq == 1) {
+			break;
+		}
                 if (ret == 0 || (ret < 0 && errno == EINTR)) {
 #ifdef JFB_ENABLE_DIMMER
 			if (!blank && ++idle_time > DIMMER_TIMEOUT) {
@@ -227,6 +236,10 @@ void tterm_start(TTerm* p, const char* tn, const char* en)
 			}
 		}
 	}
+
+	tvterm_unregister_signal();
+	tterm_final(&gTerm);
+	exit(EXIT_SUCCESS);
 }
 
 void tterm_wakeup_shell(TTerm* p, const char* tn)
@@ -242,27 +255,43 @@ void tterm_wakeup_shell(TTerm* p, const char* tn)
 	exit(1);
 }
 
+static const char *tterm_guess_utid(const char *devname)
+{
+	if (devname == NULL) {
+		return NULL;
+	}
+	if (strlen(devname) < 9) {
+		return NULL;
+	}
+	if (strncmp(devname, "/dev/", 5) == 0) {
+		return devname + 8;
+	}
+	return NULL;
+}
 
 void	tterm_set_utmp(TTerm* p)
 {
 	struct utmp	utmp;
 	struct passwd	*pw;
 	char	*tn;
+	time_t t;
 
 	pw = getpwuid(util_getuid());
 	tn = rindex(p->name, '/') + 1;
 	memset((char *)&utmp, 0, sizeof(utmp));
-	strncpy(utmp.ut_id, tn + 3, sizeof(utmp.ut_id));
+	strncpy(utmp.ut_id, tterm_guess_utid(p->name), sizeof(utmp.ut_id));
 	utmp.ut_type = DEAD_PROCESS;
 	setutent();
 	getutid(&utmp);
 	utmp.ut_type = USER_PROCESS;
 	utmp.ut_pid = getpid();
-	if (strncmp("/dev/", p->name, 5) == 0)
+	if (strncmp("/dev/", p->name, 5) == 0) {
 	    tn = p->name + 5;
+	}
 	strncpy(utmp.ut_line, tn, sizeof(utmp.ut_line));
 	strncpy(utmp.ut_user, pw->pw_name, sizeof(utmp.ut_user));
-	time(&(utmp.ut_time));
+	time(&t);
+	utmp.ut_time = (int32_t)t;
 	pututline(&utmp);
 	endutent();
 }
@@ -270,19 +299,21 @@ void	tterm_set_utmp(TTerm* p)
 void	tterm_reset_utmp(TTerm* p)
 {
 	struct utmp	utmp, *utp;
-	char	*tn;
+	time_t t;
 
-	tn = rindex(p->name, '/') + 4;
 	memset((char *)&utmp, 0, sizeof(utmp));
-	strncpy(utmp.ut_id, tn, sizeof(utmp.ut_id));
+	strncpy(utmp.ut_id, tterm_guess_utid(p->name), sizeof(utmp.ut_id));
 	utmp.ut_type = USER_PROCESS;
 	setutent();
 	utp = getutid(&utmp);
-	utp->ut_type = DEAD_PROCESS;
-	memset(utp->ut_user, 0, sizeof(utmp.ut_user));
-	utp->ut_type = DEAD_PROCESS;
-	time(&(utp->ut_time));
-	pututline(utp);
+	if (utp != NULL) {
+		utp->ut_type = DEAD_PROCESS;
+		memset(utp->ut_user, 0, sizeof(utmp.ut_user));
+		utp->ut_type = DEAD_PROCESS;
+		time(&t);
+		utp->ut_time = (int32_t)t;
+		pututline(utp);
+	}
 	endutent();
 }
 
