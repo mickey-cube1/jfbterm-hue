@@ -580,7 +580,7 @@ void tfbm_open(TFrameBufferMemory* p)
 		p->mmio = (char *)p->mmio + p->moff;
 	}
 	else {
-		p->mmio = 0;
+		p->mmio = (char *)-1;
 	}
 
 #ifdef DEBUG
