@@ -427,6 +427,7 @@ int main(int argc, char *argv[])
 		for (i = 1; gApp.gExecShellArgv[i]; i++)
 			print_message("%s ", gApp.gExecShellArgv[i]);
 	}
+	print_message("\n");
 
 	tapp_change_to_new_console(&gApp);
 	tfbm_init(&gFramebuffer);

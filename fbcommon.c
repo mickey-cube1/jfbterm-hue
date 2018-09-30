@@ -226,7 +226,7 @@ static void tfbm_setup_color_table(struct fb_var_screeninfo *var)
 			 (((u_int)(blue16[i]) >> (16 - var->blue.length))
 					 << var->blue.offset) ;
 		trueColor16Table[i] = (u_short)(trueColor32Table[i]);
-		print_message("color %d : %x, %x\n", i, trueColor32Table[i], trueColor16Table[i]);
+		print_message("color %2d : %4x, %4x\n", i, trueColor32Table[i], trueColor16Table[i]);
 	}
 }
 
