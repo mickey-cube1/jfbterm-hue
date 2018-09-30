@@ -567,16 +567,21 @@ void tfbm_open(TFrameBufferMemory* p)
 
 	p->moff = (u_long)(fb_fix.mmio_start) & (~PAGE_MASK);
 	p->mlen = (fb_fix.mmio_len + p->moff + ~PAGE_MASK) & PAGE_MASK;
-	p->mmio = (u_char*)mmap(NULL, p->mlen, PROT_READ|PROT_WRITE,
-				MAP_SHARED, p->fh, p->slen);
-	if ((long)p->mmio == -1) {
+	if (p->mlen != 0) {
+		p->mmio = (u_char*)mmap(NULL, p->mlen, PROT_READ|PROT_WRITE,
+					MAP_SHARED, p->fh, p->slen);
+		if ((long)p->mmio == -1) {
 #ifdef JFB_MMIO_CHECK 
-		die("cannot mmap(mmio)");
+			die("cannot mmap(mmio)");
 #else
-		print_message("cannot mmap(mmio) : %s\n", strerror(errno));
+			print_message("cannot mmap(mmio) : mask=%lx off=%lx len=%lx : %s\n", PAGE_MASK, p->moff, p->mlen, strerror(errno));
 #endif
+		}
+		p->mmio = (char *)p->mmio + p->moff;
 	}
-	p->mmio = (char *)p->mmio + p->moff;
+	else {
+		p->mmio = 0;
+	}
 
 #ifdef DEBUG
 	print_message("mmap ; %d - %p\n", p->slen, p->smem);
