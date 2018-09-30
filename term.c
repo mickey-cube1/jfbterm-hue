@@ -124,13 +124,50 @@ void application_final(void)
 }
 	
 
-int tterm_get_ptytty(TTerm* p)
+static int tterm_get_ptytty(TTerm* p)
 {
+#if 1
 	if (openpty(&p->ptyfd, &p->ttyfd, p->name, NULL, NULL) < 0) {
 	    print_strerror("openpty");
-	    return 0;
+	    goto err;
 	}
+#else
+	const char *slavename;
+
+	p->ptyfd = posix_openpt(O_RDWR);
+	if (p->ptyfd == -1) {
+		print_message("error: posix_openpt()\n");
+		goto err;
+	}
+	if (grantpt(p->ptyfd)) {
+		print_message("error: grantpt()\n");
+		goto err;
+	}
+	if (unlockpt(p->ptyfd)) {
+		print_message("error: unlockpt()\n");
+		goto err;
+	}
+	
+	slavename = ptsname(p->ptyfd);
+	if (slavename == NULL ) {
+		print_message("error: ptsname()\n");
+		goto err;
+	}
+	if (strlen(slavename) >= TTERM_TTYFD_NAME_MAX) {
+		print_message("error: slavename: too long.\n");
+		goto err;
+	}
+	strncpy(p->name, slavename, TTERM_TTYFD_NAME_MAX);
+
+	p->ttyfd = open(p->name, O_RDWR);
+	if (p->ttyfd == -1) {
+		print_message("error: open()\n");
+		goto err;
+	}
+#endif
 	return 1;
+err:
+	return 0;
 }
 
 #define BUF_SIZE 1024

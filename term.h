@@ -34,11 +34,12 @@
 #include "mytypes.h"
 
 #define SUCCESS       (0)
+#define TTERM_TTYFD_NAME_MAX 0x1000
 
 typedef struct Raw_TTerm {
 	int ptyfd;
 	int ttyfd;
-	char name[64];
+	char name[TTERM_TTYFD_NAME_MAX];
 	struct termios ttysave;
 	TVterm vterm;
 } TTerm;
