@@ -93,11 +93,11 @@ void tpen_no_underline(TPen* p)
 	p->bcol &= ~8;
 }
 
-static u_char gsTPenReversTable[] = {0, 4, 2, 6, 1, 5, 3, 7};
+static uint8_t gsTPenReversTable[] = {0, 4, 2, 6, 1, 5, 3, 7};
 
 void tpen_reverse(TPen* p)
 {
-	u_char swp;
+	uint8_t swp;
 
 	if (!(p->attr & ATTR_REVERSE)) {
 		p->attr |= ATTR_REVERSE;
@@ -111,7 +111,7 @@ void tpen_reverse(TPen* p)
 
 void tpen_no_reverse(TPen* p)
 {
-	u_char swp;
+	uint8_t swp;
 
 	if (p->attr & ATTR_REVERSE) {
 		p->attr &= ~ATTR_REVERSE;
@@ -125,7 +125,7 @@ void tpen_no_reverse(TPen* p)
 
 void tpen_set_color(TPen* p, int col)
 {
-	u_char t;
+	uint8_t t;
 
 	if (col >= 30 && col <= 37) {
 		t = gsTPenReversTable[col - 30];

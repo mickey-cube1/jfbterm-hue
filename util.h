@@ -29,6 +29,7 @@
 #ifndef INCLUDE_UTIL_H
 #define INCLUDE_UTIL_H
 
+#include <stdint.h>
 #include <sys/types.h>
 #include <stdlib.h>
 
@@ -44,8 +45,8 @@ void util_privilege_drop();
 
 #define util_free(p) {free(p); (p) = NULL;}
 
-void util_euc_to_sjis(u_char* ch, u_char* cl);
-void util_sjis_to_jis(u_char* ch, u_char* cl);
+void util_euc_to_sjis(uint8_t* ch, uint8_t* cl);
+void util_sjis_to_jis(uint8_t* ch, uint8_t* cl);
 
 int util_search_string(const char* s, const char** array);
 

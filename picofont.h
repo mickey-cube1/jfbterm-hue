@@ -28,12 +28,13 @@
 #ifndef INCLUDE_PICOFONT_H
 #define INCLUDE_PICOFONT_H
 
+#include <stdint.h>
 #include <sys/types.h>
 
 #define PICOFONT_WIDTH 8
 #define PICOFONT_HEIGHT 16
 
-extern u_char gPicoFontLeft[];
+extern uint8_t gPicoFontLeft[];
 
 
 #endif /* INCLUDE_PICOFONT_H */

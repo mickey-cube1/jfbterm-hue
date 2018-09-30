@@ -27,7 +27,7 @@
 
 #include "picofont.h"
 
-u_char gPicoFontLeft[] = {
+uint8_t gPicoFontLeft[] = {
 	/* 0 */
 	0x30,		/* ..OO.... */
 	0x30,		/* ..OO.... */

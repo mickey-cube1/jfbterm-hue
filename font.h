@@ -29,6 +29,7 @@
 #ifndef INCLUDE_FONT_H
 #define INCLUDE_FONT_H
 
+#include <stdint.h>
 #include <sys/types.h>
 
 #include "getcap.h"
@@ -51,32 +52,32 @@ typedef enum {
 } FONTSET_HALF;
 
 typedef struct Raw_TFont {
-	const u_char* (*conv)(struct Raw_TFont* p, u_int c, u_int* width);
+	const uint8_t* (*conv)(struct Raw_TFont* p, uint32_t c, uint32_t* width);
 	/* --- */
 	const char* name;
-	u_int width;		/* 一文字あたりの水平ドット数 */
-	u_int height;		/* 一文字あたりの垂直ドット数 */
+	uint32_t width;		/* 一文字あたりの水平ドット数 */
+	uint32_t height;		/* 一文字あたりの垂直ドット数 */
 	/* */
-	u_int fsignature;
+	uint32_t fsignature;
 	FONTSET_HALF fhalf;
-	u_char aliasF;
+	uint8_t aliasF;
 	/* */
-	u_char** glyph;		/* ビットマップ中の各glyph の先頭 */
-	u_int* glyph_width;
-	u_char* dglyph;		/* 対応するglyphが存在しない時のglyph */
-	u_char* bitmap;		/* ビットマップ */
-	u_int colf; 
-	u_int coll;
-	u_int rowf;
-	u_int rowl;
-	u_int colspan;		/* = coll-colf+1; */
-	u_int bytew;		/* 一文字の水平１ラインのバイト数 */
-	u_int bytec;		/* 一文字あたりのバイト数 */
+	uint8_t** glyph;		/* ビットマップ中の各glyph の先頭 */
+	uint32_t* glyph_width;
+	uint8_t* dglyph;		/* 対応するglyphが存在しない時のglyph */
+	uint8_t* bitmap;		/* ビットマップ */
+	uint32_t colf; 
+	uint32_t coll;
+	uint32_t rowf;
+	uint32_t rowl;
+	uint32_t colspan;		/* = coll-colf+1; */
+	uint32_t bytew;		/* 一文字の水平１ラインのバイト数 */
+	uint32_t bytec;		/* 一文字あたりのバイト数 */
 } TFont;
 
 
-const u_char* tfont_default_glyph(TFont* p, u_int c, u_int *width);
-const u_char* tfont_standard_glyph(TFont* p, u_int c, u_int *width);
+const uint8_t* tfont_default_glyph(TFont* p, uint32_t c, uint32_t *width);
+const uint8_t* tfont_standard_glyph(TFont* p, uint32_t c, uint32_t *width);
 void tfont_final(TFont* p);
 void tfont_ary_final(void);
 void tfont_init(TFont* p);
@@ -89,7 +90,7 @@ int tfont_ary_search_idx(const char* na);
 void tfont_ary_show_list(FILE* fp);
 
 extern TFont gFont[];
-extern u_int gFontsWidth;
-extern u_int gFontsHeight;
+extern uint32_t gFontsWidth;
+extern uint32_t gFontsHeight;
 
 #endif /* INCLUDE_FONT_H */

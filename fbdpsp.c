@@ -40,13 +40,13 @@
 #ifdef JFB_2BPP
 /* 2bpp */
 
-static u_char mask_2bpp_msb_left[] = {
+static uint8_t mask_2bpp_msb_left[] = {
 	0xc0, 0x30, 0x0c, 0x03
 };
-static u_char mask_2bpp_msb_right[] = {
+static uint8_t mask_2bpp_msb_right[] = {
 	0x03, 0x0c, 0x30, 0xc0
 };
-static u_char* mask_2bpp = mask_2bpp_msb_left;
+static uint8_t* mask_2bpp = mask_2bpp_msb_left;
 
 void set_most_left(__u32 bpp, struct fb_bitfield red){
 	if(red.offset != 0) return;
@@ -62,7 +62,7 @@ void set_most_left(__u32 bpp, struct fb_bitfield red){
 	}
 }
 
-static u_char color_map_2bpp[] = {
+static uint8_t color_map_2bpp[] = {
 	0x00,   // 0 (black)
 	0x55, 0x55, 0x55, 0x55, 0x55, 0x55,
 	0xff,   // 7 (normal white)
@@ -71,7 +71,7 @@ static u_char color_map_2bpp[] = {
 	0xff    // 15 (hilight white)
 };
 
-static inline u_char tfbm_select_2_color(u_int color)
+static inline uint8_t tfbm_select_2_color(uint32_t color)
 {
 #ifdef JFB_REVERSEVIDEO
 	return (~ color_map_2bpp[color & 0xf]);
@@ -81,36 +81,36 @@ static inline u_char tfbm_select_2_color(u_int color)
 }
 
 static inline void set_pixel_2bpp_packed(
-	u_char *p, u_int x, u_int icol)
+	uint8_t *p, uint32_t x, uint32_t icol)
 {
 	// p points byte to be written
-	u_int b = x / 4;        // Byte offset
+	uint32_t b = x / 4;        // Byte offset
 	p[b] = ((p[b] & ~mask_2bpp[x & 3]) | (mask_2bpp[x & 3] & icol));
 }
 
 static inline void set_byte_2bpp_packed(
-	u_char *bp, u_int icol)
+	uint8_t *bp, uint32_t icol)
 {
 	*bp = icol;
 }
 
 static inline void reverse_pixel_2bpp_packed(
-	u_char *p, u_int x, u_int icol)
+	uint8_t *p, uint32_t x, uint32_t icol)
 {
 	*p = (*p & ~mask_2bpp[x & 3]) | ((*p ^ icol) & mask_2bpp[x & 3]);
 }
 
 void tfbm_fill_rect_2bpp_packed(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
-	u_int y;
-	u_int icol = tfbm_select_2_color(color);
+	uint32_t y;
+	uint32_t icol = tfbm_select_2_color(color);
 	for (y = sy ; y < sy+ly ; y++) {
-		u_char *line = p->smem + y * p->bytePerLine;
-		u_char *bp = line + (sx / 4);   // byte position
-		u_int xx = sx % 4;
-		u_int pixels = lx;
+		uint8_t *line = p->smem + y * p->bytePerLine;
+		uint8_t *bp = line + (sx / 4);   // byte position
+		uint32_t xx = sx % 4;
+		uint32_t pixels = lx;
 		if (xx != 0) {
 			// Fill until byte boundary
 			while (xx % 4 != 0 && pixels != 0) {
@@ -135,26 +135,26 @@ void tfbm_fill_rect_2bpp_packed(
 }
 
 void tfbm_clear_all_2bpp_packed(
-	TFrameBufferMemory* p, u_int color)
+	TFrameBufferMemory* p, uint32_t color)
 {
-	u_int icol = tfbm_select_2_color(color);
+	uint32_t icol = tfbm_select_2_color(color);
 	memset(p->smem, icol, p->slen);
 }
 
 void tfbm_overlay_2bpp_packed(
 	TFrameBufferMemory* p,
-	u_int xd, u_int yd,
-	const u_char* ps, u_int lx, u_int ly, u_int gap, u_int color)
+	uint32_t xd, uint32_t yd,
+	const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color)
 {
-	u_int y;
-	u_char* wp;
-	const u_char* tps;
-	u_int i;
-	u_int sb;
-	u_int icol = tfbm_select_2_color(color);
+	uint32_t y;
+	uint8_t* wp;
+	const uint8_t* tps;
+	uint32_t i;
+	uint32_t sb;
+	uint32_t icol = tfbm_select_2_color(color);
 
 	for (y = yd ; y < yd+ly ; y++) {
-		u_int xx = xd % 4;
+		uint32_t xx = xd % 4;
 		tps = ps;
 		wp = p->smem + y * p->bytePerLine + (xd / 4);
 		for (i = lx ; i >= 8 ; i -= 8) {
@@ -216,11 +216,11 @@ void tfbm_overlay_2bpp_packed(
 
 void tfbm_reverse_2bpp_packed(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
-	u_int y;
-	u_int x;
-	u_int icol = tfbm_select_2_color(color);
+	uint32_t y;
+	uint32_t x;
+	uint32_t icol = tfbm_select_2_color(color);
 	for (y = sy ; y < min(sy+ly, p->height) ; y++) {
 		unsigned char *line = p->smem + y * p->bytePerLine;
 		for (x = sx ; x < sx + lx ; x++) {
@@ -237,9 +237,9 @@ void tfbm_reverse_2bpp_packed(
 /* 8 bpp */
 
 #ifdef EXPERMINAL
-typedef u_int T_DWORD;
-typedef u_short T_WORD;
-typedef u_char T_BYTE;
+typedef uint32_t T_DWORD;
+typedef uint16_t T_WORD;
+typedef uint8_t T_BYTE;
 
 T_DWORD mask_8bpp_packed[16] = {
 #ifdef BIG_ENDIAN
@@ -262,15 +262,15 @@ T_DWORD mask_8bpp_packed[16] = {
 
 void tfbm_fill_rect_8bpp_packed(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
-	u_int y;
+	uint32_t y;
 	for (y = sy ; y < min(sy+ly, p->height) ; y++) {
 #if 0
  		memset(p->smem + y * p->bytePerLine + sx, color, lx);
 #else
 		unsigned char *line = p->smem + y * p->bytePerLine + sx;
-		u_int x;
+		uint32_t x;
 		for (x = 0 ; x < lx ; x++) {
 			line[x] = color;
 		}
@@ -279,22 +279,22 @@ void tfbm_fill_rect_8bpp_packed(
 }
 
 void tfbm_clear_all_8bpp_packed(
-	TFrameBufferMemory* p, u_int color)
+	TFrameBufferMemory* p, uint32_t color)
 {
 	memset(p->smem, color, p->slen);
 }
 
 void tfbm_overlay_8bpp_packed(
 	TFrameBufferMemory* p,
-	u_int xd, u_int yd,
-	const u_char* ps, u_int lx, u_int ly, u_int gap, u_int color)
+	uint32_t xd, uint32_t yd,
+	const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color)
 {
 #ifdef EXPERMINAL
-	const u_char* tps;
-	u_int y;
-	u_int x;
-	u_int glyph;
-	u_int bm;
+	const uint8_t* tps;
+	uint32_t y;
+	uint32_t x;
+	uint32_t glyph;
+	uint32_t bm;
 	T_DWORD icol;
 	T_DWORD *wp;
 
@@ -327,11 +327,11 @@ void tfbm_overlay_8bpp_packed(
 		ps += gap;
 	}
 #else
-	u_int y;
-	u_char* wp;
-	const u_char* tps;
-	u_int i;
-	u_int sb;
+	uint32_t y;
+	uint8_t* wp;
+	const uint8_t* tps;
+	uint32_t i;
+	uint32_t sb;
 
 	for (y = yd ; y < yd+ly ; y++) {
 		tps = ps;
@@ -367,12 +367,12 @@ void tfbm_overlay_8bpp_packed(
 
 void tfbm_reverse_8bpp_packed(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
 #ifdef EXPERMINAL
-	u_int y;
-	u_int x;
-	u_int bm;
+	uint32_t y;
+	uint32_t x;
+	uint32_t bm;
 	T_DWORD icol;
 	T_DWORD *wp;
 
@@ -392,8 +392,8 @@ void tfbm_reverse_8bpp_packed(
 		}
 	}
 #else
-	u_int y;
-	u_int x;
+	uint32_t y;
+	uint32_t x;
 	for (y = sy ; y < min(sy+ly, p->height) ; y++) {
 		for (x = sx ; x < sx+lx ; x++) {
 			p->smem[y * p->bytePerLine + x] ^= color;
@@ -408,15 +408,15 @@ void tfbm_reverse_8bpp_packed(
 /* 15 bpp */
 void tfbm_fill_rect_15bpp_packed(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
-	u_int	x,y;
-	u_short	*d;
-	u_short icol;
+	uint32_t	x,y;
+	uint16_t	*d;
+	uint16_t icol;
 
 	icol = tfbm_select_16_color(color);
 	for (y = sy ; y < min(sy+ly, p->height) ; y++) {
-		d=(u_short*)(p->smem + y * p->bytePerLine + sx * 2);
+		d=(uint16_t*)(p->smem + y * p->bytePerLine + sx * 2);
 		for(x=0;x<lx;x++){
 			*d = icol;
 			d++;
@@ -425,11 +425,11 @@ void tfbm_fill_rect_15bpp_packed(
 }
 
 void tfbm_clear_all_15bpp_packed(
-	TFrameBufferMemory* p, u_int color)
+	TFrameBufferMemory* p, uint32_t color)
 {
-	u_int lp;
-	u_short	*d=(u_short*)(p->smem);
-	u_short icol;
+	uint32_t lp;
+	uint16_t	*d=(uint16_t*)(p->smem);
+	uint16_t icol;
 
 	icol = tfbm_select_16_color(color);
 	for(lp=0;lp<((p->slen)/2);lp++){
@@ -439,21 +439,21 @@ void tfbm_clear_all_15bpp_packed(
 
 void tfbm_overlay_15bpp_packed(
 	TFrameBufferMemory* p,
-	u_int xd, u_int yd,
-	const u_char* ps, u_int lx, u_int ly, u_int gap, u_int color)
+	uint32_t xd, uint32_t yd,
+	const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color)
 {
-	u_int y;
-	u_short* wp;
-	const u_char* tps;
-	u_int i;
-	u_int sb;
-	u_short icol;
+	uint32_t y;
+	uint16_t* wp;
+	const uint8_t* tps;
+	uint32_t i;
+	uint32_t sb;
+	uint16_t icol;
 
 	icol = tfbm_select_16_color(color);
 
 	for (y = yd ; y < yd+ly ; y++) {
 		tps = ps;
-		wp = (u_short*)(p->smem + y * p->bytePerLine + xd * 2);
+		wp = (uint16_t*)(p->smem + y * p->bytePerLine + xd * 2);
 		for (i = lx ; i >= 8 ; i -= 8) {
 			sb = *tps++;
 			if (sb & 0x80) wp[0] = icol;
@@ -484,15 +484,15 @@ void tfbm_overlay_15bpp_packed(
 
 void tfbm_reverse_15bpp_packed(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
-	u_int x,y;
-	u_short	*d;
-	u_short icol;
+	uint32_t x,y;
+	uint16_t	*d;
+	uint16_t icol;
 
 	icol = tfbm_select_16_color(color);
 	for (y = sy ; y < min(sy+ly, p->height) ; y++) {
-		d = (u_short*)(p->smem + y * p->bytePerLine + sx * 2);
+		d = (uint16_t*)(p->smem + y * p->bytePerLine + sx * 2);
 		for (x = 0 ; x < lx ; x++) {
 			d[x] ^= icol;
 		}
@@ -504,15 +504,15 @@ void tfbm_reverse_15bpp_packed(
 /* 16 bpp */
 void tfbm_fill_rect_16bpp_packed(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
-	u_int	x,y;
-	u_short	*d;
-	u_short icol;
+	uint32_t	x,y;
+	uint16_t	*d;
+	uint16_t icol;
 
 	icol = tfbm_select_16_color(color);
 	for (y = sy ; y < min(sy+ly, p->height) ; y++) {
-		d=(u_short*)(p->smem + y * p->bytePerLine + sx * 2);
+		d=(uint16_t*)(p->smem + y * p->bytePerLine + sx * 2);
 		for(x=0;x<lx;x++){
 			*d = icol;
 			d++;
@@ -521,11 +521,11 @@ void tfbm_fill_rect_16bpp_packed(
 }
 
 void tfbm_clear_all_16bpp_packed(
-	TFrameBufferMemory* p, u_int color)
+	TFrameBufferMemory* p, uint32_t color)
 {
-	u_int lp;
-	u_short	*d=(u_short*)(p->smem);
-	u_short icol;
+	uint32_t lp;
+	uint16_t	*d=(uint16_t*)(p->smem);
+	uint16_t icol;
 
 	icol = tfbm_select_16_color(color);
 	for(lp=0;lp<((p->slen)/2);lp++){
@@ -535,20 +535,20 @@ void tfbm_clear_all_16bpp_packed(
 
 void tfbm_overlay_16bpp_packed(
 	TFrameBufferMemory* p,
-	u_int xd, u_int yd,
-	const u_char* ps, u_int lx, u_int ly, u_int gap, u_int color)
+	uint32_t xd, uint32_t yd,
+	const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color)
 {
-	u_int y;
-	u_short* wp;
-	const u_char* tps;
-	u_int i;
-	u_int sb;
-	u_short icol;
+	uint32_t y;
+	uint16_t* wp;
+	const uint8_t* tps;
+	uint32_t i;
+	uint32_t sb;
+	uint16_t icol;
 
 	icol = tfbm_select_16_color(color);
 	for (y = yd ; y < yd+ly ; y++) {
 		tps = ps;
-		wp = (u_short*)(p->smem + y * p->bytePerLine + xd * 2);
+		wp = (uint16_t*)(p->smem + y * p->bytePerLine + xd * 2);
 		for (i = lx ; i >= 8 ; i -= 8) {
 			sb = *tps++;
 			if (sb & 0x80) wp[0] = icol;
@@ -583,15 +583,15 @@ void tfbm_overlay_16bpp_packed(
 
 void tfbm_reverse_16bpp_packed(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
-	u_int x,y;
-	u_short	*d;
-	u_short icol;
+	uint32_t x,y;
+	uint16_t	*d;
+	uint16_t icol;
 
 	icol = tfbm_select_16_color(color);
 	for (y = sy ; y < min(sy+ly, p->height) ; y++) {
-		d = (u_short*)(p->smem + y * p->bytePerLine + sx * 2);
+		d = (uint16_t*)(p->smem + y * p->bytePerLine + sx * 2);
 		for (x = 0 ; x < lx ; x++) {
 			d[x] ^= icol;
 		}
@@ -603,12 +603,12 @@ void tfbm_reverse_16bpp_packed(
 /* 24 bpp */
 void tfbm_fill_rect_24bpp_packed(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
-	u_int	x,y;
-	u_char*	d;
-	u_int t, m, b;
-	u_int icol;
+	uint32_t	x,y;
+	uint8_t*	d;
+	uint32_t t, m, b;
+	uint32_t icol;
 
 	icol = tfbm_select_32_color(color);
 #if __BYTE_ORDER == __BIG_ENDIAN
@@ -631,11 +631,11 @@ void tfbm_fill_rect_24bpp_packed(
 }
 
 void tfbm_clear_all_24bpp_packed(
-	TFrameBufferMemory* p, u_int color)
+	TFrameBufferMemory* p, uint32_t color)
 {
-	u_int lp;
-	u_int t, m, b;
-	u_int icol;
+	uint32_t lp;
+	uint32_t t, m, b;
+	uint32_t icol;
 
 	icol = tfbm_select_32_color(color);
 #if __BYTE_ORDER == __BIG_ENDIAN
@@ -655,14 +655,14 @@ void tfbm_clear_all_24bpp_packed(
 
 void tfbm_overlay_24bpp_packed(
 	TFrameBufferMemory* p,
-	u_int xd, u_int yd,
-	const u_char* ps, u_int lx, u_int ly, u_int gap, u_int color)
+	uint32_t xd, uint32_t yd,
+	const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color)
 {
-	u_int y,i,sb;
-	u_char* wp;
-	const u_char* tps;
-	u_int t, m, b;
-	u_int icol;
+	uint32_t y,i,sb;
+	uint8_t* wp;
+	const uint8_t* tps;
+	uint32_t t, m, b;
+	uint32_t icol;
 
 	icol = tfbm_select_32_color(color);
 #if __BYTE_ORDER == __BIG_ENDIAN
@@ -706,11 +706,11 @@ void tfbm_overlay_24bpp_packed(
 
 void tfbm_reverse_24bpp_packed(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
-	u_int x,y;
-	u_int t, m, b;
-	u_int icol;
+	uint32_t x,y;
+	uint32_t t, m, b;
+	uint32_t icol;
 
 	icol = tfbm_select_32_color(color);
 #if __BYTE_ORDER == __BIG_ENDIAN
@@ -735,15 +735,15 @@ void tfbm_reverse_24bpp_packed(
 /* 32 bpp */
 void tfbm_fill_rect_32bpp_packed(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
-	u_int x,y;
-	u_int icol;
-	u_int *d;
+	uint32_t x,y;
+	uint32_t icol;
+	uint32_t *d;
 
 	icol = tfbm_select_32_color(color);
 	for (y = sy ; y < sy+ly ; y++) {
-		d=(u_int*)(p->smem + y * p->bytePerLine + sx * 4);
+		d=(uint32_t*)(p->smem + y * p->bytePerLine + sx * 4);
 		for(x = 0 ; x < lx ; x++){
 			*d++ = icol;
 		}
@@ -751,11 +751,11 @@ void tfbm_fill_rect_32bpp_packed(
 }
 
 void tfbm_clear_all_32bpp_packed(
-	TFrameBufferMemory* p, u_int color)
+	TFrameBufferMemory* p, uint32_t color)
 {
-	u_int lp;
-	u_int	*d=(u_int*)(p->smem);
-	u_int icol;
+	uint32_t lp;
+	uint32_t	*d=(uint32_t*)(p->smem);
+	uint32_t icol;
 
 	icol = tfbm_select_32_color(color);
 	for(lp = 0 ; lp < ((p->slen)/2) ; lp++) {
@@ -765,20 +765,20 @@ void tfbm_clear_all_32bpp_packed(
 
 void tfbm_overlay_32bpp_packed(
 	TFrameBufferMemory* p,
-	u_int xd, u_int yd,
-	const u_char* ps, u_int lx, u_int ly, u_int gap, u_int color)
+	uint32_t xd, uint32_t yd,
+	const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color)
 {
-	u_int y;
-	u_int* wp;
-	const u_char* tps;
-	u_int i;
-	u_int sb;
-	u_int icol;
+	uint32_t y;
+	uint32_t* wp;
+	const uint8_t* tps;
+	uint32_t i;
+	uint32_t sb;
+	uint32_t icol;
 
 	icol = tfbm_select_32_color(color);
 	for (y = yd ; y < yd+ly ; y++) {
 		tps = ps;
-		wp = (u_int*)(p->smem + y * p->bytePerLine + xd * 4);
+		wp = (uint32_t*)(p->smem + y * p->bytePerLine + xd * 4);
 		for (i = lx ; i >= 8 ; i -= 8) {
 			sb = *tps++;
 			if (sb & 0x80) wp[0] = icol;
@@ -809,15 +809,15 @@ void tfbm_overlay_32bpp_packed(
 
 void tfbm_reverse_32bpp_packed(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
-	u_int x,y;
-	u_int *d;
-	u_int icol;
+	uint32_t x,y;
+	uint32_t *d;
+	uint32_t icol;
 
 	icol = tfbm_select_32_color(color);
 	for (y = sy ; y < sy+ly ; y++) {
-		d = (u_int*)(p->smem + y * p->bytePerLine + sx * 4);
+		d = (uint32_t*)(p->smem + y * p->bytePerLine + sx * 4);
 		for (x = 0 ; x < lx ; x++) {
 			d[x] ^= icol;
 		}
@@ -881,15 +881,15 @@ static inline void setrplane(int idx)
 
 void tfbm_fill_rect_vga16(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
 	int y;
 	unsigned char *wp;
 	unsigned char mask;
-	u_int sofs = sx % 8;
-	u_int eofs = (sx+lx) % 8;
+	uint32_t sofs = sx % 8;
+	uint32_t eofs = (sx+lx) % 8;
 	unsigned char emask = 0xff00 >> eofs;
-	u_int ix;
+	uint32_t ix;
 
 	setmode(0);
 	setop(0);
@@ -916,7 +916,7 @@ void tfbm_fill_rect_vga16(
 }
 
 void tfbm_clear_all_vga16(
-	TFrameBufferMemory* p, u_int color)
+	TFrameBufferMemory* p, uint32_t color)
 {
 	setmode(0);
 	setop(0);
@@ -931,21 +931,21 @@ void tfbm_clear_all_vga16(
 
 void tfbm_overlay_vga16(
 	TFrameBufferMemory* p,
-	u_int xd, u_int yd,
-	const u_char* ps, u_int lx, u_int ly, u_int gap, u_int color)
+	uint32_t xd, uint32_t yd,
+	const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color)
 {
 	int y;
 	volatile unsigned char *wp;
 	const unsigned char *tps;
 	volatile unsigned char mask;
 
-	u_int sofs = xd & 7;
-	u_int eofs = (xd+lx) & 7;
-	u_int xds8 = xd/8;
-	u_int xde8 = (xd+lx+7)/8;
+	uint32_t sofs = xd & 7;
+	uint32_t eofs = (xd+lx) & 7;
+	uint32_t xds8 = xd/8;
+	uint32_t xde8 = (xd+lx+7)/8;
 	unsigned char emask;
 //	unsigned char smask;
-	u_int ix;
+	uint32_t ix;
 
 	eofs = eofs ? eofs : 8;
 	emask = 0xff00 >> eofs;
@@ -997,15 +997,15 @@ void tfbm_overlay_vga16(
 
 void tfbm_reverse_vga16(
 	TFrameBufferMemory* p,
-	u_int sx, u_int sy, u_int lx, u_int ly, u_int color)
+	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color)
 {
 	int y;
 	unsigned char *wp;
 	unsigned char mask;
-	u_int sofs = sx % 8;
-	u_int eofs = (sx+lx) % 8;
+	uint32_t sofs = sx % 8;
+	uint32_t eofs = (sx+lx) % 8;
 	unsigned char emask = 0xff00 >> eofs;
-	u_int ix;
+	uint32_t ix;
 
 	setmode(0);
 	setop(0x18);

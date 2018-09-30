@@ -32,6 +32,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 
 #include "config.h"
@@ -44,11 +45,11 @@
 #include "picofont.h"
 #include "sequence.h"
 
-u_int gFontsWidth = 0;
-u_int gFontsHeight = 0;
+uint32_t gFontsWidth = 0;
+uint32_t gFontsHeight = 0;
 
-u_char sgFontsDefaultGlyph[] = {0x80};
-u_char sgFontsDefaultDGlyph[] = {0xC0};
+uint8_t sgFontsDefaultGlyph[] = {0x80};
+uint8_t sgFontsDefaultDGlyph[] = {0xC0};
 
 #define FMACRO_94__FONT(final, aline, fontname) {\
 	.conv = tfont_default_glyph, \
@@ -260,12 +261,12 @@ void tfont_ary_show_list(FILE* fp)
 {
 	TFont* ce = gFont;
 	char c;
-	u_int n;
-	u_int u;
-	u_int d;
-	u_int f1;
-	u_int f2;
-	u_int uni;
+	uint32_t n;
+	uint32_t u;
+	uint32_t d;
+	uint32_t f1;
+	uint32_t f2;
+	uint32_t uni;
 	while (ce->name) {
 		n = ce->fsignature;
 		c = n & 255;
@@ -329,17 +330,17 @@ void tfont_final(TFont* p)
 	util_free(p->bitmap);
 }
 
-const u_char* tfont_default_glyph(
+const uint8_t* tfont_default_glyph(
 	TFont* p,
-	u_int chlw,
-	u_int* width)
+	uint32_t chlw,
+	uint32_t* width)
 {
-	static u_char gly[PICOFONT_HEIGHT * 2];
+	static uint8_t gly[PICOFONT_HEIGHT * 2];
 
-	u_char* cp = gly;
-	u_int i;
-	u_int a;
-	u_int b;
+	uint8_t* cp = gly;
+	uint32_t i;
+	uint32_t a;
+	uint32_t b;
 	*width = p->width;
 
 	*cp++ = 0x80;
@@ -369,14 +370,14 @@ const u_char* tfont_default_glyph(
 	return gly;
 }
 
-const u_char* tfont_standard_glyph(
+const uint8_t* tfont_standard_glyph(
 	TFont* p,
-	u_int chlw,
-	u_int *width)
+	uint32_t chlw,
+	uint32_t *width)
 {
-	u_char b2 = (chlw >> 8) & 0xFF;
-	u_char b1 = chlw & 0xFF;
-	u_int i;
+	uint8_t b2 = (chlw >> 8) & 0xFF;
+	uint8_t b1 = chlw & 0xFF;
+	uint32_t i;
 
 	*width = p->width;
 	if (b1 < p->colf || p->coll < b1 || b2 < p->rowf || p->rowl < b2) {
@@ -479,8 +480,8 @@ static void tfont_alias(TFont* dst, TFont* src, FONTSET_HALF hf)
 static void tfont_fontlist_glyph_size(void)
 {
 	TFont* p = gFont;
-	u_int w;
-	u_int dw;
+	uint32_t w;
+	uint32_t dw;
 
 	while (p->name) {
 		if (gFontsHeight < p->height) {

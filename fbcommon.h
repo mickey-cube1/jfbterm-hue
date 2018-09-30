@@ -28,52 +28,53 @@
 #ifndef INCLUDE_FBCOMMON_H
 #define INCLUDE_FBCOMMON_H
 
+#include <stdint.h>
 #include <sys/types.h>
 
 struct Raw_TFrameBufferMemory;
 
 typedef struct Raw_TFrameBufferCapability {
-	u_int bitsPerPixel;
-	u_int fbType;
-	u_int fbVisual;
-	void (*fill)(struct Raw_TFrameBufferMemory* p, u_int x, u_int y,
-			u_int lx, u_int ly, u_int color);
-	void (*overlay)(struct Raw_TFrameBufferMemory* p, u_int xd, u_int yd,
-			const u_char* ps, u_int lx, u_int ly, u_int gap, u_int color);
-	void (*clear_all)(struct Raw_TFrameBufferMemory* p, u_int color);
-	void (*reverse)(struct Raw_TFrameBufferMemory* p, u_int x, u_int y,
-			u_int lx, u_int ly, u_int color);
+	uint32_t bitsPerPixel;
+	uint32_t fbType;
+	uint32_t fbVisual;
+	void (*fill)(struct Raw_TFrameBufferMemory* p, uint32_t x, uint32_t y,
+			uint32_t lx, uint32_t ly, uint32_t color);
+	void (*overlay)(struct Raw_TFrameBufferMemory* p, uint32_t xd, uint32_t yd,
+			const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
+	void (*clear_all)(struct Raw_TFrameBufferMemory* p, uint32_t color);
+	void (*reverse)(struct Raw_TFrameBufferMemory* p, uint32_t x, uint32_t y,
+			uint32_t lx, uint32_t ly, uint32_t color);
 } TFrameBufferCapability;
 
 typedef struct Raw_TFrameBufferMemory {
-	u_int height;
-	u_int width;
-	u_int bytePerLine;
+	uint32_t height;
+	uint32_t width;
+	uint32_t bytePerLine;
 	/* --- */
 	int fh;
-	u_long sstart;
-	u_long soff;
-	u_long slen;
-	u_long mstart;
-	u_long moff;
-	u_long mlen;
-	u_char* smem;
-	u_char* mmio;
+	uint64_t sstart;
+	uint64_t soff;
+	uint64_t slen;
+	uint64_t mstart;
+	uint64_t moff;
+	uint64_t mlen;
+	uint8_t* smem;
+	uint8_t* mmio;
 	/* function hooks */
 	TFrameBufferCapability cap;
 #ifdef JFB_ENABLE_DIMMER
-	u_short my_vt;
+	uint16_t my_vt;
 #endif
 	int tty0fd;
 #if 0
 	(*init)(void),		 /* 初期化 */
 	(*text_mode)(void),	 /* テキストモードに切替え */
 	(*graph_mode)(void),	 /* グラフィックモードに切替え */
-	(*wput)(u_char *code, u_char fc, u_char bc), /* 漢字出力 */
-	(*sput)(u_char *code, u_char fc, u_char bc), /* ANK出力 */
-	(*set_cursor_address)(struct cursorInfo *c, u_int x, u_int y),
+	(*wput)(uint8_t *code, uint8_t fc, uint8_t bc), /* 漢字出力 */
+	(*sput)(uint8_t *code, uint8_t fc, uint8_t bc), /* ANK出力 */
+	(*set_cursor_address)(struct cursorInfo *c, uint32_t x, uint32_t y),
 	/* カーソル c のアドレスを (x,y) に設定 */
-	(*set_address)(u_int i),
+	(*set_address)(uint32_t i),
 	/* 文字書き込みアドレスを i 文字目に設定 */
 	(*cursor)(struct cursorInfo *),	/* カーソルをトグル */
 	(*screen_saver)(bool),	 /* スクリーンブランク/アンブランク */
@@ -87,8 +88,8 @@ void tfbm_init(TFrameBufferMemory* p);
 void tfbm_open(TFrameBufferMemory* p);
 void tfbm_close(TFrameBufferMemory* p);
 
-u_int tfbm_select_32_color(u_int);
-u_short tfbm_select_16_color(u_int);
+uint32_t tfbm_select_32_color(uint32_t);
+uint16_t tfbm_select_16_color(uint32_t);
 
 extern float fbgamma;
 

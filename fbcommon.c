@@ -201,16 +201,16 @@ static struct fb_var_screeninfo ovar;
 static TBool modified_var_screen_info = FALSE;
 
 /*---------------------------------------------------------------------------*/
-static u_int trueColor32Table[16];
-static u_short trueColor16Table[16];
+static uint32_t trueColor32Table[16];
+static uint16_t trueColor16Table[16];
 
-static u_short red16[16] = {
+static uint16_t red16[16] = {
 	0x0000,0x0000,0x0000,0x0000,0xaaaa,0xaaaa,0xaaaa,0xaaaa,
 	0x5555,0x5555,0x5555,0x5555,0xffff,0xffff,0xffff,0xffff, };
-static u_short green16[16] = {
+static uint16_t green16[16] = {
 	0x0000,0x0000,0xaaaa,0xaaaa,0x0000,0x0000,0xaaaa,0xaaaa,
 	0x5555,0x5555,0xffff,0xffff,0x5555,0x5555,0xffff,0xffff, };
-static u_short	blue16[16] = {
+static uint16_t	blue16[16] = {
 	0x0000,0xaaaa,0x0000,0xaaaa,0x0000,0xaaaa,0x0000,0xaaaa,
 	0x5555,0xffff,0x5555,0xffff,0x5555,0xffff,0x5555,0xffff, };
 
@@ -219,13 +219,13 @@ static void tfbm_setup_color_table(struct fb_var_screeninfo *var)
 	int i;
 	for (i = 0 ; i < 16 ; i++) {
 		trueColor32Table[i] =
-			 (((u_int)(red16[i]) >> (16 - var->red.length))
+			 (((uint32_t)(red16[i]) >> (16 - var->red.length))
 					 << var->red.offset) |
-			 (((u_int)(green16[i]) >> (16 - var->green.length))
+			 (((uint32_t)(green16[i]) >> (16 - var->green.length))
 					 << var->green.offset) |
-			 (((u_int)(blue16[i]) >> (16 - var->blue.length))
+			 (((uint32_t)(blue16[i]) >> (16 - var->blue.length))
 					 << var->blue.offset) ;
-		trueColor16Table[i] = (u_short)(trueColor32Table[i]);
+		trueColor16Table[i] = (uint16_t)(trueColor32Table[i]);
 		print_message("color %2d : %4x, %4x\n", i, trueColor32Table[i], trueColor16Table[i]);
 	}
 }
@@ -389,7 +389,7 @@ static void tfbm_show_screeninfo(TFrameBufferMemory* p,
 				 struct fb_var_screeninfo* fbvs,
 				 struct fb_fix_screeninfo* fbfs)
 {
-	u_int c;
+	uint32_t c;
 	const char* t;
 	const char* v; 
 
@@ -556,19 +556,19 @@ void tfbm_open(TFrameBufferMemory* p)
 	p->height = fb_var.yres;
 	p->bytePerLine = fb_fix.line_length;
 
-	p->soff = (u_long)(fb_fix.smem_start) & (~PAGE_MASK);
+	p->soff = (uint64_t)(fb_fix.smem_start) & (~PAGE_MASK);
 	p->slen = (fb_fix.smem_len + p->soff + ~PAGE_MASK) & PAGE_MASK;
-	p->smem = (u_char*)mmap(NULL, p->slen, PROT_READ|PROT_WRITE,
+	p->smem = (uint8_t*)mmap(NULL, p->slen, PROT_READ|PROT_WRITE,
 				MAP_SHARED, p->fh, (off_t)0);
 	if ((long)p->smem == -1) {
 		die("cannot mmap(smem)");
 	}
 	p->smem = (char *)p->smem + p->soff;
 
-	p->moff = (u_long)(fb_fix.mmio_start) & (~PAGE_MASK);
+	p->moff = (uint64_t)(fb_fix.mmio_start) & (~PAGE_MASK);
 	p->mlen = (fb_fix.mmio_len + p->moff + ~PAGE_MASK) & PAGE_MASK;
 	if (p->mlen != 0) {
-		p->mmio = (u_char*)mmap(NULL, p->mlen, PROT_READ|PROT_WRITE,
+		p->mmio = (uint8_t*)mmap(NULL, p->mlen, PROT_READ|PROT_WRITE,
 					MAP_SHARED, p->fh, p->slen);
 		if ((long)p->mmio == -1) {
 #ifdef JFB_MMIO_CHECK 
@@ -616,10 +616,10 @@ void tfbm_close(TFrameBufferMemory* p)
 		return;
 	}
 	if ((long)p->smem != -1) {
-		munmap((caddr_t)((u_long)p->smem & PAGE_MASK), p->slen);
+		munmap((void *)((uint64_t)p->smem & PAGE_MASK), p->slen);
 	}
 	if ((long)p->mmio != -1) {
-		munmap((caddr_t)((u_long)p->mmio & PAGE_MASK), p->mlen);
+		munmap((void *)((uint64_t)p->mmio & PAGE_MASK), p->mlen);
 	}
 	if (cmapSaved == TRUE) {
 		tfbm_put_cmap(p->fh, &ocmap);
@@ -660,12 +660,12 @@ int tfbm_select_visual( TFrameBufferMemory* p,
 	return -1;
 }
 
-u_short tfbm_select_16_color(u_int c)
+uint16_t tfbm_select_16_color(uint32_t c)
 {
 	return trueColor16Table[c];
 }
 
-u_int tfbm_select_32_color(u_int c)
+uint32_t tfbm_select_32_color(uint32_t c)
 {
 	return trueColor32Table[c];
 }

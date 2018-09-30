@@ -31,6 +31,7 @@
 #ifndef INCLUDE_PEN_H
 #define INCLUDE_PEN_H
 
+#include	<stdint.h>
 #include	<sys/types.h>
 
 #define ATTR_ULINE      0x80    /* under line */
@@ -48,11 +49,11 @@
 
 typedef struct Raw_TPen {
 	struct Raw_TPen* prev;
-	u_char x;
-	u_char y;
-	u_char bcol;
-	u_char fcol;
-	u_char attr;
+	uint8_t x;
+	uint8_t y;
+	uint8_t bcol;
+	uint8_t fcol;
+	uint8_t attr;
 } TPen;
 
 void tpen_init(TPen* p);

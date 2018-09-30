@@ -34,15 +34,15 @@
 #include <font.h>
 
 typedef struct Raw_TPcfFormat {
-	u_int id;
-	u_int scan;
+	uint32_t id;
+	uint32_t scan;
 	int obit;
 	int obyte;
-	u_int glyphaline;
+	uint32_t glyphaline;
 } TPcfFormat;
 
 typedef struct Raw_TPcfIndex {
-	u_int type;
+	uint32_t type;
 	TPcfFormat fmt;
 	int size;
 	int offset;
@@ -50,7 +50,7 @@ typedef struct Raw_TPcfIndex {
 
 typedef struct Raw_TPcfProp {
 	int name;
-	u_char strq;
+	uint8_t strq;
 	int val;
 } TPcfProp;
 
@@ -83,11 +83,11 @@ typedef struct Raw_TPcfAccel {
 
 typedef struct Raw_TPcfBitmap {
 	int maps;
-	u_int aline;
-	u_int galine;
-	u_int mapsize[4];
-	u_int* offsets;
-	u_char* bitmap;
+	uint32_t aline;
+	uint32_t galine;
+	uint32_t mapsize[4];
+	uint32_t* offsets;
+	uint8_t* bitmap;
 } TPcfBitmap;
 
 typedef struct Raw_TPcfEncode {
@@ -100,7 +100,7 @@ typedef struct Raw_TPcfEncode {
 } TPcfEncode;
 
 typedef struct Raw_TPcf {
-	u_int nIdx;
+	uint32_t nIdx;
 	TPcfIndex* idxs; 
 	TPcfProps props;
 	TPcfMetrics metrics;

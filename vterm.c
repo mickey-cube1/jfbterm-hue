@@ -50,16 +50,16 @@
 #include	"message.h"
 
 static void tvterm_set_default_encoding(TVterm* p, const char* en);
-static void tvterm_esc_start(TVterm* p, u_char ch);
-static void tvterm_esc_bracket(TVterm*, u_char);
+static void tvterm_esc_start(TVterm* p, uint8_t ch);
+static void tvterm_esc_bracket(TVterm*, uint8_t);
 #ifdef JFB_OTHER_CODING_SYSTEM
-static void tvterm_esc_rbracket(TVterm*, u_char);
+static void tvterm_esc_rbracket(TVterm*, uint8_t);
 #endif
-static void tvterm_esc_traditional_multibyte_fix(TVterm* p, u_char ch);
+static void tvterm_esc_traditional_multibyte_fix(TVterm* p, uint8_t ch);
 static int tvterm_find_font_index(int fsig);
-static void tvterm_esc_designate_font(TVterm* p, u_char ch);
-static void tvterm_esc_designate_otherCS(TVterm* p, u_char ch);
-static void tvterm_invoke_gx(TVterm* p, TFontSpec* fs, u_int n);
+static void tvterm_esc_designate_font(TVterm* p, uint8_t ch);
+static void tvterm_esc_designate_otherCS(TVterm* p, uint8_t ch);
+static void tvterm_invoke_gx(TVterm* p, TFontSpec* fs, uint32_t n);
 static void tvterm_re_invoke_gx(TVterm* p, TFontSpec* fs);
 void tvterm_set_window_size(TVterm* p);
 
@@ -76,7 +76,7 @@ static int tvterm_is_otherCS(TVterm *p);
 
 #endif
 
-void tvterm_init(TVterm* p, TTerm* pt, u_int hw, u_int hh, TCaps *caps, const char* en)
+void tvterm_init(TVterm* p, TTerm* pt, uint32_t hw, uint32_t hh, TCaps *caps, const char* en)
 {
 	p->term = pt;
 	p->xcap = hw;
@@ -463,9 +463,9 @@ void tvterm_start(TVterm* p)
 	p->cursor.height = gFontsHeight;
 
 	p->tsize = p->xcap4 * p->ycap;
-	p->text = (u_int *)calloc(p->xcap4, p->ycap * sizeof(u_int));
-	p->attr = (u_char *)calloc(p->xcap4, p->ycap);
-	p->flag = (u_char *)calloc(p->xcap4, p->ycap);
+	p->text = (uint32_t *)calloc(p->xcap4, p->ycap * sizeof(uint32_t));
+	p->attr = (uint8_t *)calloc(p->xcap4, p->ycap);
+	p->flag = (uint8_t *)calloc(p->xcap4, p->ycap);
 
 	ioctl(0, KDSETMODE, KD_GRAPHICS);
 	/*
@@ -537,12 +537,12 @@ void tvterm_pop_pen_and_set_currnt_pen(TVterm* p, TBool b)
 
 /*---------------------------------------------------------------------------*/
 
-static inline int IS_GL_AREA(TVterm* p, u_char ch)
+static inline int IS_GL_AREA(TVterm* p, uint8_t ch)
 {
 	return (p->tgl.type & TFONT_FT_96CHAR) ? (0x1F < ch && ch < 0x80) :
 						(0x20 < ch && ch < 0x7F);
 }
-static inline int IS_GR_AREA(TVterm* p, u_char ch)
+static inline int IS_GR_AREA(TVterm* p, uint8_t ch)
 {
 	return (p->tgr.type & TFONT_FT_96CHAR) ? (0x9F < ch) :
 						(0xA0 < ch && ch < 0xFF);
@@ -563,7 +563,7 @@ static inline void SET_WARP_FLAG_IF_NEEDED(TVterm* p)
 }
 
 
-static int tvterm_put_normal_char(TVterm* p, u_char ch)
+static int tvterm_put_normal_char(TVterm* p, uint8_t ch)
 {
 	if (p->pen.x == p->xmax) {
 		p->wrap = TRUE;
@@ -623,10 +623,10 @@ static int tvterm_put_normal_char(TVterm* p, u_char ch)
 }
 
 #ifdef JFB_UTF8
-static int tvterm_put_uchar(TVterm* p, u_int ch)
+static int tvterm_put_uchar(TVterm* p, uint32_t ch)
 {
 	TFont *pf = &gFont[p->utf8Idx];
-	u_int w;
+	uint32_t w;
 	if (p->pen.x == p->xmax) {
 		p->wrap = TRUE;
 		p->pen.x --;
@@ -657,7 +657,7 @@ static int tvterm_put_uchar(TVterm* p, u_int ch)
 }
 #endif
 
-int tvterm_iso_C0_set(TVterm* p, u_char ch)
+int tvterm_iso_C0_set(TVterm* p, uint8_t ch)
 {
 	switch(ch) {
 	case ISO_BS:
@@ -716,7 +716,7 @@ int tvterm_iso_C0_set(TVterm* p, u_char ch)
 	return 0;
 }
 
-int tvterm_iso_C1_set(TVterm* p, u_char ch)
+int tvterm_iso_C1_set(TVterm* p, uint8_t ch)
 {
 	switch (ch) {
 	case ISO_SS2:	/* single shift 2 */
@@ -740,7 +740,7 @@ int tvterm_iso_C1_set(TVterm* p, u_char ch)
 }
 
 int
-tvterm_put_utf8_char(TVterm *p, u_char ch)
+tvterm_put_utf8_char(TVterm *p, uint8_t ch)
 {
 	int rev;
 	if (ch < 0x7F) {
@@ -773,7 +773,7 @@ tvterm_put_utf8_char(TVterm *p, u_char ch)
 	}
 	if (p->altCs 
 	    && (p->ucs2ch < 127)
-	    && (IS_GL_AREA(p, (u_char)(p->ucs2ch & 0x0ff))))
+	    && (IS_GL_AREA(p, (uint8_t)(p->ucs2ch & 0x0ff))))
 		rev = tvterm_put_normal_char(p, (p->ucs2ch & 0x0ff));
 	else
 		rev = tvterm_put_uchar(p, p->ucs2ch);
@@ -788,7 +788,7 @@ tvterm_put_utf8_char(TVterm *p, u_char ch)
 
 #ifdef JFB_OTHER_CODING_SYSTEM
 int 
-tvterm_put_otherCS_char(TVterm *p, u_char ch)
+tvterm_put_otherCS_char(TVterm *p, uint8_t ch)
 {
 	int rev;
 	char *inbuf;
@@ -842,7 +842,7 @@ tvterm_put_otherCS_char(TVterm *p, u_char ch)
 		return rev;
 	} else {
 		for (i = 0; i < s; i++) {
-			u_char c = p->otherCS->outbuf[i];
+			uint8_t c = p->otherCS->outbuf[i];
 			rev = tvterm_put_normal_char(p, c);
 			if (rev < 0) {
 				p->otherCS->inbuflen--;
@@ -857,7 +857,7 @@ tvterm_put_otherCS_char(TVterm *p, u_char ch)
 
 void tvterm_emulate(TVterm* p, const char *buff, int nchars)
 {
-	u_char	ch;
+	uint8_t	ch;
 	int rev;
 	int cn;
 
@@ -925,7 +925,7 @@ void tvterm_emulate(TVterm* p, const char *buff, int nchars)
 
 #define Fe(x)	((x)-0x40)
 
-static void tvterm_esc_start(TVterm* p, u_char ch)
+static void tvterm_esc_start(TVterm* p, uint8_t ch)
 {
 	p->esc = NULL;
 	switch(ch) {
@@ -1089,7 +1089,7 @@ void tvterm_esc_set_attr(TVterm* p, int col)
 	}
 }
 
-static void tvterm_set_mode(TVterm* p, u_char mode, TBool sw)
+static void tvterm_set_mode(TVterm* p, uint8_t mode, TBool sw)
 {
 	switch(mode) {
 	case 4:
@@ -1101,7 +1101,7 @@ static void tvterm_set_mode(TVterm* p, u_char mode, TBool sw)
 	}
 }
 
-static void tvterm_esc_report(TVterm* p, u_char mode, u_short arg)
+static void tvterm_esc_report(TVterm* p, uint8_t mode, uint16_t arg)
 {
 	p->report[0] = '\0';
 
@@ -1156,7 +1156,7 @@ void tvterm_set_window_size(TVterm* p)
 }
 
 
-static void tvterm_esc_status_line(TVterm* p, u_char mode)
+static void tvterm_esc_status_line(TVterm* p, uint8_t mode)
 {
 	switch(mode) {
 	case 'T':	/* To */
@@ -1204,10 +1204,10 @@ static void tvterm_esc_status_line(TVterm* p, u_char mode)
 
 #define	MAX_NARG	8
 
-static void tvterm_esc_bracket(TVterm* p, u_char ch)
+static void tvterm_esc_bracket(TVterm* p, uint8_t ch)
 {
-	u_char	n;
-	static u_short varg[MAX_NARG], narg, question;
+	uint8_t	n;
+	static uint16_t varg[MAX_NARG], narg, question;
 
 	if (ch >= '0' && ch <= '9') {
 		varg[narg] = (varg[narg] * 10) + (ch - '0');
@@ -1349,9 +1349,9 @@ static void tvterm_esc_bracket(TVterm* p, u_char ch)
  *
  */
 static void
-tvterm_esc_rbracket(TVterm* p, u_char ch)
+tvterm_esc_rbracket(TVterm* p, uint8_t ch)
 {
-	static u_char arg[MAX_ARGLEN+1], enbuf[MAX_ARGLEN+32];
+	static uint8_t arg[MAX_ARGLEN+1], enbuf[MAX_ARGLEN+32];
 	static int argidx;
 
 	if (ch >= 0x20 && ch <= 0x7e) {
@@ -1389,7 +1389,7 @@ tvterm_esc_rbracket(TVterm* p, u_char ch)
 * ESC ISO_94_TO_G1 0  ==> GRAPHIC FONT SET
 */
 
-static void tvterm_invoke_gx(TVterm* p, TFontSpec* fs, u_int n)
+static void tvterm_invoke_gx(TVterm* p, TFontSpec* fs, uint32_t n)
 {
 	fs->invokedGn = n;
 	fs->idx = p->gIdx[fs->invokedGn];
@@ -1415,7 +1415,7 @@ static int tvterm_find_font_index(int fsig)
 	return -1;
 }
 
-static void tvterm_esc_designate_font(TVterm* p, u_char ch)
+static void tvterm_esc_designate_font(TVterm* p, uint8_t ch)
 {
 	int i;
 	if (!tvterm_is_ISO2022(p)) {
@@ -1432,7 +1432,7 @@ static void tvterm_esc_designate_font(TVterm* p, u_char ch)
 	p->esc = NULL;
 }
 
-static void tvterm_esc_designate_otherCS(TVterm* p, u_char ch)
+static void tvterm_esc_designate_otherCS(TVterm* p, uint8_t ch)
 {
 	switch (ch) {
 	case 0x40:
@@ -1448,7 +1448,7 @@ static void tvterm_esc_designate_otherCS(TVterm* p, u_char ch)
 	p->esc = NULL;
 }
 
-static void tvterm_esc_traditional_multibyte_fix(TVterm* p, u_char ch)
+static void tvterm_esc_traditional_multibyte_fix(TVterm* p, uint8_t ch)
 {
 	if (ch == 0x40 || ch == 0x41 || ch == 0x42) {
 		tvterm_esc_designate_font(p, ch);
@@ -1501,9 +1501,9 @@ void tvterm_show_sequence(FILE *tf, TCaps *cap, const char *en)
 	/* G0 .. G3 */
 	for (i = 0; i < 4; i++) {
 		TFont *f;
-		u_int n;
+		uint32_t n;
 		char c;
-		u_int f1, f2;
+		uint32_t f1, f2;
 		f = &gFont[idx[2+i]];
 		n = f->fsignature;
 		c = n & 255;

@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <signal.h>
 #include <errno.h>
 #include <unistd.h>
@@ -177,10 +178,10 @@ void tterm_start(TTerm* p, const char* tn, const char* en)
 
 	int ret;
 	struct timeval tv;
-	u_char buf[BUF_SIZE+1];
+	uint8_t buf[BUF_SIZE+1];
 #ifdef JFB_ENABLE_DIMMER
-	u_int idle_time = 0;
-	u_int blank = 0;
+	uint32_t idle_time = 0;
+	uint32_t blank = 0;
 	int tfbm_set_blank(int, int);
 #  define DIMMER_TIMEOUT (3 * 60 * 10)        /* 3 min */
 #endif

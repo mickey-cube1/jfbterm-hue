@@ -32,6 +32,7 @@
 #ifndef INCLUDE_VTERM_H
 #define INCLUDE_VTERM_H
 
+#include	<stdint.h>
 #include	<sys/types.h>
 
 #include	"config.h"
@@ -47,15 +48,15 @@
 
 
 typedef struct Raw_TFontSpec {
-	u_int invokedGn;	/* 呼び出さされている Gn : n = 0..3 */
-	u_int idx;		/* 文字集合のgFont[]での位置 */
-	u_int type; 		/* 文字集合の区分 */
+	uint32_t invokedGn;	/* 呼び出さされている Gn : n = 0..3 */
+	uint32_t idx;		/* 文字集合のgFont[]での位置 */
+	uint32_t type; 		/* 文字集合の区分 */
 	FONTSET_HALF half;	/* 文字集合のG0,G1 のどちらを使っているか */
 } TFontSpec;
 
 #ifdef JFB_OTHER_CODING_SYSTEM
 typedef struct Raw_TCodingSystem {
-	u_int fch;
+	uint32_t fch;
 	/* iconv state */
 	char *fromcode;
 	char *tocode;
@@ -66,22 +67,22 @@ typedef struct Raw_TCodingSystem {
 	char outbuf[MAX_MULTIBYTE_CHARLEN];
 
 	/* saved state */
-	u_int gSavedL;
-	u_int gSavedR;
-	u_int gSavedIdx[4];
-	u_int utf8SavedIdx;
+	uint32_t gSavedL;
+	uint32_t gSavedR;
+	uint32_t gSavedIdx[4];
+	uint32_t utf8SavedIdx;
 } TCodingSystem;
 
 #endif
 
 typedef struct Raw_TCursor {
-	u_int x;
-	u_int y;
+	uint32_t x;
+	uint32_t y;
 	TBool on;
 	TBool shown;
 	TBool wide;
-	u_int width;
-	u_int height;
+	uint32_t width;
+	uint32_t height;
 
 } TCursor;
 
@@ -92,7 +93,7 @@ typedef struct Raw_TVterm {
 	int ymin;
 	int xcap;			/* ハード的な1行あたり文字数 */
 	int ycap;			/* ハード的な行数 */
-	u_int tab;			/* TAB サイズ */
+	uint32_t tab;			/* TAB サイズ */
 	
 	TPen pen;
 	TPen* savedPen;
@@ -100,22 +101,22 @@ typedef struct Raw_TVterm {
 	int scroll;			/* スクロール行数 */
 	/* -- */
 
-	u_char knj1;			/* first byte of 2 byte code */
+	uint8_t knj1;			/* first byte of 2 byte code */
 	FONTSET_HALF knj1h;
-	u_int knj1idx;
+	uint32_t knj1idx;
 
 	/* ISO-2022 対応 */
-	u_int escSignature;
-	u_int escGn;
+	uint32_t escSignature;
+	uint32_t escGn;
 	TFontSpec tgl;	/* 次の文字がGLのときに使う文字集合 */
 	TFontSpec tgr;	/* 次の文字がGRのときに使う文字集合 */
 	TFontSpec gl;	/* GL に呼び出されている文字集合 */
 	TFontSpec gr;	/* GR に呼び出されている文字集合 */
-	u_int gIdx[4];	/* Gn に指示されている文字集合のgFont[]での位置 */
+	uint32_t gIdx[4];	/* Gn に指示されている文字集合のgFont[]での位置 */
 	/* --- */
-	u_int gDefaultL;
-	u_int gDefaultR;
-	u_int gDefaultIdx[4];
+	uint32_t gDefaultL;
+	uint32_t gDefaultR;
+	uint32_t gDefaultIdx[4];
 	/* --- */
 	enum {
 		SL_NONE,
@@ -123,10 +124,10 @@ typedef struct Raw_TVterm {
 		SL_LEAVE
 	} sl;
 #ifdef JFB_UTF8
-	u_int utf8DefaultIdx;
-	u_int utf8Idx;
-	u_int utf8remain;
-	u_int ucs2ch;
+	uint32_t utf8DefaultIdx;
+	uint32_t utf8Idx;
+	uint32_t utf8remain;
+	uint32_t ucs2ch;
 #endif
 #ifdef JFB_OTHER_CODING_SYSTEM
 	TCodingSystem *otherCS;
@@ -142,7 +143,7 @@ typedef struct Raw_TVterm {
 	TBool sw;
 	TBool release;
 	TBool textClear;
-	void (*esc)(struct Raw_TVterm* p, u_char ch);
+	void (*esc)(struct Raw_TVterm* p, uint8_t ch);
 	/* カーソル */
 	TCursor cursor;
 
@@ -151,13 +152,13 @@ typedef struct Raw_TVterm {
 	/* ESC Report Buffer */
 	char report[LEN_REPORT];
 	/* low level half */
-	u_int textHead;
-	u_int xcap4; /* 4 bytes 境界に整合した桁数(xcap + 0 ... 3) */
-	u_int tsize; /* == xcap4 * ycap */
+	uint32_t textHead;
+	uint32_t xcap4; /* 4 bytes 境界に整合した桁数(xcap + 0 ... 3) */
+	uint32_t tsize; /* == xcap4 * ycap */
 	/* */
-	u_int* text; /* 1 文字当たり 4 bytes */
-	u_char* attr;
-	u_char* flag;
+	uint32_t* text; /* 1 文字当たり 4 bytes */
+	uint8_t* attr;
+	uint8_t* flag;
 } TVterm;
 
 void tvterm_insert_n_chars(TVterm* p, int n);
@@ -166,20 +167,20 @@ void tvterm_text_scroll_down(TVterm* p, int line);
 void tvterm_text_scroll_up(TVterm* p, int line);
 void tvterm_text_move_down(TVterm* p, int top, int btm, int line);
 void tvterm_text_move_up(TVterm* p, int top, int btm, int line);
-void tvterm_text_clear_eol(TVterm* p, u_char mode);
-void tvterm_text_clear_eos(TVterm* p, u_char mode);
-void tvterm_wput(TVterm* p, u_int idx, u_char ch1, u_char ch2);
-void tvterm_sput(TVterm* p, u_int idx, u_char ch);
+void tvterm_text_clear_eol(TVterm* p, uint8_t mode);
+void tvterm_text_clear_eos(TVterm* p, uint8_t mode);
+void tvterm_wput(TVterm* p, uint32_t idx, uint8_t ch1, uint8_t ch2);
+void tvterm_sput(TVterm* p, uint32_t idx, uint8_t ch);
 #ifdef JFB_UTF8
-void tvterm_uput1(TVterm* p, u_int idx, u_int ch);
-void tvterm_uput2(TVterm* p, u_int idx, u_int ch);
+void tvterm_uput1(TVterm* p, uint32_t idx, uint32_t ch);
+void tvterm_uput2(TVterm* p, uint32_t idx, uint32_t ch);
 #endif
 void tvterm_text_clear_all(TVterm* p);
 
 void tvterm_emulate(TVterm* p, const char *buff, int nchars);
 void tvterm_refresh(TVterm* p);
 
-void tvterm_init(TVterm* p, struct Raw_TTerm* tp, u_int hx, u_int hy, TCaps *caps, const char* en);
+void tvterm_init(TVterm* p, struct Raw_TTerm* tp, uint32_t hx, uint32_t hy, TCaps *caps, const char* en);
 void tvterm_start(TVterm* p);
 void tvterm_final(TVterm* p);
 

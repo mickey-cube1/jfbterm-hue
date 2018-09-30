@@ -97,9 +97,9 @@ util_privilege_drop()
     setreuid(runner_uid, runner_uid);
 }
 
-void util_euc_to_sjis(u_char* ch, u_char* cl)
+void util_euc_to_sjis(uint8_t* ch, uint8_t* cl)
 {
-    u_char  nh, nl;
+    uint8_t  nh, nl;
     
     nh = ((*ch - 0x21) >> 1) + 0x81;
     if (nh > 0x9F) nh += 0x40;
@@ -112,10 +112,10 @@ void util_euc_to_sjis(u_char* ch, u_char* cl)
     *ch = nh;
 }
 
-void util_sjis_to_jis(u_char* ch, u_char* cl)
+void util_sjis_to_jis(uint8_t* ch, uint8_t* cl)
 {
-    u_char  nh = *ch;
-    u_char  nl = *cl;
+    uint8_t  nh = *ch;
+    uint8_t  nl = *cl;
 	
     nh -= (nh > 0x9F) ? 0xB1: 0x71;
     nh = nh * 2 + 1;

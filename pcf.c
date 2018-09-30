@@ -62,42 +62,42 @@
 #define TPCF_INDEX_SIZE		(4+4+4+4)
 #define TPCF_PROP_SIZE		(4+1+4)
 
-static u_char read_u8(FILE* fp)
+static uint8_t read_u8(FILE* fp)
 {
-	u_char b;
+	uint8_t b;
 	if (fread(&b, 1, 1, fp) != 1) die_file_eof(fp);
 	return b;
 }
 
-static u_int read_u16l(FILE* fp)
+static uint32_t read_u16l(FILE* fp)
 {
-	u_char b[2];
+	uint8_t b[2];
 	if (fread(b, 2, 1, fp) != 1) die_file_eof(fp);
 	return b[0]+(b[1]<<8);
 }
 
-static u_int read_u16b(FILE* fp)
+static uint32_t read_u16b(FILE* fp)
 {
-	u_char b[2];
+	uint8_t b[2];
 	if (fread(b, 2, 1, fp) != 1) die_file_eof(fp);
 	return b[1]+(b[0]<<8);
 }
 
-static u_int read_u16(FILE* fp, int e)
+static uint32_t read_u16(FILE* fp, int e)
 {
 	return (e&1) ? read_u16b(fp) : read_u16l(fp);
 }
 
 static int read_s16l(FILE* fp)
 {
-	u_int t = read_u16l(fp);
+	uint32_t t = read_u16l(fp);
 	if (t >= 0x8000) t |= ~0xffff;
 	return (int)t;
 }
 
 static int read_s16b(FILE* fp)
 {
-	u_int t = read_u16b(fp);
+	uint32_t t = read_u16b(fp);
 	if (t >= 0x8000) t |= ~0xffff;
 	return (int)t;
 }
@@ -107,35 +107,35 @@ static int read_s16(FILE* fp, int e)
 	return (e&1) ? read_s16b(fp) : read_s16l(fp);
 }
 
-static u_int read_u32l(FILE* fp)
+static uint32_t read_u32l(FILE* fp)
 {
-	u_char b[4];
+	uint8_t b[4];
 	if (fread(b, 4, 1, fp) != 1) die_file_eof(fp);
 	return b[0]+(b[1]<<8)+(b[2]<<16)+(b[3]<<24);
 }
 
-static u_int read_u32b(FILE* fp)
+static uint32_t read_u32b(FILE* fp)
 {
-	u_char b[4];
+	uint8_t b[4];
 	if (fread(b, 4, 1, fp) != 1) die_file_eof(fp);
 	return b[3]+(b[2]<<8)+(b[1]<<16)+(b[0]<<24);
 }
 
-static u_int read_u32(FILE* fp, int e)
+static uint32_t read_u32(FILE* fp, int e)
 {
 	return (e&1) ? read_u32b(fp) : read_u32l(fp);
 }
 
 static int read_s32l(FILE* fp)
 {
-	u_char b[4];
+	uint8_t b[4];
 	if (fread(b, 4, 1, fp) != 1) die_file_eof(fp);
 	return b[0]+(b[1]<<8)+(b[2]<<16)+(b[3]<<24);
 }
 
 static int read_s32b(FILE* fp)
 {
-	u_char b[4];
+	uint8_t b[4];
 	if (fread(b, 4, 1, fp) != 1) die_file_eof(fp);
 	return b[3]+(b[2]<<8)+(b[1]<<16)+(b[0]<<24);
 }
@@ -181,7 +181,7 @@ static size_t seek_section(FILE* fp, size_t cur, size_t tag)
 /*---------------------------------------------------------------------------*/
 void tpcfformat_load(TPcfFormat* p, FILE* fp)
 {
-	u_int t = read_u32l(fp);
+	uint32_t t = read_u32l(fp);
 #if PCF_DEBUG
 	printf("[[FORMAT: %x = ", t);
 #endif
@@ -212,7 +212,7 @@ void tpcfformat_load(TPcfFormat* p, FILE* fp)
 }
 
 /*---------------------------------------------------------------------------*/
-static u_int to_u32l(u_char* p)
+static uint32_t to_u32l(uint8_t* p)
 {
 	return  p[0]+(p[1]<<8)+(p[2]<<16)+(p[3]<<24);
 }
@@ -288,7 +288,7 @@ size_t tpcfprops_load(TPcfProps* p, FILE* fp)
 		read_u8(fp);
 	}
 	p->nSlen = read_s32(fp, p->e);
-	if (!(p->strings = (u_char*)malloc(sizeof(u_char)*p->nSlen))) {
+	if (!(p->strings = (uint8_t*)malloc(sizeof(uint8_t)*p->nSlen))) {
 		die("(FONT): malloc error\n");
 	}
 	if (fread(p->strings, p->nSlen, 1, fp) != 1) die_file_eof(fp);
@@ -453,11 +453,11 @@ void tpcfbitmap_final(TPcfBitmap* p) {
 
 void tpcfbitmap_swap(TPcfBitmap* p, int e, int swp, int aline)
 {
-	u_int len = p->mapsize[aline];
-	u_int i;
-	u_char* bp = p->bitmap;
-	u_char c;
-	u_char d;
+	uint32_t len = p->mapsize[aline];
+	uint32_t i;
+	uint8_t* bp = p->bitmap;
+	uint8_t c;
+	uint8_t d;
 
 	if (!e) {	/* LSB <==> MSB */
 		for (i = 0 ; i < len ; i++) {
@@ -487,7 +487,7 @@ size_t tpcfbitmap_load(TPcfBitmap* p, FILE* fp)
 	p->galine = fmt.glyphaline;
 
 	p->maps = read_s32(fp, fmt.obit);
-	if (!(p->offsets = (u_int*)malloc(sizeof(u_int) * p->maps))) {
+	if (!(p->offsets = (uint32_t*)malloc(sizeof(uint32_t) * p->maps))) {
 		die("(FONT): malloc error (offset table)\n");
 	}
 	for (i = 0 ; i < p->maps ; i++) {
@@ -501,7 +501,7 @@ size_t tpcfbitmap_load(TPcfBitmap* p, FILE* fp)
 	printf("BITMAP SIZE : %d bytes - %d (%d bytes/line)\n", r, fmt.glyphaline, 
 	       p->aline);
 #endif
-	if (!(p->bitmap = (u_char*)malloc(r))) {
+	if (!(p->bitmap = (uint8_t*)malloc(r))) {
 		die("(FONT): malloc error(bitmap)\n");
 	}
 	if (fread(p->bitmap, r, 1, fp) != 1) die_file_eof(fp);
@@ -535,7 +535,7 @@ size_t tpcfencode_load(TPcfEncode* p, FILE* fp)
 	p->defa = read_s16(fp, fmt.obit);
 
 	r = (p->coll - p->colf +1) * (p->rowl  - p->rowf +1);
-	if (!(p->table = (u_int*)malloc(sizeof(int) * r))) {
+	if (!(p->table = (uint32_t*)malloc(sizeof(int) * r))) {
 		die("(FONT): malloc error\n");
 	}
 	for (i = 0 ; i < r ; i++) {
@@ -574,7 +574,7 @@ void tpcf_final(TPcf* p) {
 
 static TPcfIndex* tpcf_search_section(
 	TPcf* p,
-	u_int type)
+	uint32_t type)
 {
 	int i;
 	for (i = 0 ; i < p->nIdx ;  i++) {
@@ -720,7 +720,7 @@ void tpcf_as_tfont(TPcf* p, TFont* q)
 	q->height = p->accel.metric.ascent + p->accel.metric.descent;
 
 	bs = p->bitmap.mapsize[p->bitmap.galine];
-	if (!(q->bitmap = (u_char*)malloc(bs))) {
+	if (!(q->bitmap = (uint8_t*)malloc(bs))) {
 		die("(FONT): malloc error(bitmap)\n");
 	}
 	memcpy(q->bitmap, p->bitmap.bitmap, bs);
@@ -733,19 +733,19 @@ void tpcf_as_tfont(TPcf* p, TFont* q)
 	q->rowl = p->encode.rowl;
 	q->colspan = q->coll-q->colf+1;
 
-	if (!(q->dglyph = (u_char*)malloc(q->bytec))) {
+	if (!(q->dglyph = (uint8_t*)malloc(q->bytec))) {
 		die("(FONT): malloc error(default glyph)\n");
 	}
 	memset(q->dglyph, 0xff, q->bytec);
 
 	gs = (q->coll - q->colf +1) * (q->rowl  - q->rowf +1);
-	if (!(q->glyph = (u_char**)malloc(sizeof(u_char*) * gs))) {
+	if (!(q->glyph = (uint8_t**)malloc(sizeof(uint8_t*) * gs))) {
 		die("(FONT): malloc error (glyph)\n");
 	}
 	q->glyph_width = NULL;
 	if (p->accel.termf == 0) {
 		/* not terminal font */
-		q->glyph_width = (u_int*)malloc(sizeof(u_int)*gs);
+		q->glyph_width = (uint32_t*)malloc(sizeof(uint32_t)*gs);
 		if (q->glyph_width == NULL) {
 			die("(FONT): malloc error (glyph_width)\n");
 		}
