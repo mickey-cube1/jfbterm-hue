@@ -30,6 +30,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <fcntl.h>
 #include <string.h>
 #include <strings.h>
@@ -417,7 +418,7 @@ static FILE *font_open(const char *fname)
 #ifndef JFB_GZIP_PATH
 #error			JFB_GZIP_PATH is not set.
 #else
-			execl(JFB_GZIP_PATH, JFB_GZIP_PATH, "-dc", NULL);
+			execl(JFB_GZIP_PATH, JFB_GZIP_PATH, "-c", NULL);
 #endif
 			exit(0);
 		}
@@ -437,6 +438,8 @@ static void tfont_setup_font(TFont* pf, const char* fname, FONTSET_HALF hf)
 {
 	FILE* fp;
 	TPcf pcf;
+	int st;
+
 	tpcf_init(&pcf);
 
 	if (access(fname, R_OK) != 0) {
@@ -450,6 +453,8 @@ static void tfont_setup_font(TFont* pf, const char* fname, FONTSET_HALF hf)
 	}
 	tpcf_load(&pcf, fp);
 	fclose(fp);
+
+	wait(&st);
 
 	tpcf_as_tfont(&pcf, pf);
 	pf->fhalf = hf;

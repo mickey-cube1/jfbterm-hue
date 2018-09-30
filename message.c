@@ -50,7 +50,7 @@ void die(const char *format, ...)
 
 void die_file_eof(FILE* fp)
 {
-	die("Unexpectied EOF\n");
+	die("Unexpectied EOF: %s\n", strerror(errno));
 }
 
 void print_warn(const char *format, ...)

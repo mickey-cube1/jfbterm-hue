@@ -26,6 +26,7 @@
  *
  */
 
+#define _XOPEN_SOURCE 600
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -127,7 +128,7 @@ void application_final(void)
 
 static int tterm_get_ptytty(TTerm* p)
 {
-#if 1
+#if 0
 	if (openpty(&p->ptyfd, &p->ttyfd, p->name, NULL, NULL) < 0) {
 	    print_strerror("openpty");
 	    goto err;
@@ -192,7 +193,11 @@ void tterm_start(TTerm* p, const char* tn, const char* en)
 	}
 
 	ntio = p->ttysave;
+#if defined(XCASE)
 	ntio.c_lflag &= ~(ECHO|ISIG|ICANON|XCASE);
+#else
+	ntio.c_lflag &= ~(ECHO|ISIG|ICANON);
+#endif
         ntio.c_iflag = 0;
         ntio.c_oflag &= ~OPOST;
         ntio.c_cc[VMIN] = 1;
