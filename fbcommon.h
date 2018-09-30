@@ -64,7 +64,7 @@ typedef struct Raw_TFrameBufferMemory {
 #ifdef JFB_ENABLE_DIMMER
 	u_short my_vt;
 #endif
-	int ttyfd;
+	int tty0fd;
 #if 0
 	(*init)(void),		 /* 初期化 */
 	(*text_mode)(void),	 /* テキストモードに切替え */

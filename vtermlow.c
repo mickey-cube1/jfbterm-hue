@@ -35,6 +35,7 @@
 #include	<stdlib.h>
 #include	<string.h>
 #include	<unistd.h>
+#include	<errno.h>
 #include	<sys/vt.h>
 #include	<fcntl.h>
 #include	<signal.h>
@@ -352,12 +353,12 @@ void tvterm_unregister_signal(void)
         vtm.frsig = 0;
         ret = ioctl(0, VT_SETMODE, &vtm);
 	if (ret == -1) {
-		fprintf(stderr, "VT_SETMODE failed @ tvterm_unregister_signal().\n");
+		fprintf(stderr, "VT_SETMODE failed @ tvterm_unregister_signal(): %s\n", strerror(errno));
 	}
 
-        ret = ioctl(0, TIOCCONS, NULL);
+        ret = ioctl(gFramebuffer.tty0fd, TIOCCONS, NULL);
 	if (ret == -1) {
-		fprintf(stderr, "TIOCCONS failed @ tvterm_unregister_signal().\n");
+		fprintf(stderr, "TIOCCONS failed @ tvterm_unregister_signal(): %s\n", strerror(errno));
 	}
 }
 
@@ -378,12 +379,12 @@ void tvterm_register_signal(TVterm* p)
         vtm.frsig = 0;
         ret = ioctl(0, VT_SETMODE, &vtm);
 	if (ret == -1) {
-		fprintf(stderr, "VT_SETMODE failed @ tvterm_register_signal().\n");
+		fprintf(stderr, "VT_SETMODE failed @ tvterm_register_signal(): %s\n", strerror(errno));
 	}
 
         ret = ioctl(sig_obj->term->ttyfd, TIOCCONS, NULL);
 	if (ret == -1) {
-		fprintf(stderr, "VT_SETMODE failed @ tvterm_register_signal().\n");
+		fprintf(stderr, "VT_SETMODE failed @ tvterm_register_signal(): %s\n", strerror(errno));
 	}
 
         llatch(p->flag, p->tsize);

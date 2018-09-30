@@ -277,7 +277,7 @@ static void tfbm_pan_display(int fh, struct fb_var_screeninfo *var)
 int tfbm_set_blank(int fh, int blank)
 {
       struct vt_stat vstat;
-      if (-1 == ioctl(gFramebuffer.ttyfd, VT_GETSTATE, &vstat)) {
+      if (-1 == ioctl(gFramebuffer.tty0fd, VT_GETSTATE, &vstat)) {
               die("ioctl VT_GETSTATE");
       }
       if (vstat.v_active != gFramebuffer.my_vt)
@@ -457,11 +457,11 @@ void tfbm_init(TFrameBufferMemory* p)
 		struct fb_con2fbmap c2m;
 		struct vt_stat vstat;
 
-		if (-1 == (p->ttyfd = util_privilege_open("/dev/tty0", O_RDWR))) {
+		if (-1 == (p->tty0fd = util_privilege_open("/dev/tty0", O_RDWR))) {
 			util_free(fbdn);
 			die("open /dev/tty0: %s\n", strerror(errno));
 		}
-		if (-1 == ioctl(p->ttyfd, VT_GETSTATE, &vstat)) {
+		if (-1 == ioctl(p->tty0fd, VT_GETSTATE, &vstat)) {
 			util_free(fbdn);
 			die("ioctl VT_GETSTATE");
 		}
