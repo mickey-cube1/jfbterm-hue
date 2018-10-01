@@ -25,7 +25,6 @@
  *
  */
 
-
 #ifndef INCLUDE_SEQUENCE_H
 #define INCLUDE_SEQUENCE_H
 
@@ -51,9 +50,9 @@
 #define	CHAR_SS2	(0x8E)
 #endif
 
-#define UNIVERSAL_ESC	(0x1B)	/* UNIVERSAL ESCAPE CODE */ 
-#define ISO_DEL		(0x7F)	/*  */ 
-#define ISO_SPACE	(0x20)	/*  */ 
+#define UNIVERSAL_ESC	(0x1B)	/* UNIVERSAL ESCAPE CODE */
+#define ISO_DEL		(0x7F)	/*  */
+#define ISO_SPACE	(0x20)	/*  */
 
 /* ======== ISO/IEC 2022 : ============================================== */
 #define ISO_ACS		(0x20)	/*  */
@@ -63,7 +62,7 @@
 #define ISO__MBS	(0x24)	/* DESIGNATE MULTBITE SET */
 #define ISO_DOCS	(0x25)	/*  */
 #define ISO_IRR		(0x26)	/*  */
-			/* 27	 *RESERVED* */
+			/* 27    *RESERVED* */
 #define ISO_GZD4	(0x28)	/* G0-DESIGNATE 94-SET */
 #define ISO_G1D4	(0x29)	/* G1-DESIGNATE 94-SET */
 #define ISO_G2D4	(0x2A)	/* G2-DESIGNATE 94-SET */
@@ -82,14 +81,14 @@
 #define ISO_ENQ		(0x05)	/*  */
 #define ISO_ACK		(0x06)	/*  */
 #define ISO_BEL		(0x07)	/*  */
-#define ISO_BS		(0x08)	/* (C0)		BACKSPACE */
-#define ISO_HT		(0x09)	/* (C0)		CHARACTER TABULATION */
-#define ISO_LF		(0x0A)	/* (C0)		LINE FEED */
-#define ISO_VT		(0x0B)	/* (C0)		LINE TABULATION */
-#define ISO_FF		(0x0C)	/* (C0)		FORM FEED */
-#define ISO_CR		(0x0D)	/* (C0)		CARRIAGE RETURN */
-#define ISO_LS1		(0x0E)	/* (C0)		LOCKING-SHIFT ONE */
-#define ISO_LS0		(0x0F)	/* (C0)		LOCKING-SHIFT ZERO */
+#define ISO_BS		(0x08)	/* (C0)         BACKSPACE */
+#define ISO_HT		(0x09)	/* (C0)         CHARACTER TABULATION */
+#define ISO_LF		(0x0A)	/* (C0)         LINE FEED */
+#define ISO_VT		(0x0B)	/* (C0)         LINE TABULATION */
+#define ISO_FF		(0x0C)	/* (C0)         FORM FEED */
+#define ISO_CR		(0x0D)	/* (C0)         CARRIAGE RETURN */
+#define ISO_LS1		(0x0E)	/* (C0)         LOCKING-SHIFT ONE */
+#define ISO_LS0		(0x0F)	/* (C0)         LOCKING-SHIFT ZERO */
 #define ISO_DLE		(0x10)	/*  */
 #define ISO_DC1		(0x11)	/*  */
 #define ISO_DC2		(0x12)	/*  */
@@ -101,8 +100,8 @@
 #define ISO_CAN		(0x18)	/*  */
 #define ISO_EM		(0x19)	/*  */
 #define ISO_SUB		(0x1A)	/*  */
-#if 0	/* ESC is defined as UNIVERSAL_ESC */
-#define ISO_ESC		(0x1B)	/* (C0)		ESCAPE */ 
+#if 0				/* ESC is defined as UNIVERSAL_ESC */
+#define ISO_ESC		(0x1B)	/* (C0)         ESCAPE */
 #endif
 #define ISO_IS4		(0x1C)	/*  */
 #define ISO_IS3		(0x1D)	/*  */
@@ -114,7 +113,7 @@
 #define ISO_BPH		(0x82)	/*  */
 #define ISO_NBH		(0x83)	/*  */
 #define ISO_UNDEF_83	(0x84)	/*  */
-#define ISO_NEL		(0x85)	/* (C1)		NEXT LINE */
+#define ISO_NEL		(0x85)	/* (C1)         NEXT LINE */
 #define ISO_SSA		(0x86)	/*  */
 #define ISO_ESA		(0x87)	/*  */
 #define ISO_HTS		(0x88)	/*  */
@@ -122,7 +121,7 @@
 #define ISO_VTS		(0x8A)	/*  */
 #define ISO_PLD		(0x8B)	/*  */
 #define ISO_PLU		(0x8C)	/*  */
-#define ISO_RI		(0x8D)	/* (C1)		REVERSE LINE FEED */
+#define ISO_RI		(0x8D)	/* (C1)         REVERSE LINE FEED */
 #define ISO_SS2		(0x8E)	/*  */
 #define ISO_SS3		(0x8F)	/*  */
 #define ISO_DCS		(0x90)	/*  */
@@ -136,17 +135,17 @@
 #define ISO_SOS		(0x98)	/*  */
 #define ISO_UNDEF_99	(0x99)	/*  */
 #define ISO_SCI		(0x9A)	/*  */
-#define ISO_CSI		(0x9B)	/* (C1)	CONTROL SEQUENCE INTRODUCER */
+#define ISO_CSI		(0x9B)	/* (C1) CONTROL SEQUENCE INTRODUCER */
 #define ISO_ST		(0x9C)	/*  */
 #define ISO_OSC		(0x9D)	/*  */
 #define ISO_PM		(0x9E)	/*  */
 #define ISO_APC		(0x9F)	/*  */
 /* ======== ISO/IEC 6429 : CONTROL SEQUENCE WITHOUT I-BYTE ========== */
 #define ISO_CS_NO_ICH	(0x40)	/*  */
-#define ISO_CS_NO_CUU	(0x41)	/* (Pn)		CURSOR UP */
-#define ISO_CS_NO_CUD	(0x42)	/* (Pn)		CURSOR DOWN */
-#define ISO_CS_NO_CUF	(0x43)	/* (Pn)		CURSOR RIGHT */
-#define ISO_CS_NO_CUB	(0x44)	/* (Pn)		CURSOR LEFT */
+#define ISO_CS_NO_CUU	(0x41)	/* (Pn)         CURSOR UP */
+#define ISO_CS_NO_CUD	(0x42)	/* (Pn)         CURSOR DOWN */
+#define ISO_CS_NO_CUF	(0x43)	/* (Pn)         CURSOR RIGHT */
+#define ISO_CS_NO_CUB	(0x44)	/* (Pn)         CURSOR LEFT */
 #define ISO_CS_NO_CNL	(0x45)	/*  */
 #define ISO_CS_NO_CPL	(0x46)	/*  */
 #define ISO_CS_NO_CHA	(0x47)	/*  */
@@ -243,7 +242,7 @@
 #define ISO_DMI		(0x60)	/*  */
 #define ISO_INT		(0x61)	/*  */
 #define ISO_EMI		(0x62)	/*  */
-#define ISO_RIS		(0x63)	/* (Fs)		RESET TO INITIAL STATE */
+#define ISO_RIS		(0x63)	/* (Fs)         RESET TO INITIAL STATE */
 #define ISO_CMD		(0x64)	/*  */
 #define ISO_LS2		(0x6E)	/*  */
 #define ISO_LS3		(0x6F)	/*  */

@@ -42,102 +42,99 @@
 static uid_t owner_uid;
 static uid_t runner_uid;
 
-void
-util_privilege_init()
+void util_privilege_init()
 {
-    runner_uid = getuid();
-    owner_uid = geteuid();	/* if setuid, owner_uid is root */
-    /* swap real and effective */
-    setreuid(owner_uid, runner_uid);
+	runner_uid = getuid();
+	owner_uid = geteuid();	/* if setuid, owner_uid is root */
+	/* swap real and effective */
+	setreuid(owner_uid, runner_uid);
 }
 
-void
-util_privilege_on()
+void util_privilege_on()
 {
-    setreuid(runner_uid, owner_uid);
+	setreuid(runner_uid, owner_uid);
 }
 
-void
-util_privilege_off()
+void util_privilege_off()
 {
-    setreuid(owner_uid, runner_uid);
+	setreuid(owner_uid, runner_uid);
 }
 
-int
-util_privilege_open(char *pathname, int flags)
+int util_privilege_open(char *pathname, int flags)
 {
-    int fd;
-    setreuid(runner_uid, owner_uid);
-    fd = open(pathname, flags);
-    setreuid(owner_uid, runner_uid);
-    return fd;
+	int fd;
+	setreuid(runner_uid, owner_uid);
+	fd = open(pathname, flags);
+	setreuid(owner_uid, runner_uid);
+	return fd;
 }
 
 #ifdef HAVE_IOPERM
-int
-util_privilege_ioperm(unsigned long from, unsigned int num, int turn_on)
+int util_privilege_ioperm(unsigned long from, unsigned int num, int turn_on)
 {
-    int r;
-    setreuid(runner_uid, owner_uid);
-    r = ioperm(from, num, turn_on);
-    setreuid(owner_uid, runner_uid);
-    return r;
+	int r;
+	setreuid(runner_uid, owner_uid);
+	r = ioperm(from, num, turn_on);
+	setreuid(owner_uid, runner_uid);
+	return r;
 }
 #endif
 
-uid_t
-util_getuid()
+uid_t util_getuid()
 {
-    return runner_uid;
+	return runner_uid;
 }
 
-void
-util_privilege_drop()
+void util_privilege_drop()
 {
-    setreuid(runner_uid, runner_uid);
+	setreuid(runner_uid, runner_uid);
 }
 
-void util_euc_to_sjis(uint8_t* ch, uint8_t* cl)
+void util_euc_to_sjis(uint8_t * ch, uint8_t * cl)
 {
-    uint8_t  nh, nl;
-    
-    nh = ((*ch - 0x21) >> 1) + 0x81;
-    if (nh > 0x9F) nh += 0x40;
-    if (*ch & 1) {
-	nl = *cl + 0x1F;
-	if (*cl > 0x5F)
-	    nl ++;
-    } else nl = *cl + 0x7E;
-    *cl = nl;
-    *ch = nh;
+	uint8_t nh, nl;
+
+	nh = ((*ch - 0x21) >> 1) + 0x81;
+	if (nh > 0x9F)
+		nh += 0x40;
+	if (*ch & 1) {
+		nl = *cl + 0x1F;
+		if (*cl > 0x5F)
+			nl++;
+	}
+	else
+		nl = *cl + 0x7E;
+	*cl = nl;
+	*ch = nh;
 }
 
-void util_sjis_to_jis(uint8_t* ch, uint8_t* cl)
+void util_sjis_to_jis(uint8_t * ch, uint8_t * cl)
 {
-    uint8_t  nh = *ch;
-    uint8_t  nl = *cl;
-	
-    nh -= (nh > 0x9F) ? 0xB1: 0x71;
-    nh = nh * 2 + 1;
-    if (nl > 0x9E) {
-        nl = nl - 0x7E;
-        nh ++;
-    } else {
-        if (nl > 0x7E) nl --;
-        nl -= 0x1F;
-    }
-    *cl = nl;
-    *ch = nh;
+	uint8_t nh = *ch;
+	uint8_t nl = *cl;
+
+	nh -= (nh > 0x9F) ? 0xB1 : 0x71;
+	nh = nh * 2 + 1;
+	if (nl > 0x9E) {
+		nl = nl - 0x7E;
+		nh++;
+	}
+	else {
+		if (nl > 0x7E)
+			nl--;
+		nl -= 0x1F;
+	}
+	*cl = nl;
+	*ch = nh;
 }
 
-int util_search_string(const char* s, const char** array)
+int util_search_string(const char *s, const char **array)
 {
 	int i;
-	for (i = 0 ; array[i] ; i++) {
+	for (i = 0; array[i]; i++) {
 		if (strcmp(array[i], s) == 0) {
 			return i;
 		}
 	}
-	return -1;	
+	return -1;
 }
-

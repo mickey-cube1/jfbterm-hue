@@ -28,9 +28,10 @@
 #ifndef INCLUDE_MYTYPES_H
 #define INCLUDE_MYTYPES_H
 
-typedef enum Raw_TBool {
-        FALSE=0,
-        TRUE=1
+typedef enum Raw_TBool
+{
+	FALSE = 0,
+	TRUE = 1
 } TBool;
 
 #endif /* INCLUDE_MYTYPES_H */

@@ -47,28 +47,28 @@
 #define MAX_COLS	256
 
 /*--------------------------------------------------------------------------*/
-void tcapValue_init(TCapValue* p)
+void tcapValue_init(TCapValue * p)
 {
 	p->next = NULL;
 	p->value = NULL;
 }
 
-void tcapValue_final(TCapValue* p)
+void tcapValue_final(TCapValue * p)
 {
 	util_free(p->value);
 }
 
-void tcapability_init(TCapability* p)
+void tcapability_init(TCapability * p)
 {
 	p->next = NULL;
 	p->name = NULL;
 	p->values = NULL;
 }
 
-void tcapability_del_value_all(TCapability* p)
+void tcapability_del_value_all(TCapability * p)
 {
-	TCapValue* r;
-	TCapValue* rn;
+	TCapValue *r;
+	TCapValue *rn;
 
 	r = p->values;
 	while (r) {
@@ -80,13 +80,13 @@ void tcapability_del_value_all(TCapability* p)
 	p->values = NULL;
 }
 
-void tcapability_final(TCapability* p)
+void tcapability_final(TCapability * p)
 {
 	tcapability_del_value_all(p);
 	util_free(p->name);
 }
 
-void tcapability_set_name(TCapability* p, const char* name)
+void tcapability_set_name(TCapability * p, const char *name)
 {
 	util_free(p->name);
 	if (name) {
@@ -94,12 +94,12 @@ void tcapability_set_name(TCapability* p, const char* name)
 	}
 }
 
-void tcapability_add_value(TCapability* p, const char* value)
+void tcapability_add_value(TCapability * p, const char *value)
 {
-	TCapValue* cp;
-	TCapValue* en;
+	TCapValue *cp;
+	TCapValue *en;
 
-	cp = (TCapValue*)malloc(sizeof(TCapValue));
+	cp = (TCapValue *) malloc(sizeof(TCapValue));
 	tcapValue_init(cp);
 	if (p->values) {
 		en = p->values;
@@ -107,21 +107,22 @@ void tcapability_add_value(TCapability* p, const char* value)
 			en = en->next;
 		}
 		en->next = cp;
-	} else {
+	}
+	else {
 		p->values = cp;
 	}
 	cp->value = strdup(value);
 }
 
-void tcaps_init(TCaps* p)
+void tcaps_init(TCaps * p)
 {
 	p->next = NULL;
 }
 
-void tcaps_final(TCaps* p)
+void tcaps_final(TCaps * p)
 {
-	TCapability* r;
-	TCapability* rn;
+	TCapability *r;
+	TCapability *rn;
 	r = p->next;
 	while (r) {
 		rn = r->next;
@@ -131,12 +132,13 @@ void tcaps_final(TCaps* p)
 	}
 	p->next = NULL;
 }
+
 /*--------------------------------------------------------------------------*/
 #if DEBUG
-void tcaps_debug(TCaps* p)
+void tcaps_debug(TCaps * p)
 {
-	TCapability* np;
-	TCapValue* vp;
+	TCapability *np;
+	TCapValue *vp;
 
 	np = p->next;
 	while (np) {
@@ -151,9 +153,9 @@ void tcaps_debug(TCaps* p)
 }
 #endif
 
-TCapability* tcaps_find(TCaps* p, const char *name)
+TCapability *tcaps_find(TCaps * p, const char *name)
 {
-	TCapability* cp;
+	TCapability *cp;
 	cp = p->next;
 	while (cp) {
 		if ((cp->name != NULL) && (strcasecmp(name, cp->name) == 0)) {
@@ -164,24 +166,24 @@ TCapability* tcaps_find(TCaps* p, const char *name)
 	return cp;
 }
 
-char* tcaps_find_first(TCaps* p, const char *name)
+char *tcaps_find_first(TCaps * p, const char *name)
 {
-	TCapability* cp;
+	TCapability *cp;
 	cp = tcaps_find(p, name);
 
 	if (!cp || !(cp->values)) {
 		return NULL;
-	} else {
+	}
+	else {
 		return cp->values->value;
 	}
 }
 
-char *
-tcaps_find_entry(TCaps *p, const char* prefix, const char *name)
+char *tcaps_find_entry(TCaps * p, const char *prefix, const char *name)
 {
 	char *key;
 	char *val;
-	key = (char *)malloc(strlen(prefix) + strlen(name) + 1);
+	key = (char *) malloc(strlen(prefix) + strlen(name) + 1);
 	strcpy(key, prefix);
 	strcat(key, name);
 	val = tcaps_find_first(p, key);
@@ -189,13 +191,13 @@ tcaps_find_entry(TCaps *p, const char* prefix, const char *name)
 	return val;
 }
 
-void	tcaps_register_nv(TCaps* p, const char *name, const char *value, char f)
+void tcaps_register_nv(TCaps * p, const char *name, const char *value, char f)
 {
-	TCapability* cp;
+	TCapability *cp;
 
 	cp = tcaps_find(p, name);
 	if (!cp) {
-		cp = (TCapability*)malloc(sizeof(TCapability));
+		cp = (TCapability *) malloc(sizeof(TCapability));
 		tcapability_init(cp);
 		cp->next = p->next;
 		p->next = cp;
@@ -207,7 +209,7 @@ void	tcaps_register_nv(TCaps* p, const char *name, const char *value, char f)
 	tcapability_add_value(cp, value);
 }
 
-char* trim_left(char* cp)
+char *trim_left(char *cp)
 {
 	while (cp) {
 		if (*cp != ' ' && *cp != '\t') {
@@ -218,9 +220,9 @@ char* trim_left(char* cp)
 	return cp;
 }
 
-char* trim_left_right(char* cp)
+char *trim_left_right(char *cp)
 {
-	char* q;
+	char *q;
 	char c;
 
 	cp = trim_left(cp);
@@ -235,12 +237,12 @@ char* trim_left_right(char* cp)
 	return cp;
 }
 
-TBool tcaps_register(TCaps* p, const char *cp)
+TBool tcaps_register(TCaps * p, const char *cp)
 {
 	char line[MAX_COLS];
-	char* n;
-	char* v;
-	char* q;
+	char *n;
+	char *v;
+	char *q;
 
 	strcpy(line, cp);
 	if ((q = strchr(line, ':')) == NULL) {
@@ -248,15 +250,16 @@ TBool tcaps_register(TCaps* p, const char *cp)
 	}
 	*q = '\0';
 	n = trim_left_right(line);
-	v = trim_left_right(q+1);
+	v = trim_left_right(q + 1);
 
 	if (*n == '\0') {
 		return FALSE;
 	}
-	
+
 	if (*n == '+') {
-		tcaps_register_nv(p, n+1, v, '+');
-	} else {
+		tcaps_register_nv(p, n + 1, v, '+');
+	}
+	else {
 		tcaps_register_nv(p, n, v, '=');
 	}
 
@@ -264,10 +267,10 @@ TBool tcaps_register(TCaps* p, const char *cp)
 }
 
 /*--------------------------------------------------------------------------*/
-void tcaps_read(TCaps* p, const char *filename)
+void tcaps_read(TCaps * p, const char *filename)
 {
-	FILE* fp;
-	char* q;
+	FILE *fp;
+	char *q;
 	char line[MAX_COLS];
 	TBool b;
 	int nl = 0;
@@ -279,11 +282,11 @@ void tcaps_read(TCaps* p, const char *filename)
 
 	print_message("(**) : Configuration file `%s'\n", filename);
 
-	while(fgets(line, MAX_COLS, fp) != NULL) {
+	while (fgets(line, MAX_COLS, fp) != NULL) {
 		nl++;
 		len = strlen(line);
 		if (len > 0) {
-			line[len-1] = '\0';
+			line[len - 1] = '\0';
 		}
 		if ((q = strchr(line, '#')) != NULL) {
 			*q = '\0';
@@ -299,7 +302,8 @@ void tcaps_read(TCaps* p, const char *filename)
 		b = tcaps_register(p, line);
 		if (!b) {
 			print_message("(--) : line %d, `%s'\n", nl, line);
-		} else {
+		}
+		else {
 			print_message("(**) : line %d, `%s'\n", nl, line);
 		}
 	}
@@ -308,15 +312,15 @@ void tcaps_read(TCaps* p, const char *filename)
 	fclose(fp);
 }
 
-void tcaps_read_args(TCaps* p, int argc, char *argv[])
+void tcaps_read_args(TCaps * p, int argc, char *argv[])
 {
 	TBool b;
 	int nl = 0;
-	char* q;
+	char *q;
 
 	print_warn("(**) : command line option(s)\n");
 
-	for (nl = 1 ; nl < argc ; nl++) {
+	for (nl = 1; nl < argc; nl++) {
 		q = trim_left(argv[nl]);
 		if (*q == '\0') {
 			continue;
@@ -337,4 +341,3 @@ void tcaps_read_args(TCaps* p, int argc, char *argv[])
 	print_warn("(**) : total %d args read.\n", nl);
 
 }
-

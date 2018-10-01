@@ -29,10 +29,10 @@
 #include "csv.h"
 #include "util.h"
 
-void tcsv_init(TCsv* p, const char* s)
+void tcsv_init(TCsv * p, const char *s)
 {
-	char* cp;
-	char* cq;
+	char *cp;
+	char *cq;
 
 	p->buffer = strdup(s);
 	p->pnt = p->buffer;
@@ -44,7 +44,7 @@ void tcsv_init(TCsv* p, const char* s)
 	}
 
 	p->cap = 1;
-	for (cp = p->buffer , cq = p->buffer ; *cp ; cp++) {
+	for (cp = p->buffer, cq = p->buffer; *cp; cp++) {
 		switch (*cp) {
 		case ',':
 			*cq++ = '\0';
@@ -56,24 +56,24 @@ void tcsv_init(TCsv* p, const char* s)
 		}
 	}
 	*cq = '\0';
-	
+
 	return;
 }
 
-void tcsv_final(TCsv* p)
+void tcsv_final(TCsv * p)
 {
 	util_free(p->buffer);
 }
 
-const char* tcsv_get_token(TCsv* p)
+const char *tcsv_get_token(TCsv * p)
 {
-	char* r;
+	char *r;
 
 	if (p->count >= p->cap) {
 		return NULL;
 	}
 
-	for (r = p->pnt ; *(p->pnt) ; p->pnt++) {
+	for (r = p->pnt; *(p->pnt); p->pnt++) {
 		/* no body */
 	}
 	p->pnt++;

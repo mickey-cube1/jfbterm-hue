@@ -48,7 +48,7 @@ void die(const char *format, ...)
 	exit(EXIT_FAILURE);
 }
 
-void die_file_eof(FILE* fp)
+void die_file_eof(FILE * fp)
 {
 	die("Unexpectied EOF: %s\n", strerror(errno));
 }
@@ -76,7 +76,7 @@ void print_message(const char *format, ...)
 	va_list args;
 
 	if (gApp.gOptQuiet)
-	    return;
+		return;
 	va_start(args, format);
 	vfprintf(stderr, format, args);
 	va_end(args);

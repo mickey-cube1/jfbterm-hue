@@ -36,7 +36,8 @@
 #define SUCCESS       (0)
 #define TTERM_TTYFD_NAME_MAX 0x1000
 
-typedef struct Raw_TTerm {
+typedef struct Raw_TTerm
+{
 	int ptyfd;
 	int ttyfd;
 	char name[TTERM_TTYFD_NAME_MAX];
@@ -44,7 +45,7 @@ typedef struct Raw_TTerm {
 	TVterm vterm;
 } TTerm;
 
-void tterm_start(TTerm* p, const char* tn, const char* en);
+void tterm_start(TTerm * p, const char *tn, const char *en);
 void sigchld(int sig);
 
 extern TTerm gTerm;

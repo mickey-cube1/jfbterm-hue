@@ -32,20 +32,20 @@
 #include "mytypes.h"
 #include "getcap.h"
 
-typedef struct Raw_TApplication {
+typedef struct Raw_TApplication
+{
 	int gOrigVirtualConsole;
 	TBool gCapsQ;
 	TCaps gCaps;
 	TBool gOptShowHelpQ;
 	TBool gOptQuiet;
-	char* gOptReset;
-	char* gExecShell;
-	char** gExecShellArgv;
-    	char* gConfFile;
-	char* gConfEncoding;
+	char *gOptReset;
+	char *gExecShell;
+	char **gExecShellArgv;
+	char *gConfFile;
+	char *gConfEncoding;
 } TApplication;
 
 extern TApplication gApp;
-
 
 #endif /* INCLUDE_MAIN_H */

@@ -34,21 +34,22 @@
 #include	<stdint.h>
 #include	<sys/types.h>
 
-#define ATTR_ULINE      0x80    /* under line */
-#define ATTR_REVERSE    0x40    /* reverse */
-#define ATTR_HIGH       0x20    /* high */
+#define ATTR_ULINE      0x80	/* under line */
+#define ATTR_REVERSE    0x40	/* reverse */
+#define ATTR_HIGH       0x20	/* high */
 
-#define LATCH_S         0x0 /* single byte char */
-#define LATCH_1         0x20 /* double byte char 1st byte */
-#define LATCH_2         0x40 /* double byte char 2nd byte */
+#define LATCH_S         0x0	/* single byte char */
+#define LATCH_1         0x20	/* double byte char 1st byte */
+#define LATCH_2         0x40	/* double byte char 2nd byte */
 
 #define CLEAN_S         0x80
 #define CODEIS_1        LATCH_1
 #define CODEIS_2        LATCH_2
 #define LANG_CODE       0x0F
 
-typedef struct Raw_TPen {
-	struct Raw_TPen* prev;
+typedef struct Raw_TPen
+{
+	struct Raw_TPen *prev;
 	uint8_t x;
 	uint8_t y;
 	uint8_t bcol;
@@ -56,16 +57,16 @@ typedef struct Raw_TPen {
 	uint8_t attr;
 } TPen;
 
-void tpen_init(TPen* p);
-void tpen_final(TPen* p);
-void tpen_copy(TPen* p, TPen* q);
-void tpen_off_all_attribute(TPen* p);
-void tpen_higlight(TPen* p);
-void tpen_dehiglight(TPen* p);
-void tpen_underline(TPen* p);
-void tpen_no_underline(TPen* p);
-void tpen_reverse(TPen* p);
-void tpen_no_reverse(TPen* p);
-void tpen_set_color(TPen* p, int col);
+void tpen_init(TPen * p);
+void tpen_final(TPen * p);
+void tpen_copy(TPen * p, TPen * q);
+void tpen_off_all_attribute(TPen * p);
+void tpen_higlight(TPen * p);
+void tpen_dehiglight(TPen * p);
+void tpen_underline(TPen * p);
+void tpen_no_underline(TPen * p);
+void tpen_reverse(TPen * p);
+void tpen_no_reverse(TPen * p);
+void tpen_set_color(TPen * p, int col);
 
 #endif /* INCLUDE_PEN_H */

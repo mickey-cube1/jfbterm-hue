@@ -33,7 +33,7 @@
 
 #include	"pen.h"
 
-void tpen_init(TPen* p)
+void tpen_init(TPen * p)
 {
 	p->prev = NULL;
 	p->x = p->y = 0;
@@ -42,9 +42,9 @@ void tpen_init(TPen* p)
 	p->attr = 0;
 }
 
-void tpen_final(TPen* p)
+void tpen_final(TPen * p)
 {
-	TPen* q = p->prev;
+	TPen *q = p->prev;
 	p->prev = NULL;
 	if (q) {
 		tpen_final(q);
@@ -52,7 +52,7 @@ void tpen_final(TPen* p)
 	}
 }
 
-void tpen_copy(TPen* p, TPen* q)
+void tpen_copy(TPen * p, TPen * q)
 {
 	p->prev = NULL;
 	p->x = q->x;
@@ -62,89 +62,100 @@ void tpen_copy(TPen* p, TPen* q)
 	p->attr = q->attr;
 }
 
-void tpen_off_all_attribute(TPen* p)
+void tpen_off_all_attribute(TPen * p)
 {
 	p->bcol = 0;
 	p->fcol = 7;
 	p->attr = 0;
 }
 
-void tpen_higlight(TPen* p)
+void tpen_higlight(TPen * p)
 {
 	p->attr |= ATTR_HIGH;
-	if (p->fcol) p->fcol |= 8;
+	if (p->fcol)
+		p->fcol |= 8;
 }
 
-void tpen_dehiglight(TPen* p)
+void tpen_dehiglight(TPen * p)
 {
 	p->attr &= ~ATTR_HIGH;
 	p->fcol &= ~8;
 }
 
-void tpen_underline(TPen* p)
+void tpen_underline(TPen * p)
 {
 	p->attr |= ATTR_ULINE;
 	p->bcol |= 8;
 }
 
-void tpen_no_underline(TPen* p)
+void tpen_no_underline(TPen * p)
 {
 	p->attr &= ~ATTR_ULINE;
 	p->bcol &= ~8;
 }
 
-static uint8_t gsTPenReversTable[] = {0, 4, 2, 6, 1, 5, 3, 7};
+static uint8_t gsTPenReversTable[] = { 0, 4, 2, 6, 1, 5, 3, 7 };
 
-void tpen_reverse(TPen* p)
+void tpen_reverse(TPen * p)
 {
 	uint8_t swp;
 
 	if (!(p->attr & ATTR_REVERSE)) {
 		p->attr |= ATTR_REVERSE;
 		swp = p->fcol & 7;
-		if (p->attr & ATTR_ULINE) swp |= 8;
+		if (p->attr & ATTR_ULINE)
+			swp |= 8;
 		p->fcol = p->bcol & 7;
-		if (p->attr & ATTR_HIGH && p->fcol) p->fcol |= 8;
+		if (p->attr & ATTR_HIGH && p->fcol)
+			p->fcol |= 8;
 		p->bcol = swp;
 	}
 }
 
-void tpen_no_reverse(TPen* p)
+void tpen_no_reverse(TPen * p)
 {
 	uint8_t swp;
 
 	if (p->attr & ATTR_REVERSE) {
 		p->attr &= ~ATTR_REVERSE;
 		swp = p->fcol & 7;
-		if (p->attr & ATTR_ULINE) swp |= 8;
+		if (p->attr & ATTR_ULINE)
+			swp |= 8;
 		p->fcol = p->bcol & 7;
-		if (p->attr & ATTR_HIGH && p->fcol) p->fcol |= 8;
+		if (p->attr & ATTR_HIGH && p->fcol)
+			p->fcol |= 8;
 		p->bcol = swp;
 	}
 }
 
-void tpen_set_color(TPen* p, int col)
+void tpen_set_color(TPen * p, int col)
 {
 	uint8_t t;
 
 	if (col >= 30 && col <= 37) {
 		t = gsTPenReversTable[col - 30];
 		if (p->attr & ATTR_REVERSE) {
-			if (p->attr & ATTR_ULINE) t |= 8;
+			if (p->attr & ATTR_ULINE)
+				t |= 8;
 			p->bcol = t;
-		} else {
-			if (p->attr & ATTR_HIGH) t |= 8;
+		}
+		else {
+			if (p->attr & ATTR_HIGH)
+				t |= 8;
 			p->fcol = t;
 		}
-	} else if (col >= 40 && col <= 47) {
+	}
+	else if (col >= 40 && col <= 47) {
 		t = gsTPenReversTable[col - 40];
 		if (p->attr & ATTR_REVERSE) {
-			if (p->attr & ATTR_HIGH) t |= 8;
+			if (p->attr & ATTR_HIGH)
+				t |= 8;
 			p->fcol = t;
-		} else {
-			if (p->attr & ATTR_ULINE) t |= 8;
+		}
+		else {
+			if (p->attr & ATTR_ULINE)
+				t |= 8;
 			p->bcol = t;
 		}
 	}
 }
-

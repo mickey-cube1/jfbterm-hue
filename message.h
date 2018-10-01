@@ -29,7 +29,7 @@
 #define INCLUDE_MESSAGE_H
 
 void die(const char *format, ...);
-void die_file_eof(FILE* fp);
+void die_file_eof(FILE * fp);
 void print_warn(const char *format, ...);
 void print_error(const char *format, ...);
 void print_message(const char *format, ...);

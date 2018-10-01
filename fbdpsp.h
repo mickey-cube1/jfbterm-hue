@@ -32,24 +32,17 @@
 #	include "config.h"
 #endif
 
-
 #include <sys/types.h>
 
 #include "fbcommon.h"
 
 #ifdef JFB_2BPP
-void tfbm_fill_rect_2bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
-void tfbm_overlay_2bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t xd, uint32_t yd,
-const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
-	void tfbm_clear_all_2bpp_packed(
-	struct Raw_TFrameBufferMemory* p, uint32_t color);
-void tfbm_reverse_2bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_fill_rect_2bpp_packed(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_overlay_2bpp_packed(TFrameBufferMemory * p,
+			      uint32_t xd, uint32_t yd,
+			      const uint8_t * ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
+void tfbm_clear_all_2bpp_packed(struct Raw_TFrameBufferMemory *p, uint32_t color);
+void tfbm_reverse_2bpp_packed(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
 #endif /* JFB_2BPP */
 
 #ifdef JFB_MONO
@@ -57,93 +50,56 @@ void tfbm_reverse_2bpp_packed(
 #endif
 
 #ifdef JFB_8BPP
-void tfbm_fill_rect_8bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
-void tfbm_overlay_8bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t xd, uint32_t yd,
-	const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
-void tfbm_clear_all_8bpp_packed(
-	struct Raw_TFrameBufferMemory* p, uint32_t color);
-void tfbm_reverse_8bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_fill_rect_8bpp_packed(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_overlay_8bpp_packed(TFrameBufferMemory * p,
+			      uint32_t xd, uint32_t yd,
+			      const uint8_t * ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
+void tfbm_clear_all_8bpp_packed(struct Raw_TFrameBufferMemory *p, uint32_t color);
+void tfbm_reverse_8bpp_packed(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
 #endif /* JFB_8BPP */
 
 #ifdef JFB_15BPP
-void tfbm_fill_rect_15bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
-void tfbm_overlay_15bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t xd, uint32_t yd,
-	const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
-void tfbm_clear_all_15bpp_packed(
-	struct Raw_TFrameBufferMemory* p, uint32_t color);
-void tfbm_reverse_15bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_fill_rect_15bpp_packed(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_overlay_15bpp_packed(TFrameBufferMemory * p,
+			       uint32_t xd, uint32_t yd,
+			       const uint8_t * ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
+void tfbm_clear_all_15bpp_packed(struct Raw_TFrameBufferMemory *p, uint32_t color);
+void tfbm_reverse_15bpp_packed(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
 #endif /* JFB_15BPP */
 
 #ifdef JFB_16BPP
-void tfbm_fill_rect_16bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
-void tfbm_overlay_16bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t xd, uint32_t yd,
-	const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
-void tfbm_clear_all_16bpp_packed(
-	struct Raw_TFrameBufferMemory* p, uint32_t color);
-void tfbm_reverse_16bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_fill_rect_16bpp_packed(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_overlay_16bpp_packed(TFrameBufferMemory * p,
+			       uint32_t xd, uint32_t yd,
+			       const uint8_t * ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
+void tfbm_clear_all_16bpp_packed(struct Raw_TFrameBufferMemory *p, uint32_t color);
+void tfbm_reverse_16bpp_packed(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
 #endif /* JFB_16BPP */
 
 #ifdef JFB_24BPP
-void tfbm_fill_rect_24bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
-void tfbm_overlay_24bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t xd, uint32_t yd,
-	const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
-void tfbm_clear_all_24bpp_packed(
-	struct Raw_TFrameBufferMemory* p, uint32_t color);
-void tfbm_reverse_24bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_fill_rect_24bpp_packed(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_overlay_24bpp_packed(TFrameBufferMemory * p,
+			       uint32_t xd, uint32_t yd,
+			       const uint8_t * ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
+void tfbm_clear_all_24bpp_packed(struct Raw_TFrameBufferMemory *p, uint32_t color);
+void tfbm_reverse_24bpp_packed(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
 #endif /* JFB_24BPP */
 
 #ifdef JFB_32BPP
-void tfbm_fill_rect_32bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
-void tfbm_overlay_32bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t xd, uint32_t yd,
-	const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
-void tfbm_clear_all_32bpp_packed(
-	struct Raw_TFrameBufferMemory* p, uint32_t color);
-void tfbm_reverse_32bpp_packed(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_fill_rect_32bpp_packed(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_overlay_32bpp_packed(TFrameBufferMemory * p,
+			       uint32_t xd, uint32_t yd,
+			       const uint8_t * ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
+void tfbm_clear_all_32bpp_packed(struct Raw_TFrameBufferMemory *p, uint32_t color);
+void tfbm_reverse_32bpp_packed(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
 #endif /* JFB_32BPP */
 
 #ifdef JFB_VGA16FB
-void tfbm_fill_rect_vga16(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
-void tfbm_overlay_vga16(
-	TFrameBufferMemory* p,
-	uint32_t xd, uint32_t yd,
-	const uint8_t* ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
-void tfbm_clear_all_vga16(
-	struct Raw_TFrameBufferMemory* p, uint32_t color);
-void tfbm_reverse_vga16(
-	TFrameBufferMemory* p,
-	uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_fill_rect_vga16(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
+void tfbm_overlay_vga16(TFrameBufferMemory * p,
+			uint32_t xd, uint32_t yd, const uint8_t * ps, uint32_t lx, uint32_t ly, uint32_t gap, uint32_t color);
+void tfbm_clear_all_vga16(struct Raw_TFrameBufferMemory *p, uint32_t color);
+void tfbm_reverse_vga16(TFrameBufferMemory * p, uint32_t sx, uint32_t sy, uint32_t lx, uint32_t ly, uint32_t color);
 #endif /* JFB_VGA16FB */
 
 #endif /* INCLUDE_FBDPSP_H */

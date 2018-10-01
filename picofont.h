@@ -36,6 +36,4 @@
 
 extern uint8_t gPicoFontLeft[];
 
-
 #endif /* INCLUDE_PICOFONT_H */
-
