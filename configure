@@ -5054,7 +5054,8 @@ test -n "$jfb_gzip_path" || jfb_gzip_path=":"
 if test $jfb_gzip_path = ":"; then
 	as_fn_error $? "Test for gunzip failed. Please install gunzip program." "$LINENO" 5
 else
-	cat >>confdefs.h <<_ACEOF
+
+cat >>confdefs.h <<_ACEOF
 #define JFB_GZIP_PATH "${jfb_gzip_path}"
 _ACEOF
 
@@ -5072,7 +5073,8 @@ $as_echo_n "checking whether to enable color gamma... " >&6; }
 if test x$enable_colorgamma = xyes; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-        $as_echo "#define JFB_COLOR_GAMMA 1" >>confdefs.h
+
+$as_echo "#define JFB_COLOR_GAMMA 1" >>confdefs.h
 
 else
         { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5090,7 +5092,8 @@ $as_echo_n "checking whether to enable reverse-video... " >&6; }
 if test x$enable_reverse_video = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_REVERSEVIDEO 1" >>confdefs.h
+
+$as_echo "#define JFB_REVERSEVIDEO 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5109,7 +5112,8 @@ $as_echo_n "checking whether to enable debugging... " >&6; }
 if test x$enable_debug = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define DEBUG 1" >>confdefs.h
+
+$as_echo "#define DEBUG 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5128,7 +5132,8 @@ $as_echo_n "checking whether to enable utf8... " >&6; }
 if test x$enable_utf8 = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_UTF8 1" >>confdefs.h
+
+$as_echo "#define JFB_UTF8 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5146,7 +5151,8 @@ $as_echo_n "checking whether to enable other coding system... " >&6; }
 if test x$enable_utf8 = xyes -a x$enable_other = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_OTHER_CODING_SYSTEM 1" >>confdefs.h
+
+$as_echo "#define JFB_OTHER_CODING_SYSTEM 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5165,7 +5171,8 @@ $as_echo_n "checking whether to enable 1bpp... " >&6; }
 if test x$enable_1bpp = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_1BPP 1" >>confdefs.h
+
+$as_echo "#define JFB_1BPP 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5184,7 +5191,8 @@ $as_echo_n "checking whether to enable 2bpp... " >&6; }
 if test x$enable_2bpp = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_2BPP 1" >>confdefs.h
+
+$as_echo "#define JFB_2BPP 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5204,7 +5212,8 @@ $as_echo_n "checking whether to enable 8bpp... " >&6; }
 if test x$enable_8bpp = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_8BPP 1" >>confdefs.h
+
+$as_echo "#define JFB_8BPP 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5223,7 +5232,8 @@ $as_echo_n "checking whether to enable 15bpp... " >&6; }
 if test x$enable_15bpp = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_15BPP 1" >>confdefs.h
+
+$as_echo "#define JFB_15BPP 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5242,7 +5252,8 @@ $as_echo_n "checking whether to enable 16bpp... " >&6; }
 if test x$enable_16bpp = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_16BPP 1" >>confdefs.h
+
+$as_echo "#define JFB_16BPP 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5261,7 +5272,8 @@ $as_echo_n "checking whether to enable 24bpp... " >&6; }
 if test x$enable_24bpp = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_24BPP 1" >>confdefs.h
+
+$as_echo "#define JFB_24BPP 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5280,7 +5292,8 @@ $as_echo_n "checking whether to enable 32bpp... " >&6; }
 if test x$enable_32bpp = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_32BPP 1" >>confdefs.h
+
+$as_echo "#define JFB_32BPP 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5299,7 +5312,8 @@ $as_echo_n "checking whether to enable pseudo-color... " >&6; }
 if test x$enable_pseudo_color = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_PSEUDOCOLOR 1" >>confdefs.h
+
+$as_echo "#define JFB_PSEUDOCOLOR 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5318,7 +5332,8 @@ $as_echo_n "checking whether to enable direct-color... " >&6; }
 if test x$enable_direct_color = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_DIRECTCOLOR 1" >>confdefs.h
+
+$as_echo "#define JFB_DIRECTCOLOR 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5337,7 +5352,8 @@ $as_echo_n "checking whether to enable true-color... " >&6; }
 if test x$enable_true_color = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_TRUECOLOR 1" >>confdefs.h
+
+$as_echo "#define JFB_TRUECOLOR 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5357,7 +5373,8 @@ if test x$enable_vga16fb = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 	if test x$ac_cv_func_ioperm = xyes; then
-	   $as_echo "#define JFB_VGA16FB 1" >>confdefs.h
+
+$as_echo "#define JFB_VGA16FB 1" >>confdefs.h
 
 	else
 	   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  but ioperm() not found on your system, disable vga16fb support" >&5
@@ -5381,7 +5398,8 @@ $as_echo_n "checking whether to enable packed-pixels... " >&6; }
 if test x$enable_packed_pixels = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_PACKED 1" >>confdefs.h
+
+$as_echo "#define JFB_PACKED 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5400,7 +5418,8 @@ $as_echo_n "checking whether to enable check-mmio-error... " >&6; }
 if test x$enable_check_mmio_error = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_MMIO_CHECK 1" >>confdefs.h
+
+$as_echo "#define JFB_MMIO_CHECK 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5419,7 +5438,8 @@ $as_echo_n "checking whether to enable force-8bit... " >&6; }
 if test x$enable_force_8bit = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define FORCE_8BIT 1" >>confdefs.h
+
+$as_echo "#define FORCE_8BIT 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5438,7 +5458,8 @@ $as_echo_n "checking whether to enable dimmer... " >&6; }
 if test x$enable_dimmer = xyes; then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	$as_echo "#define JFB_ENABLE_DIMMER 1" >>confdefs.h
+
+$as_echo "#define JFB_ENABLE_DIMMER 1" >>confdefs.h
 
 else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -5447,18 +5468,21 @@ fi
 
 if test x$sysconfdir = 'x${prefix}/etc'; then
 	if test x$prefix = xNONE; then
-		cat >>confdefs.h <<_ACEOF
+
+cat >>confdefs.h <<_ACEOF
 #define SYSCONFDIR "/usr/local/etc"
 _ACEOF
 
 	else
-		cat >>confdefs.h <<_ACEOF
+
+cat >>confdefs.h <<_ACEOF
 #define SYSCONFDIR "${prefix}/etc"
 _ACEOF
 
 	fi
 else
-	cat >>confdefs.h <<_ACEOF
+
+cat >>confdefs.h <<_ACEOF
 #define SYSCONFDIR "${sysconfdir}"
 _ACEOF
 

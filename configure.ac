@@ -60,14 +60,14 @@ AC_PATH_PROGS(jfb_gzip_path, gunzip, :)
 if test $jfb_gzip_path = ":"; then
 	AC_MSG_ERROR(Test for gunzip failed. Please install gunzip program.)
 else
-	AC_DEFINE_UNQUOTED(JFB_GZIP_PATH, "${jfb_gzip_path}")
+	AC_DEFINE_UNQUOTED(JFB_GZIP_PATH, "${jfb_gzip_path}", [zip command path])
 fi
 
 AC_ARG_ENABLE(colorgamma, [ --enable-color-gamma     turn on color gamma [default no]],,enable_colorgamma=no)
 AC_MSG_CHECKING(whether to enable color gamma)
 if test x$enable_colorgamma = xyes; then
         AC_MSG_RESULT(yes)
-        AC_DEFINE(JFB_COLOR_GAMMA)
+        AC_DEFINE(JFB_COLOR_GAMMA, 1, [color gamma])
 else
         AC_MSG_RESULT(no)
 fi
@@ -75,7 +75,7 @@ AC_ARG_ENABLE(reverse-video, [ --enable-reverse-video   support reverse cmap [de
 AC_MSG_CHECKING(whether to enable reverse-video)
 if test x$enable_reverse_video = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_REVERSEVIDEO)
+	AC_DEFINE(JFB_REVERSEVIDEO, 1, [support reverse cmap])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -84,7 +84,7 @@ AC_ARG_ENABLE(debug, [ --enable-debug           turn on debugging [default no]],
 AC_MSG_CHECKING(whether to enable debugging)
 if test x$enable_debug = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(DEBUG)
+	AC_DEFINE(DEBUG, 1, [debug flag])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -93,7 +93,7 @@ AC_ARG_ENABLE(utf8, [ --enable-utf8            support UTF-8 [default yes]],,ena
 AC_MSG_CHECKING(whether to enable utf8)
 if test x$enable_utf8 = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_UTF8)
+	AC_DEFINE(JFB_UTF8, 1, [support UTF-8])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -101,7 +101,7 @@ AC_ARG_ENABLE(other-coding-system, [ --enable-other-coding-system support other-
 AC_MSG_CHECKING(whether to enable other coding system)
 if test x$enable_utf8 = xyes -a x$enable_other = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_OTHER_CODING_SYSTEM)
+	AC_DEFINE(JFB_OTHER_CODING_SYSTEM, 1, [support other-coding-system])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -110,7 +110,7 @@ AC_ARG_ENABLE(1bpp, [ --enable-1bpp            support 1bpp [default no]],,enabl
 AC_MSG_CHECKING(whether to enable 1bpp)
 if test x$enable_1bpp = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_1BPP)
+	AC_DEFINE(JFB_1BPP, 1, [support 1bpp])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -119,7 +119,7 @@ AC_ARG_ENABLE(2bpp, [ --enable-2bpp            support 2bpp [default yes]],,enab
 AC_MSG_CHECKING(whether to enable 2bpp)
 if test x$enable_2bpp = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_2BPP)
+	AC_DEFINE(JFB_2BPP, 1, [support 2bpp])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -128,7 +128,7 @@ dnl AC_ARG_ENABLE(4bpp, [ --enable-4bpp            support 4bpp [default no]],,e
 dnl AC_MSG_CHECKING(whether to enable 4bpp)
 dnl if test x$enable_4bpp = xyes; then
 dnl	AC_MSG_RESULT(yes)
-dnl	AC_DEFINE(JFB_4BPP)
+dnl	AC_DEFINE(JFB_4BPP, 1, [support 4pp])
 dnl else
 dnl	AC_MSG_RESULT(no)
 dnl fi
@@ -137,7 +137,7 @@ AC_ARG_ENABLE(8bpp, [ --enable-8bpp            support 8bpp [default yes]],,enab
 AC_MSG_CHECKING(whether to enable 8bpp)
 if test x$enable_8bpp = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_8BPP)
+	AC_DEFINE(JFB_8BPP, 1, [support 8bpp])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -146,7 +146,7 @@ AC_ARG_ENABLE(15bpp, [ --enable-15bpp           support 15bpp [default yes]],,en
 AC_MSG_CHECKING(whether to enable 15bpp)
 if test x$enable_15bpp = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_15BPP)
+	AC_DEFINE(JFB_15BPP, 1, [support 15bpp])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -155,7 +155,7 @@ AC_ARG_ENABLE(16bpp, [ --enable-16bpp           support 16bpp [default yes]],,en
 AC_MSG_CHECKING(whether to enable 16bpp)
 if test x$enable_16bpp = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_16BPP)
+	AC_DEFINE(JFB_16BPP, 1, [support 16bpp])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -164,7 +164,7 @@ AC_ARG_ENABLE(24bpp, [ --enable-24bpp           support 24bpp [default yes]],,en
 AC_MSG_CHECKING(whether to enable 24bpp)
 if test x$enable_24bpp = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_24BPP)
+	AC_DEFINE(JFB_24BPP, 1, [support 24bpp])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -173,7 +173,7 @@ AC_ARG_ENABLE(32bpp, [ --enable-32bpp           support 32bpp [default yes]],,en
 AC_MSG_CHECKING(whether to enable 32bpp)
 if test x$enable_32bpp = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_32BPP)
+	AC_DEFINE(JFB_32BPP, 1, [support 32bpp])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -182,7 +182,7 @@ AC_ARG_ENABLE(pseudo-color, [ --enable-pseudo-color    support pseudo-color [def
 AC_MSG_CHECKING(whether to enable pseudo-color)
 if test x$enable_pseudo_color = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_PSEUDOCOLOR)
+	AC_DEFINE(JFB_PSEUDOCOLOR, 1, [support pseudocolor])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -191,7 +191,7 @@ AC_ARG_ENABLE(direct-color, [ --enable-direct-color    support direct-color (EXP
 AC_MSG_CHECKING(whether to enable direct-color)
 if test x$enable_direct_color = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_DIRECTCOLOR)
+	AC_DEFINE(JFB_DIRECTCOLOR, 1, [support directcolor])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -200,7 +200,7 @@ AC_ARG_ENABLE(true-color, [ --enable-true-color      support true-color [default
 AC_MSG_CHECKING(whether to enable true-color)
 if test x$enable_true_color = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_TRUECOLOR)
+	AC_DEFINE(JFB_TRUECOLOR, 1, [support turecolor])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -210,7 +210,7 @@ AC_MSG_CHECKING(whether to enable vga16fb)
 if test x$enable_vga16fb = xyes; then
 	AC_MSG_RESULT(yes)
 	if test x$ac_cv_func_ioperm = xyes; then
-	   AC_DEFINE(JFB_VGA16FB)
+	   AC_DEFINE(JFB_VGA16FB, 1, [support vga16fb])
 	else
 	   AC_MSG_WARN([ but ioperm() not found on your system, disable vga16fb support])
 	   enable_vga16fb=no
@@ -223,7 +223,7 @@ AC_ARG_ENABLE(packed-pixels, [ --enable-packed-pixels         support packed-pix
 AC_MSG_CHECKING(whether to enable packed-pixels)
 if test x$enable_packed_pixels = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_PACKED)
+	AC_DEFINE(JFB_PACKED, 1, [support packed-pixels])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -232,7 +232,7 @@ AC_ARG_ENABLE(check-mmio-error, [ --enable-check-mmio-error         Check mmap(m
 AC_MSG_CHECKING(whether to enable check-mmio-error)
 if test x$enable_check_mmio_error = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_MMIO_CHECK)
+	AC_DEFINE(JFB_MMIO_CHECK, 1, [check mmap(mmio)])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -241,7 +241,7 @@ AC_ARG_ENABLE(force-8bit, [ --enable-force-8bit         Force 8bit Color [defaul
 AC_MSG_CHECKING(whether to enable force-8bit)
 if test x$enable_force_8bit = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(FORCE_8BIT)
+	AC_DEFINE(FORCE_8BIT, 1, [force 8bit color])
 else
 	AC_MSG_RESULT(no)
 fi
@@ -250,19 +250,19 @@ AC_ARG_ENABLE(dimmer, [ --enable-dimmer          Enable auto dimmer (condole bla
 AC_MSG_CHECKING(whether to enable dimmer)
 if test x$enable_dimmer = xyes; then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(JFB_ENABLE_DIMMER)
+	AC_DEFINE(JFB_ENABLE_DIMMER, 1, [enable auto dimmer])
 else
 	AC_MSG_RESULT(no)
 fi
 
 if test x$sysconfdir = 'x${prefix}/etc'; then
 	if test x$prefix = xNONE; then
-		AC_DEFINE_UNQUOTED(SYSCONFDIR, "/usr/local/etc")
+		AC_DEFINE_UNQUOTED(SYSCONFDIR, "/usr/local/etc", [config file dir])
 	else
-		AC_DEFINE_UNQUOTED(SYSCONFDIR, "${prefix}/etc")
+		AC_DEFINE_UNQUOTED(SYSCONFDIR, "${prefix}/etc", [config file dir])
 	fi
 else
-	AC_DEFINE_UNQUOTED(SYSCONFDIR, "${sysconfdir}")
+	AC_DEFINE_UNQUOTED(SYSCONFDIR, "${sysconfdir}", [config file dir])
 fi
 
 AC_CONFIG_FILES([Makefile])
