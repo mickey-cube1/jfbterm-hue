@@ -21,18 +21,25 @@ AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS(fcntl.h malloc.h sys/ioctl.h sys/time.h unistd.h)
 
+AC_CHECK_HEADERS([langinfo.h])
+AC_CHECK_HEADERS([locale.h])
+AC_CHECK_HEADERS([termios.h])
+AC_CHECK_HEADERS([utmp.h])
+
+AC_CHECK_MEMBERS([struct stat.st_rdev])
+
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_C_INLINE
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
-AC_DIAGNOSE([obsolete],[your code should no longer depend upon `HAVE_ST_RDEV', but
-`HAVE_STRUCT_STAT_ST_RDEV'.  Remove this warning and
-the `AC_DEFINE' when you adjust the code.])dnl
-AC_CHECK_MEMBERS([struct stat.st_rdev],[AC_DEFINE(HAVE_ST_RDEV, 1,
-			    [Define to 1 if your `struct stat' has `st_rdev'.
-			     Deprecated, use `HAVE_STRUCT_STAT_ST_RDEV'
-			     instead.])])
+AC_TYPE_PID_T
+AC_TYPE_UID_T
+AC_TYPE_INT32_T
+AC_TYPE_UINT8_T
+AC_TYPE_UINT16_T
+AC_TYPE_UINT32_T
+AC_TYPE_UINT64_T
 
 AC_HEADER_TIME
 
@@ -53,7 +60,23 @@ AC_DEFINE_UNQUOTED([RETSIGTYPE],[$ac_cv_type_signal],[Define as the return type 
 		    (`int' or `void').])
 
 AC_FUNC_VPRINTF
+AC_FUNC_FORK
+AC_FUNC_MALLOC
 AC_CHECK_FUNCS(select strdup strerror ioperm)
+AC_CHECK_FUNCS([atexit])
+AC_CHECK_FUNCS([bzero])
+AC_CHECK_FUNCS([dup2])
+AC_CHECK_FUNCS([memmove])
+AC_CHECK_FUNCS([memset])
+AC_CHECK_FUNCS([munmap])
+AC_CHECK_FUNCS([nl_langinfo])
+AC_CHECK_FUNCS([pow])
+AC_CHECK_FUNCS([setenv])
+AC_CHECK_FUNCS([setlocale])
+AC_CHECK_FUNCS([strcasecmp])
+AC_CHECK_FUNCS([strchr])
+AC_CHECK_FUNCS([strncasecmp])
+AC_CHECK_FUNCS([strtol])
 
 dnl setup options.
 AC_PATH_PROGS(jfb_gzip_path, gunzip, :)
