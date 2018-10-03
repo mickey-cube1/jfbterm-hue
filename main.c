@@ -39,7 +39,6 @@
 #include <sys/ioctl.h>
 #include <sys/vt.h>
 #include <sys/kd.h>
-#include <signal.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -129,11 +128,6 @@ void tapp_change_to_original_console(TApplication * p)
 	int cfd;
 	int n = p->gOrigVirtualConsole;
 
-/*
-        signal(SIGUSR1, SIG_DFL);
-        signal(SIGUSR2, SIG_DFL);
-*/
-
 	util_privilege_on();
 	cfd = open("/dev/console", O_WRONLY);
 	if (cfd < 0 && (cfd = open("/dev/console", O_RDONLY)) < 0) {
@@ -184,8 +178,6 @@ void tapp_init(TApplication * p)
 	p->gExecShellArgv = NULL;
 	p->gConfFile = FILE_JFBTERM_CONF;
 	p->gConfEncoding = NULL;
-
-//      signal(SIGCHLD, sigchld);
 
 	atexit(tapp_final_at_exit);
 }

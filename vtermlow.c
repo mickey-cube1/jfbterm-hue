@@ -48,7 +48,9 @@
 #include	"term.h"
 #include	"font.h"
 #include	"fbcommon.h"
-#include	"config.h"
+#if defined(HAVE_CONFIG_H)
+#include "config.h"
+#endif
 
 #if 0
 
@@ -338,9 +340,29 @@ void tvterm_unregister_signal(void)
 {
 	int ret;
 	struct vt_mode vtm;
+#if defined(HAVE_SIGACTION)
+	struct sigaction sa;
+#endif
 
+#if defined(HAVE_SIGACTION)
+	memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags |= (SA_NOMASK | SA_ONESHOT);
+	if (sigaction(SIGUSR1, &sa, NULL) != 0) {
+		fprintf(stderr, "sigaction failed @ tvterm_unregister_signal(): %s\n", strerror(errno));
+		exit(1);
+	}
+	memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags |= (SA_NOMASK | SA_ONESHOT);
+	if (sigaction(SIGUSR2, &sa, NULL) != 0) {
+		fprintf(stderr, "sigaction failed @ tvterm_unregister_signal(): %s\n", strerror(errno));
+		exit(1);
+	}
+#else
 	signal(SIGUSR1, SIG_DFL);
 	signal(SIGUSR2, SIG_DFL);
+#endif
 
 	vtm.mode = VT_AUTO;
 	vtm.waitv = 0;
@@ -362,11 +384,31 @@ void tvterm_register_signal(TVterm * p)
 {
 	int ret;
 	struct vt_mode vtm;
+#if defined(HAVE_SIGACTION)
+	struct sigaction sa;
+#endif
 
 	sig_obj = p;
 
+#if defined(HAVE_SIGACTION)
+	memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = sig_leave_virtual_console;
+	sa.sa_flags |= SA_RESTART;
+	if (sigaction(SIGUSR1, &sa, NULL) != 0) {
+		fprintf(stderr, "sigaction failed @ tvterm_register_signal(): %s\n", strerror(errno));
+		exit(1);
+	}
+	memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = sig_enter_virtual_console;
+	sa.sa_flags |= SA_RESTART;
+	if (sigaction(SIGUSR2, &sa, NULL) != 0) {
+		fprintf(stderr, "sigaction failed @ tvterm_register_signal(): %s\n", strerror(errno));
+		exit(1);
+	}
+#else
 	signal(SIGUSR1, sig_leave_virtual_console);
 	signal(SIGUSR2, sig_enter_virtual_console);
+#endif
 
 	vtm.mode = VT_PROCESS;
 	vtm.waitv = 0;
@@ -390,8 +432,9 @@ void tvterm_register_signal(TVterm * p)
 
 static void sig_leave_virtual_console(int signum)
 {
-
+#if !defined(HAVE_SIGACTION)
 	signal(SIGUSR1, sig_leave_virtual_console);
+#endif
 	if (sig_obj->busy) {
 		sig_obj->release = TRUE;
 		return;
@@ -408,11 +451,15 @@ static void sig_leave_virtual_console(int signum)
 
 static void sig_enter_virtual_console(int signum)
 {
+#if !defined(HAVE_SIGACTION)
 	signal(SIGUSR2, sig_enter_virtual_console);
+#endif
 	if (!sig_obj->active) {
 		sig_obj->active = TRUE;
 		tvterm_register_signal(sig_obj);
-		signal(SIGUSR2, sig_enter_virtual_console);
+//#if !defined(HAVE_SIGACTION)
+//		signal(SIGUSR2, sig_enter_virtual_console);
+//#endif
 	}
 }
 

@@ -77,6 +77,7 @@ AC_CHECK_FUNCS([strcasecmp])
 AC_CHECK_FUNCS([strchr])
 AC_CHECK_FUNCS([strncasecmp])
 AC_CHECK_FUNCS([strtol])
+AC_CHECK_FUNCS([sigaction])
 
 dnl setup options.
 AC_PATH_PROGS(jfb_gzip_path, gunzip, :)

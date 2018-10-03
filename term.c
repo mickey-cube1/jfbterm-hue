@@ -55,10 +55,12 @@
 #include "main.h"
 #include "util.h"
 
+#if defined(HAVE_CONFIG_H)
 #include "config.h"
+#endif
 
 volatile int gChildProcessId = 0;
-volatile int gExitReq = 0;
+volatile sig_atomic_t gExitReq = 0;
 
 TTerm gTerm;
 
@@ -79,18 +81,18 @@ void sigchld(int sig)
 {
 	int st;
 	int ret;
+
+#if !defined(HAVE_SIGACTION)
+	signal(SIGCHLD, sigchld);
+#endif
+
 	ret = waitpid(-1, &st, WNOHANG);
-//      ret = wait(&st);
 	if (ret == 0) {
 		// nothing to do.
 	}
 	if (ret == gChildProcessId || (ret == -1 && errno == ECHILD)) {
 		gExitReq = 1;
-//              tvterm_unregister_signal();
-//              tterm_final(&gTerm);
-//              exit(EXIT_SUCCESS);
 	}
-	signal(SIGCHLD, sigchld);
 }
 
 void tterm_init(TTerm * p, const char *en)
@@ -181,6 +183,9 @@ void tterm_start(TTerm * p, const char *tn, const char *en)
 	int tfbm_set_blank(int, int);
 #define DIMMER_TIMEOUT (3 * 60 * 10)	/* 3 min */
 #endif
+#if defined(HAVE_SIGACTION)
+	struct sigaction sa;
+#endif
 
 	tterm_init(p, en);
 	if (!tterm_get_ptytty(p)) {
@@ -218,7 +223,18 @@ void tterm_start(TTerm * p, const char *tn, const char *en)
 	}
 	/* parent */
 	tterm_set_utmp(p);
+
+#if defined(HAVE_SIGACTION)
+	memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = sigchld;
+	sa.sa_flags |= SA_RESTART;
+	if (sigaction(SIGCHLD, &sa, NULL) != 0) {
+		print_strerror("sigaction");
+		exit(1);
+	}
+#else
 	signal(SIGCHLD, sigchld);
+#endif
 	atexit(application_final);
 
 	/* not available
