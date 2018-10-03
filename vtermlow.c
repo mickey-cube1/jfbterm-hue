@@ -422,7 +422,7 @@ void tvterm_register_signal(TVterm * p)
 
 	ret = ioctl(sig_obj->term->ttyfd, TIOCCONS, NULL);
 	if (ret == -1) {
-		fprintf(stderr, "VT_SETMODE failed @ tvterm_register_signal(): %s\n", strerror(errno));
+		fprintf(stderr, "TIOCCONS failed @ tvterm_register_signal(): %s\n", strerror(errno));
 	}
 
 	llatch(p->flag, p->tsize);
