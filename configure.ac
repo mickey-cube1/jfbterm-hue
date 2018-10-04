@@ -80,7 +80,7 @@ AC_CHECK_FUNCS([strtol])
 AC_CHECK_FUNCS([sigaction])
 
 dnl setup options.
-AC_PATH_PROGS(jfb_gzip_path, gunzip, :)
+AC_PATH_PROGS(jfb_gzip_path, gzip, :)
 if test $jfb_gzip_path = ":"; then
 	AC_MSG_ERROR(Test for gunzip failed. Please install gunzip program.)
 else

@@ -412,7 +412,7 @@ static FILE *font_open(const char *fname)
 #ifndef JFB_GZIP_PATH
 #error			JFB_GZIP_PATH is not set.
 #else
-			execl(JFB_GZIP_PATH, JFB_GZIP_PATH, "-c", NULL);
+			execl(JFB_GZIP_PATH, JFB_GZIP_PATH, "-dc", NULL);
 #endif
 			exit(0);
 		}
