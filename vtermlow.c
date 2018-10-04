@@ -55,11 +55,11 @@
 #if 0
 
 static int saveTime, saverCount;
-static bool saved;
-static volatile bool busy;	/* TRUE iff updating screen */
-static volatile bool release;	/* delayed VC switch flag */
+static TBool saved;
+static volatile TBool busy;	/* TRUE iff updating screen */
+static volatile TBool release;	/* delayed VC switch flag */
 
-static void ShowCursor(struct cursorInfo *, bool);
+static void ShowCursor(struct cursorInfo *, TBool);
 
 #endif
 
@@ -704,7 +704,7 @@ static void ToggleCursor(struct cursorInfo *c)
 	vInfo.cursor(c);
 }
 
-static void ShowCursor(struct cursorInfo *c, bool show)
+static void ShowCursor(struct cursorInfo *c, TBool show)
 {
 	if (!con.active || !c->sw)
 		return;
@@ -712,7 +712,7 @@ static void ShowCursor(struct cursorInfo *c, bool show)
 		ToggleCursor(c);
 }
 
-static void SaveScreen(bool save)
+static void SaveScreen(TBool save)
 {
 	if (saved != save) {
 		saved = save;
@@ -725,7 +725,7 @@ static void SaveScreen(bool save)
 #if 0
 /* Called when some action was over, or every 1/10 sec when idle. */
 
-void PollCursor(bool wakeup)
+void PollCursor(TBool wakeup)
 {
 	if (!con.active)
 		return;

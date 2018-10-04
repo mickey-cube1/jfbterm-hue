@@ -77,7 +77,7 @@ typedef struct Raw_TFrameBufferMemory
 	  (*set_address) (uint32_t i),
 		/* 文字書き込みアドレスを i 文字目に設定 */
 	  (*cursor) (struct cursorInfo *),	/* カーソルをトグル */
-	  (*screen_saver) (bool),	/* スクリーンブランク/アンブランク */
+	  (*screen_saver) (TBool),	/* スクリーンブランク/アンブランク */
 	  (*detatch) (void),	/* ドライバ解放 */
 #endif
 } TFrameBufferMemory;
