@@ -28,10 +28,11 @@
  * 
  */
 
-#include	<stdlib.h>
-#include	<sys/types.h>
+#include <stdlib.h>
+#include <sys/types.h>
 
-#include	"pen.h"
+#include "util.h"
+#include "pen.h"
 
 void tpen_init(TPen * p)
 {
@@ -48,7 +49,7 @@ void tpen_final(TPen * p)
 	p->prev = NULL;
 	if (q) {
 		tpen_final(q);
-		free(q);
+		util_free(q);
 	}
 }
 

@@ -43,7 +43,7 @@ int util_privilege_ioperm(unsigned long from, unsigned int num, int turn_on);
 uid_t util_getuid();
 void util_privilege_drop();
 
-#define util_free(p) {free(p); (p) = NULL;}
+#define util_free(p) do {free(p); (p) = NULL;} while (0)
 
 void util_euc_to_sjis(uint8_t * ch, uint8_t * cl);
 void util_sjis_to_jis(uint8_t * ch, uint8_t * cl);

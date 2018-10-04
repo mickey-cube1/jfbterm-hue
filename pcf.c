@@ -32,6 +32,7 @@
 #include <string.h>
 #include <sys/types.h>
 
+#include "util.h"
 #include "pcf.h"
 #include "message.h"
 
@@ -300,8 +301,8 @@ void tpcfprops_init(TPcfProps * p)
 
 void tpcfprops_final(TPcfProps * p)
 {
-	free(p->props);
-	free(p->strings);
+	util_free(p->props);
+	util_free(p->strings);
 }
 
 size_t tpcfprops_load(TPcfProps * p, FILE * fp)
@@ -385,7 +386,7 @@ void tpcfmetrics_init(TPcfMetrics * p)
 void tpcfmetrics_final(TPcfMetrics * p)
 {
 	p->nMetrics = 0;
-	free(p->metric);
+	util_free(p->metric);
 }
 
 size_t tpcfmetrics_load(TPcfMetrics * p, FILE * fp)
@@ -483,8 +484,8 @@ void tpcfbitmap_init(TPcfBitmap * p)
 void tpcfbitmap_final(TPcfBitmap * p)
 {
 	p->maps = 0;
-	free(p->offsets);
-	free(p->bitmap);
+	util_free(p->offsets);
+	util_free(p->bitmap);
 }
 
 void tpcfbitmap_swap(TPcfBitmap * p, int e, int swp, int aline)
@@ -555,7 +556,7 @@ void tpcfencode_init(TPcfEncode * p)
 
 void tpcfencode_final(TPcfEncode * p)
 {
-	free(p->table);
+	util_free(p->table);
 }
 
 size_t tpcfencode_load(TPcfEncode * p, FILE * fp)
@@ -605,7 +606,7 @@ void tpcf_init(TPcf * p)
 
 void tpcf_final(TPcf * p)
 {
-	free(p->idxs);
+	util_free(p->idxs);
 	tpcfprops_final(&(p->props));
 	tpcfmetrics_final(&(p->metrics));
 	tpcfbitmap_final(&(p->bitmap));

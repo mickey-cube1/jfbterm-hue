@@ -275,12 +275,12 @@ static void tvterm_finish_otherCS(TVterm * p)
 			iconv_close(o->cd);
 		}
 		o->cd = (iconv_t) (-1);
-		if (o->fromcode)
-			free(o->fromcode);
-		o->fromcode = NULL;
-		if (o->tocode)
-			free(o->tocode);
-		o->tocode = NULL;
+		if (o->fromcode) {
+			util_free(o->fromcode);
+		}
+		if (o->tocode) {
+			util_free(o->tocode);
+		}
 	}
 	p->otherCS = NULL;
 }
@@ -310,13 +310,13 @@ static void tvterm_switch_to_otherCS(TVterm * p, TCodingSystem * ocs)
 
 		en = tcaps_find_entry(p->caps, "encoding.", ocs->tocode);
 		if (en == NULL) {
-			free(ocs->tocode);
+			util_free(ocs->tocode);
 			ocs->tocode = strdup("UTF-8");
 			goto retry;
 		}
 
 		if (tvterm_parse_encoding(en, idx) == 0) {
-			free(ocs->tocode);
+			util_free(ocs->tocode);
 			ocs->tocode = strdup("UTF-8");
 			goto retry;
 		}
@@ -331,7 +331,7 @@ static void tvterm_switch_to_otherCS(TVterm * p, TCodingSystem * ocs)
 	ocs->cd = iconv_open(tocode, ocs->fromcode);
 	if (ocs->cd == (iconv_t) (-1)) {
 		if (strcmp(ocs->tocode, "UTF-8") == 0) {
-			free(ocs->tocode);
+			util_free(ocs->tocode);
 			ocs->tocode = strdup("UTF-8");
 			goto retry;
 		}
@@ -345,10 +345,8 @@ static void tvterm_switch_to_otherCS(TVterm * p, TCodingSystem * ocs)
 	p->otherCS = &otherCS;
 	return;
       FINALIZE:
-	free(ocs->fromcode);
-	free(ocs->tocode);
-	ocs->fromcode = NULL;
-	ocs->tocode = NULL;
+	util_free(ocs->fromcode);
+	util_free(ocs->tocode);
 	return;
 }
 
@@ -476,13 +474,11 @@ void tvterm_final(TVterm * p)
 	tpen_final(&(p->pen));
 	if (p->savedPen) {
 		tpen_final(p->savedPen);
-		free(p->savedPen);
-		p->savedPen = NULL;
+		util_free(p->savedPen);
 	}
 	if (p->savedPenSL) {
 		tpen_final(p->savedPenSL);
-		free(p->savedPenSL);
-		p->savedPenSL = NULL;
+		util_free(p->savedPenSL);
 	}
 	p->textHead = 0;
 	util_free(p->text);
@@ -524,7 +520,7 @@ void tvterm_pop_pen_and_set_currnt_pen(TVterm * p, TBool b)
 		p->pen.y = p->ymax - 1;
 
 	*base = t->prev;
-	free(t);
+	util_free(t);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -1507,8 +1503,8 @@ void tvterm_show_sequence(FILE * tf, TCaps * cap, const char *en)
 		TCodingSystem otherCS;
 		if (tvterm_parse_otherCS(en, &otherCS)) {
 			fprintf(tf, "%s%s\005", "\033]", otherCS.fromcode);
-			free(otherCS.fromcode);
-			free(otherCS.tocode);
+			util_free(otherCS.fromcode);
+			util_free(otherCS.tocode);
 		}
 		goto end;
 	}

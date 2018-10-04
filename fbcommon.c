@@ -473,7 +473,7 @@ void tfbm_open(TFrameBufferMemory * p)
 	if (!S_ISCHR(st.st_mode) || major(st.st_rdev) != 29 /* FB_MAJOR */ ) {
 		die("%s: not a frame buffer device\n", fbdn);
 	}
-	free(fbdn);
+	util_free(fbdn);
 
 	tfbm_get_var_screen_info(p->fh, &fb_var);
 	if (fb_var.yres_virtual != fb_var.yres) {

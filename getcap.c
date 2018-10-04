@@ -187,7 +187,7 @@ char *tcaps_find_entry(TCaps * p, const char *prefix, const char *name)
 	strcpy(key, prefix);
 	strcat(key, name);
 	val = tcaps_find_first(p, key);
-	free(key);
+	util_free(key);
 	return val;
 }
 
