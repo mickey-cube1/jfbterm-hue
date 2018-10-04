@@ -760,7 +760,7 @@ static int ConfigBeep(const char *confstr)
 {
 	beepCount = atoi(confstr) * 10000;
 	if (beepCount > 0)
-		ioperm(COUNTER_ADDR, 1, TBOOL_TRUE);
+		util_privilege_ioperm(COUNTER_ADDR, 1, 1);
 	return SUCCESS;
 }
 
