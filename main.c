@@ -100,16 +100,16 @@ static void tapp_get_options(TApplication * p, int argc, char *argv[])
 			p->gConfEncoding = optarg;
 			break;
 		case 'r':
-			p->gOptQuiet = TRUE;
+			p->gOptQuiet = TBOOL_TRUE;
 			p->gOptReset = optarg;
 			if (p->gOptReset == NULL)
 				p->gOptReset = "locale";
 			break;
 		case 'q':
-			p->gOptQuiet = TRUE;
+			p->gOptQuiet = TBOOL_TRUE;
 			break;
 		case 'h':
-			p->gOptShowHelpQ = TRUE;
+			p->gOptShowHelpQ = TBOOL_TRUE;
 			break;
 		default:
 			break;
@@ -164,8 +164,8 @@ void tapp_init(TApplication * p)
 
 	p->gOrigVirtualConsole = -1;
 	tcaps_init(&(p->gCaps));
-	p->gCapsQ = TRUE;
-	p->gOptShowHelpQ = FALSE;
+	p->gCapsQ = TBOOL_TRUE;
+	p->gOptShowHelpQ = TBOOL_FALSE;
 	if (getenv("SHELL")) {
 		/* This cause a buffer overflow. */
 		memset(shell, '\0', sizeof shell);

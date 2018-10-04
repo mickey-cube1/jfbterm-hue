@@ -56,7 +56,7 @@
 
 static int saveTime, saverCount;
 static TBool saved;
-static volatile TBool busy;	/* TRUE iff updating screen */
+static volatile TBool busy;	/* TBOOL_TRUE iff updating screen */
 static volatile TBool release;	/* delayed VC switch flag */
 
 static void ShowCursor(struct cursorInfo *, TBool);
@@ -262,17 +262,17 @@ void tvterm_refresh(TVterm * p)
 	const uint8_t *glyph;
 	uint32_t w, gw;
 
-	p->busy = TRUE;
+	p->busy = TBOOL_TRUE;
 	if (!p->active) {
-		p->busy = FALSE;
+		p->busy = TBOOL_FALSE;
 		return;
 	}
 
-	tvterm_show_cursor(p, FALSE);
+	tvterm_show_cursor(p, TBOOL_FALSE);
 
 	if (p->textClear) {
 		gFramebuffer.cap.fill(&gFramebuffer, 0, 0, gFramebuffer.width, gFramebuffer.height, 0);
-		p->textClear = FALSE;
+		p->textClear = TBOOL_FALSE;
 	}
 
 	for (y = 0; y < p->ycap; y++) {
@@ -323,10 +323,10 @@ void tvterm_refresh(TVterm * p)
 		tvterm_set_cursor_wide(p, IsKanji(p, p->pen.x, p->pen.y));
 		p->cursor.x = p->pen.x;
 		p->cursor.y = p->pen.y;
-		tvterm_show_cursor(p, TRUE);
+		tvterm_show_cursor(p, TBOOL_TRUE);
 	}
 
-	p->busy = FALSE;
+	p->busy = TBOOL_FALSE;
 	if (p->release) {
 		sig_leave_virtual_console(SIGUSR1);
 	}
@@ -426,7 +426,7 @@ void tvterm_register_signal(TVterm * p)
 	}
 
 	llatch(p->flag, p->tsize);
-	p->textClear = TRUE;
+	p->textClear = TBOOL_TRUE;
 	tvterm_refresh(p);
 }
 
@@ -436,12 +436,12 @@ static void sig_leave_virtual_console(int signum)
 	signal(SIGUSR1, sig_leave_virtual_console);
 #endif
 	if (sig_obj->busy) {
-		sig_obj->release = TRUE;
+		sig_obj->release = TBOOL_TRUE;
 		return;
 	}
 	else {
-		sig_obj->release = FALSE;
-		sig_obj->active = FALSE;
+		sig_obj->release = TBOOL_FALSE;
+		sig_obj->active = TBOOL_FALSE;
 		/*
 		 * SetTextMode();
 		 */
@@ -455,7 +455,7 @@ static void sig_enter_virtual_console(int signum)
 	signal(SIGUSR2, sig_enter_virtual_console);
 #endif
 	if (!sig_obj->active) {
-		sig_obj->active = TRUE;
+		sig_obj->active = TBOOL_TRUE;
 		tvterm_register_signal(sig_obj);
 //#if !defined(HAVE_SIGACTION)
 //		signal(SIGUSR2, sig_enter_virtual_console);
@@ -517,7 +517,7 @@ void tvterm_text_clear_all(TVterm * p)
 		a = tvterm_coord_to_index(p, 0, y);
 		tvterm_clear(p, a, p->xcap4);	/* lclear */
 	}
-	p->textClear = TRUE;
+	p->textClear = TBOOL_TRUE;
 }
 
 /**
@@ -730,16 +730,16 @@ void PollCursor(TBool wakeup)
 	if (!con.active)
 		return;
 	if (wakeup) {
-		SaveScreen(FALSE);
-		ShowCursor(&cInfo, TRUE);
+		SaveScreen(TBOOL_FALSE);
+		ShowCursor(&cInfo, TBOOL_TRUE);
 		return;
 	}
 	/* Idle. */
 	if (saved)
 		return;
 	if ((saveTime > 0) && (++saverCount == saveTime)) {
-		ShowCursor(&cInfo, FALSE);
-		SaveScreen(TRUE);
+		ShowCursor(&cInfo, TBOOL_FALSE);
+		SaveScreen(TBOOL_TRUE);
 		return;
 	}
 	if ((cInfo.interval > 0) && (++cInfo.count == cInfo.interval)) {
@@ -760,7 +760,7 @@ static int ConfigBeep(const char *confstr)
 {
 	beepCount = atoi(confstr) * 10000;
 	if (beepCount > 0)
-		ioperm(COUNTER_ADDR, 1, TRUE);
+		ioperm(COUNTER_ADDR, 1, TBOOL_TRUE);
 	return SUCCESS;
 }
 

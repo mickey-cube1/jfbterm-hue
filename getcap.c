@@ -246,14 +246,14 @@ TBool tcaps_register(TCaps * p, const char *cp)
 
 	strcpy(line, cp);
 	if ((q = strchr(line, ':')) == NULL) {
-		return FALSE;
+		return TBOOL_FALSE;
 	}
 	*q = '\0';
 	n = trim_left_right(line);
 	v = trim_left_right(q + 1);
 
 	if (*n == '\0') {
-		return FALSE;
+		return TBOOL_FALSE;
 	}
 
 	if (*n == '+') {
@@ -263,7 +263,7 @@ TBool tcaps_register(TCaps * p, const char *cp)
 		tcaps_register_nv(p, n, v, '=');
 	}
 
-	return TRUE;
+	return TBOOL_TRUE;
 }
 
 /*--------------------------------------------------------------------------*/

@@ -30,8 +30,8 @@
 
 typedef enum Raw_TBool
 {
-	FALSE = 0,
-	TRUE = 1
+	TBOOL_FALSE = 0,
+	TBOOL_TRUE = 1
 } TBool;
 
 #endif /* INCLUDE_MYTYPES_H */
