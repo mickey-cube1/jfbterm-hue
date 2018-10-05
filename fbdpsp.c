@@ -833,7 +833,7 @@ void tfbm_clear_all_32bpp_packed(TFrameBufferMemory * p, uint32_t color)
 	uint32_t icol;
 
 	icol = tfbm_select_32_color(color);
-	for (lp = 0; lp < ((p->slen) / 2); lp++) {
+	for (lp = 0; lp < ((p->slen) / 4); lp++) {
 		d[lp] = icol;
 	}
 }
