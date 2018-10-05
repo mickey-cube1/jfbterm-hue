@@ -167,6 +167,7 @@ typedef struct Raw_TVterm
 
 void tvterm_insert_n_chars(TVterm * p, int n);
 void tvterm_delete_n_chars(TVterm * p, int n);
+void tvterm_clear_n_chars(TVterm * p, uint32_t n);
 void tvterm_text_scroll_down(TVterm * p, int line);
 void tvterm_text_scroll_up(TVterm * p, int line);
 void tvterm_text_move_down(TVterm * p, int top, int btm, int line);

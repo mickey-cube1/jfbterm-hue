@@ -1354,6 +1354,9 @@ static void tvterm_esc_bracket(TVterm * p, uint8_t ch)
 			break;
 		case 'R':
 			break;
+		case 'X':
+			tvterm_clear_n_chars(p, varg[0] ? varg[0] : 1);
+			break;
 		}
 		if (p->esc == NULL) {
 			question = narg = varg[0] = varg[1] = 0;

@@ -152,6 +152,22 @@ void tvterm_delete_n_chars(TVterm * p, int n)
 	tvterm_clear(p, addr, n);
 }
 
+/*---------------------------------------------------------------------------*/
+void tvterm_clear_n_chars(TVterm * p, uint32_t n)
+{
+	uint32_t addr;
+
+	// Modify param, if need.
+	if (p->xcap - p->pen.x < n) {
+		n = p->xcap - p->pen.x;
+	}
+	if (n > 0) {
+		addr = tvterm_coord_to_index(p, p->pen.x, p->pen.y);
+		tvterm_clear(p, addr, n);
+	}
+}
+
+/*---------------------------------------------------------------------------*/
 void tvterm_insert_n_chars(TVterm * p, int n)
 {
 	uint32_t addr;
