@@ -31,8 +31,8 @@
 #ifndef INCLUDE_PEN_H
 #define INCLUDE_PEN_H
 
-#include	<stdint.h>
-#include	<sys/types.h>
+#include <stdint.h>
+#include <sys/types.h>
 
 #define ATTR_ULINE      0x80	/* under line */
 #define ATTR_REVERSE    0x40	/* reverse */

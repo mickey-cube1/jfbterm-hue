@@ -31,23 +31,23 @@
  */
 
 #define __USE_STRING_INLINES
-#include	<stdio.h>
-#include	<stdlib.h>
-#include	<string.h>
-#include	<unistd.h>
-#include	<errno.h>
-#include	<sys/vt.h>
-#include	<fcntl.h>
-#include	<signal.h>
-#include	<termios.h>
-#include	<sys/ioctl.h>
-#include	<sys/kd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/vt.h>
+#include <fcntl.h>
+#include <signal.h>
+#include <termios.h>
+#include <sys/ioctl.h>
+#include <sys/kd.h>
 
-#include	"util.h"
-#include	"vterm.h"
-#include	"term.h"
-#include	"font.h"
-#include	"fbcommon.h"
+#include "util.h"
+#include "vterm.h"
+#include "term.h"
+#include "font.h"
+#include "fbcommon.h"
 #if defined(HAVE_CONFIG_H)
 #include "config.h"
 #endif

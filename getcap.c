@@ -31,17 +31,17 @@
  * Copyright (C) 1992-1996 Takashi MANABE (manabe@papilio.tutics.tut.ac.jp)
  */
 
-#include	<stdio.h>
-#include	<string.h>
-#include	<strings.h>
-#include	<unistd.h>
-#include	<stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
+#include <stdlib.h>
 
-#include	"getcap.h"
+#include "getcap.h"
 
-#include	"util.h"
-#include	"mytypes.h"
-#include	"message.h"
+#include "util.h"
+#include "mytypes.h"
+#include "message.h"
 
 #define BUF_SIZE	1024
 #define MAX_COLS	256

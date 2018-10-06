@@ -29,25 +29,25 @@
  * 
  */
 
-#include	<stdio.h>
-#include	<unistd.h>
-#include	<string.h>
-#include	<termios.h>
-#include	<malloc.h>
-#include	<sys/types.h>
-#include	<sys/ioctl.h>
-#include	<sys/kd.h>
-#include	<errno.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <termios.h>
+#include <malloc.h>
+#include <sys/types.h>
+#include <sys/ioctl.h>
+#include <sys/kd.h>
+#include <errno.h>
 
-#include	"config.h"
-#include	"util.h"
-#include	"term.h"
-#include	"vterm.h"
-#include	"font.h"
-#include	"csv.h"
+#include "config.h"
+#include "util.h"
+#include "term.h"
+#include "vterm.h"
+#include "font.h"
+#include "csv.h"
 
-#include	"sequence.h"
-#include	"message.h"
+#include "sequence.h"
+#include "message.h"
 
 static void tvterm_set_default_encoding(TVterm * p, const char *en);
 static void tvterm_esc_start(TVterm * p, uint8_t ch);

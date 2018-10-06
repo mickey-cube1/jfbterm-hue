@@ -35,10 +35,10 @@
 #include	<stdint.h>
 #include	<sys/types.h>
 
-#include	"config.h"
-#include	"mytypes.h"
-#include	"pen.h"
-#include	"font.h"
+#include "config.h"
+#include "mytypes.h"
+#include "pen.h"
+#include "font.h"
 
 #ifdef JFB_OTHER_CODING_SYSTEM
 #include <iconv.h>
