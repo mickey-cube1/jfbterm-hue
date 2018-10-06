@@ -68,7 +68,7 @@ expand()
 
 	while read l ; do
 		code="${l%%,*}"
-		printf "STARTCHAR ${code#0x}\nENCODING %d\n" $code
+		printf "STARTCHAR U+${code#0x}\nENCODING %d\n" $code
 		echo "${l#*,:}" | tr ':' '\n'
 		printf "ENDCHAR\n\n"
 		c=$((c + 1))
