@@ -374,7 +374,9 @@ size_t tpcfcmetric_load(TPcfMetric * p, FILE * fp, int e)
 
 void tpcfmetric_debug(TPcfMetric * p)
 {
-	printf("[METRIC:%d<>%d(%d):%d^v%d:%d]", p->leftsb, p->rightsb, p->width, p->ascent, p->descent, p->attr);
+	printf(	"\"METRIC\":{\"leftsb\":%d, \"rightsb\":%d, "
+		"\"width\":%d, \"ascent\":%d, \"descent\":%d, \"attr\":%d}",
+		p->leftsb, p->rightsb, p->width, p->ascent, p->descent, p->attr);
 }
 
 void tpcfmetrics_init(TPcfMetrics * p)
@@ -468,9 +470,10 @@ size_t tpcfaccel_load(TPcfAccel * p, FILE * fp)
 
 void tpcfaccel_debug(TPcfAccel * p)
 {
-	printf("[ACCEL:");
+	printf("\"ACCEL\":{");
+	printf("\"terminalFont\":%d, ", p->termf);
 	tpcfmetric_debug(&(p->metric));
-	printf("]\n");
+	printf("}\n");
 }
 
 /*---------------------------------------------------------------------------*/
