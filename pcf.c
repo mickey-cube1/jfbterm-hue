@@ -814,7 +814,9 @@ void tpcf_as_tfont(TPcf * p, TFont * q)
 			if (q->glyph_width) {
 				TPcfMetric *m = &p->metrics.metric[ii];
 				q->glyph_width[i].pixels = m->rightsb - m->leftsb;
-				int cw = wcwidth((wchar_t)i);	// FIXME:
+				wchar_t wch = ((i % q->colspan) + q->colf) |
+						(((i / q->colspan) + q->rowf) << 8);
+				int cw = wcwidth(wch);
 				q->glyph_width[i].cols = cw;
 			}
 		}
