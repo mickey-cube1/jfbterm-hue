@@ -258,6 +258,7 @@ TFont gFont[] = {
 	,
 };
 
+/*---------------------------------------------------------------------------*/
 void tfont_ary_show_list(FILE * fp)
 {
 	TFont *ce = gFont;
@@ -287,6 +288,7 @@ void tfont_ary_show_list(FILE * fp)
 
 }
 
+/*---------------------------------------------------------------------------*/
 void tfont_ary_final(void)
 {
 	TFont *ce = gFont;
@@ -298,6 +300,7 @@ void tfont_ary_final(void)
 	}
 }
 
+/*---------------------------------------------------------------------------*/
 int tfont_ary_search_idx(const char *na)
 {
 	TFont *p;
@@ -310,6 +313,7 @@ int tfont_ary_search_idx(const char *na)
 	return -1;
 }
 
+/*---------------------------------------------------------------------------*/
 TFont *tfont_ary_search(const char *na)
 {
 	TFont *p;
@@ -321,6 +325,7 @@ TFont *tfont_ary_search(const char *na)
 	return NULL;
 }
 
+/*---------------------------------------------------------------------------*/
 void tfont_final(TFont * p)
 {
 	util_free(p->glyph);
@@ -328,6 +333,7 @@ void tfont_final(TFont * p)
 	util_free(p->bitmap);
 }
 
+/*---------------------------------------------------------------------------*/
 const uint8_t *tfont_default_glyph(TFont * p, uint32_t chlw, TFontGlyphWidth * width)
 {
 	static uint8_t gly[PICOFONT_HEIGHT * 2];
@@ -368,6 +374,7 @@ const uint8_t *tfont_default_glyph(TFont * p, uint32_t chlw, TFontGlyphWidth * w
 	return gly;
 }
 
+/*---------------------------------------------------------------------------*/
 const uint8_t *tfont_standard_glyph(TFont * p, uint32_t chlw, TFontGlyphWidth * width)
 {
 	uint8_t b2 = (chlw >> 8) & 0xFF;
@@ -388,6 +395,7 @@ const uint8_t *tfont_standard_glyph(TFont * p, uint32_t chlw, TFontGlyphWidth * 
 	}
 }
 
+/*---------------------------------------------------------------------------*/
 static FILE *font_open(const char *fname)
 {
 	int nf = strlen(fname);
@@ -433,6 +441,58 @@ static FILE *font_open(const char *fname)
 	return NULL;
 }
 
+/*---------------------------------------------------------------------------*/
+static void tfont_modify_glyph_width(TFont * pf)
+{
+	uint32_t i;			// glyph access index.
+	uint32_t gs;			// num. of glyphs.
+	uint8_t *ps;			//
+	uint32_t y;			//
+	uint32_t x;			//
+	uint32_t v;			// 16 pixels.
+
+	// Nothing to do if glyph width is not defined.
+	if (pf->glyph_width == NULL) {
+		return;
+	}
+
+	//
+	gs = (pf->coll - pf->colf + 1) * (pf->rowl - pf->rowf + 1);
+
+	for (i = 0; i < gs; i++) {
+		// glyph width is too large. ==> make glyph half size.
+		if ((pf->glyph_width[i].pixels > pf->width) && (pf->glyph_width[i].cols < 2)) {
+			// Nothing to do if glyph is not defined.
+			if (pf->glyph[i] == pf->dglyph) {
+				continue;
+			}
+			//
+			for (y = 0; y < pf->height; y++) {
+				ps = pf->glyph[i] + y * pf->bytew;
+				for (x = 0; x < pf->bytew - 1; x += 2) {
+					v = *ps | (*(ps+1) << 8);
+					v = (v | (v <<  1)) & 0xAAAA;
+					v = (v | (v <<  1)) & 0xCCCC;
+					v = (v | (v <<  2)) & 0xF0F0;
+					v = (v | (v >> 12)) & 0x00FF;
+					*ps = v;
+					ps += 2;
+				}
+				if (x < pf->bytew) {
+					v = *ps;
+					v = (v | (v << 1)) & 0xAA;
+					v = (v | (v << 1)) & 0xCC;
+					v = (v | (v << 2)) & 0xF0;
+					*ps = v;
+				}
+			}
+			//
+			pf->glyph_width[i].pixels = (pf->glyph_width[i].pixels + 1) / 2;
+		}
+	}
+}
+
+/*---------------------------------------------------------------------------*/
 static void tfont_setup_font(TFont * pf, const char *fname, FONTSET_HALF hf)
 {
 	FILE *fp;
@@ -458,9 +518,12 @@ static void tfont_setup_font(TFont * pf, const char *fname, FONTSET_HALF hf)
 	tpcf_as_tfont(&pcf, pf);
 	pf->fhalf = hf;
 	pf->conv = tfont_standard_glyph;
+	tfont_modify_glyph_width(pf);
+
 	tpcf_final(&pcf);
 }
 
+/*---------------------------------------------------------------------------*/
 static void tfont_alias(TFont * dst, TFont * src, FONTSET_HALF hf)
 {
 	dst->conv = src->conv;
@@ -481,6 +544,7 @@ static void tfont_alias(TFont * dst, TFont * src, FONTSET_HALF hf)
 	dst->bytec = src->bytec;
 }
 
+/*---------------------------------------------------------------------------*/
 static void tfont_fontlist_glyph_size(void)
 {
 	TFont *p = gFont;
@@ -513,16 +577,19 @@ static void tfont_fontlist_glyph_size(void)
 
 }
 
+/*---------------------------------------------------------------------------*/
 int tfont_is_valid(TFont * p)
 {
 	return (p->width == 0 || p->height == 0) ? 0 : 1;
 }
 
+/*---------------------------------------------------------------------------*/
 int tfont_is_loaded(TFont * p)
 {
 	return (p->conv != tfont_default_glyph);
 }
 
+/*---------------------------------------------------------------------------*/
 void tfont_setup_fontlist(TCapValue * vp)
 {
 	static const char *types[] = { "pcf", "alias", NULL };
