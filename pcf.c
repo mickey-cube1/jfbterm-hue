@@ -757,6 +757,7 @@ void tpcf_load(TPcf * p, FILE * fp)
 #endif
 }
 
+/*---------------------------------------------------------------------------*/
 void tpcf_as_tfont(TPcf * p, TFont * q)
 {
 	int offset;
