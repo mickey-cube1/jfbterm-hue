@@ -328,7 +328,7 @@ void tfont_final(TFont * p)
 	util_free(p->bitmap);
 }
 
-const uint8_t *tfont_default_glyph(TFont * p, uint32_t chlw, uint32_t * width)
+const uint8_t *tfont_default_glyph(TFont * p, uint32_t chlw, TFontGlyphWidth * width)
 {
 	static uint8_t gly[PICOFONT_HEIGHT * 2];
 
@@ -336,7 +336,9 @@ const uint8_t *tfont_default_glyph(TFont * p, uint32_t chlw, uint32_t * width)
 	uint32_t i;
 	uint32_t a;
 	uint32_t b;
-	*width = p->width;
+
+	width->cols = 1;
+	width->pixels = p->width;
 
 	*cp++ = 0x80;
 	*cp++ = 0x00;
@@ -366,13 +368,15 @@ const uint8_t *tfont_default_glyph(TFont * p, uint32_t chlw, uint32_t * width)
 	return gly;
 }
 
-const uint8_t *tfont_standard_glyph(TFont * p, uint32_t chlw, uint32_t * width)
+const uint8_t *tfont_standard_glyph(TFont * p, uint32_t chlw, TFontGlyphWidth * width)
 {
 	uint8_t b2 = (chlw >> 8) & 0xFF;
 	uint8_t b1 = chlw & 0xFF;
 	uint32_t i;
 
-	*width = p->width;
+	width->cols = 1;
+	width->pixels = p->width;
+
 	if (b1 < p->colf || p->coll < b1 || b2 < p->rowf || p->rowl < b2) {
 		return p->dglyph;
 	}

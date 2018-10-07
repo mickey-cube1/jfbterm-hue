@@ -26,11 +26,13 @@
  *
  */
 
+#define _XOPEN_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
 #include <sys/types.h>
+#include <wchar.h>
 
 #include "util.h"
 #include "pcf.h"
@@ -792,7 +794,7 @@ void tpcf_as_tfont(TPcf * p, TFont * q)
 	q->glyph_width = NULL;
 	if (p->accel.termf == 0) {
 		/* not terminal font */
-		q->glyph_width = (uint32_t *) malloc(sizeof(uint32_t) * gs);
+		q->glyph_width = (TFontGlyphWidth *) malloc(sizeof(TFontGlyphWidth) * gs);
 		if (q->glyph_width == NULL) {
 			die("(FONT): malloc error (glyph_width)\n");
 		}
@@ -801,16 +803,19 @@ void tpcf_as_tfont(TPcf * p, TFont * q)
 		ii = p->encode.table[i];
 		if (ii == 0xffff) {
 			q->glyph[i] = q->dglyph;
-			if (q->glyph_width)
-				q->glyph_width[i] = q->width;	/* XXX */
+			if (q->glyph_width) {
+				q->glyph_width[i].pixels = q->width;	/* XXX */
+				q->glyph_width[i].cols = 1;	// FIXME:
+			}
 		}
 		else {
 			offset = p->bitmap.offsets[ii];
 			q->glyph[i] = q->bitmap + offset;
 			if (q->glyph_width) {
-				TPcfMetric *m;
-				m = &p->metrics.metric[ii];
-				q->glyph_width[i] = m->rightsb - m->leftsb;
+				TPcfMetric *m = &p->metrics.metric[ii];
+				q->glyph_width[i].pixels = m->rightsb - m->leftsb;
+				int cw = wcwidth((wchar_t)i);	// FIXME:
+				q->glyph_width[i].cols = cw;
 			}
 		}
 	}
