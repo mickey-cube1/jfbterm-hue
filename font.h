@@ -52,9 +52,21 @@ typedef enum
 	FH_UNI,
 } FONTSET_HALF;
 
+//
+//
+//
+typedef struct Raw_TFontGlyphWidth
+{
+	int8_t cols;			// glyph width in cols. (0, 1, 2)
+	uint16_t pixels;		// width in pixels.
+} TFontGlyphWidth;
+
+//
+//
+//
 typedef struct Raw_TFont
 {
-	const uint8_t *(*conv) (struct Raw_TFont * p, uint32_t c, uint32_t * width);
+	const uint8_t *(*conv) (struct Raw_TFont * p, uint32_t c, TFontGlyphWidth * width);
 	/* --- */
 	const char *name;
 	uint32_t width;		/* 一文字あたりの水平ドット数 */
@@ -65,7 +77,7 @@ typedef struct Raw_TFont
 	uint8_t aliasF;
 	/* */
 	uint8_t **glyph;	/* ビットマップ中の各glyph の先頭 */
-	uint32_t *glyph_width;
+	TFontGlyphWidth *glyph_width;	//
 	uint8_t *dglyph;	/* 対応するglyphが存在しない時のglyph */
 	uint8_t *bitmap;	/* ビットマップ */
 	uint32_t colf;
@@ -77,8 +89,8 @@ typedef struct Raw_TFont
 	uint32_t bytec;		/* 一文字あたりのバイト数 */
 } TFont;
 
-const uint8_t *tfont_default_glyph(TFont * p, uint32_t c, uint32_t * width);
-const uint8_t *tfont_standard_glyph(TFont * p, uint32_t c, uint32_t * width);
+const uint8_t *tfont_default_glyph(TFont * p, uint32_t c, TFontGlyphWidth * width);
+const uint8_t *tfont_standard_glyph(TFont * p, uint32_t c, TFontGlyphWidth * width);
 void tfont_final(TFont * p);
 void tfont_ary_final(void);
 void tfont_init(TFont * p);

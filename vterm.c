@@ -619,7 +619,8 @@ static int tvterm_put_normal_char(TVterm * p, uint8_t ch)
 static int tvterm_put_uchar(TVterm * p, uint32_t ch)
 {
 	TFont *pf = &gFont[p->utf8Idx];
-	uint32_t w;
+	TFontGlyphWidth w;
+
 	if (p->pen.x == p->xmax) {
 		p->wrap = TBOOL_TRUE;
 		p->pen.x--;
@@ -636,7 +637,8 @@ static int tvterm_put_uchar(TVterm * p, uint32_t ch)
 		return -1;
 	}
 	pf->conv(pf, ch, &w);
-	if (pf->width == w) {
+#if 1
+	if (w.cols < 2) {
 		INSERT_N_CHARS_IF_NEEDED(p, 1);
 		tvterm_uput1(p, p->utf8Idx, ch);
 		p->pen.x++;
@@ -646,6 +648,18 @@ static int tvterm_put_uchar(TVterm * p, uint32_t ch)
 		tvterm_uput2(p, p->utf8Idx, ch);
 		p->pen.x += 2;
 	}
+#else
+	if (pf->width == w.pixels) {
+		INSERT_N_CHARS_IF_NEEDED(p, 1);
+		tvterm_uput1(p, p->utf8Idx, ch);
+		p->pen.x++;
+	}
+	else {
+		INSERT_N_CHARS_IF_NEEDED(p, 2);
+		tvterm_uput2(p, p->utf8Idx, ch);
+		p->pen.x += 2;
+	}
+#endif
 	p->utf8remain = 0;
 	p->ucs2ch = 0;
 	return 0;

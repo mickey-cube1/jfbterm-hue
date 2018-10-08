@@ -276,7 +276,8 @@ void tvterm_refresh(TVterm * p)
 	uint8_t fc, bc, fg;
 	TFont *pf;
 	const uint8_t *glyph;
-	uint32_t w, gw;
+	uint32_t w;
+	TFontGlyphWidth gw;
 
 	p->busy = TBOOL_TRUE;
 	if (!p->active) {
@@ -331,7 +332,7 @@ void tvterm_refresh(TVterm * p)
 			if (chlw == 0)
 				continue;
 			gFramebuffer.cap.overlay(&gFramebuffer,
-						 gFontsWidth * x, gFontsHeight * y, glyph, gw, pf->height, pf->bytew, fc);
+						 gFontsWidth * x, gFontsHeight * y, glyph, gw.pixels, pf->height, pf->bytew, fc);
 		}
 	}
 	if (p->pen.x < p->xcap && p->pen.y < p->ycap) {
