@@ -28,6 +28,8 @@
 #ifndef INCLUDE_MESSAGE_H
 #define INCLUDE_MESSAGE_H
 
+#include <stdio.h>
+
 void die(const char *format, ...);
 void die_file_eof(FILE * fp);
 void print_warn(const char *format, ...);

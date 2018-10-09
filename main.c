@@ -316,40 +316,56 @@ void ShowCaps(void)
 
 }
 
-char *tapp_setup_encoding(char *en)
+char *tapp_setup_encoding(const char *qen)
 {
+	char *en;			//
+
 	/* if quoted, remove it */
-	if (en && ((en[0] == '"' && en[strlen(en) - 1] == '"')
-		   || (en[0] == '\'' && en[strlen(en) - 1] == '\''))) {
-		en = en + 1;
+	if (qen && ((qen[0] == '"' && qen[strlen(qen) - 1] == '"')
+		   || (qen[0] == '\'' && qen[strlen(qen) - 1] == '\''))) {
+		en = util_strdup(qen + 1);
 		en[strlen(en) - 1] = '\0';
 	}
+	else {
+		en = util_strdup(qen);
+	}
+
 	if (en == NULL || strcmp(en, "locale") == 0) {
 		setlocale(LC_ALL, "");
-		en = nl_langinfo(CODESET);
-		print_message("ENCODING: locale = %s\n", en);
+		util_free(en);
+		en = util_strdup(nl_langinfo(CODESET));
+		print_message("ENCODING: locale = %s\n", en ? en : "(NULL)");
 	}
+
 	if (en && (strchr(en, ',') == NULL)) {
 		char *encname = en;
-		en = tcaps_find_entry(&(gApp.gCaps), "encoding.", encname);
-		if (!en) {
+		const char *capent = tcaps_find_entry(&(gApp.gCaps), "encoding.", encname);
+		if (capent == NULL) {
 			/* not found */
 			iconv_t cd = iconv_open("UCS-2BE", encname);
 			if (cd != (iconv_t) (-1)) {
 				iconv_close(cd);
 				en = (char *) malloc(strlen("other,iconv,UTF-8") + 1 + strlen(encname));
-				if (en == NULL)
+				if (en == NULL) {
 					die("not enough memory: encode");
+				}
 				sprintf(en, "other,%s,iconv,UTF-8", encname);
 			}
 			else {
 				print_error("%s not found, fallback to default\n", encname);
+				en = NULL;
 			}
 		}
+		else {
+			en = util_strdup(capent);
+		}
+		util_free(encname);
 	}
-	if (!en) {
-		en = "G0,G1,ansix3.4-1968,ansix3.4-1968,iso8859.1-1987,ansix3.4-1968";
+
+	if (en == NULL) {
+		en = util_strdup("G0,G1,ansix3.4-1968,ansix3.4-1968,iso8859.1-1987,ansix3.4-1968");
 	}
+
 	return en;
 }
 

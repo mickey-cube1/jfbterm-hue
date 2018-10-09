@@ -38,6 +38,7 @@
 #include <fcntl.h>
 
 #include "util.h"
+#include "message.h"
 
 static uid_t owner_uid;
 static uid_t runner_uid;
@@ -88,6 +89,20 @@ uid_t util_getuid()
 void util_privilege_drop()
 {
 	setreuid(runner_uid, runner_uid);
+}
+
+char *util_strdup(const char *s)
+{
+	char *r = NULL;			// out string.
+
+	if (s != NULL) {
+		r = strdup(s);
+		if (r == NULL) {
+			die("not enough memory: strdup");
+		}
+	}
+
+	return r;
 }
 
 void util_euc_to_sjis(uint8_t * ch, uint8_t * cl)
