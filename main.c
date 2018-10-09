@@ -381,9 +381,12 @@ int main(int argc, char *argv[])
 	tapp_get_options(&gApp, argc, argv);
 
 	print_message("%s - Kanji on framebuffer console Version %s\n"
+		      "       Copyright (C) 2018 Mickey-Cube1\n"
 		      "       Copyright (C) 2003 Fumitoshi UKAI\n"
-		      "	Copyright (C) 1999-2000 Noritoshi Masuichi\n"
-		      "This program is based on KON2\n" "	Copyright (C) 1992-1996 Takashi MANABE\n\n", PACKAGE, VERSION);
+		      "       Copyright (C) 1999-2000 Noritoshi Masuichi\n"
+		      "This program is based on KON2\n"
+		      "       Copyright (C) 1992-1996 Takashi MANABE\n\n",
+		      PACKAGE, VERSION);
 
 	if (gApp.gOptShowHelpQ) {
 		ShowCaps();
