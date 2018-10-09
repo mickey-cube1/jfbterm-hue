@@ -59,7 +59,7 @@ void tcaps_init(TCaps * p);
 void tcaps_final(TCaps * p);
 TCapability *tcaps_find(TCaps * p, const char *name);
 char *tcaps_find_first(TCaps * p, const char *name);
-char *tcaps_find_entry(TCaps * p, const char *prefix, const char *name);
+const char *tcaps_find_entry(TCaps * p, const char *prefix, const char *name);
 void tcaps_read(TCaps * p, const char *filename);
 void tcaps_read_args(TCaps * p, int argc, char *argv[]);
 

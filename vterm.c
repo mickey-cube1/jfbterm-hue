@@ -306,7 +306,7 @@ static void tvterm_switch_to_otherCS(TVterm * p, TCodingSystem * ocs)
 	}
 	else {
 		int idx[6];
-		char *en;
+		const char *en;
 
 		en = tcaps_find_entry(p->caps, "encoding.", ocs->tocode);
 		if (en == NULL) {

@@ -179,7 +179,7 @@ char *tcaps_find_first(TCaps * p, const char *name)
 	}
 }
 
-char *tcaps_find_entry(TCaps * p, const char *prefix, const char *name)
+const char *tcaps_find_entry(TCaps * p, const char *prefix, const char *name)
 {
 	char *key;
 	char *val;
