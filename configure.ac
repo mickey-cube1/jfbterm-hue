@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([jfbterm-hue],[0.4.7])
+AC_INIT([jfbterm-hue],[0.4.7-20181010])
 AC_CONFIG_SRCDIR([fbcommon.c])
 AM_INIT_AUTOMAKE
 
