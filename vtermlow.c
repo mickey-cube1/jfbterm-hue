@@ -231,10 +231,40 @@ void tvterm_set_cursor_wide(TVterm * p, TBool b)
 
 void tvterm_show_cursor(TVterm * p, TBool b)
 {
+	int32_t curhi;		// cursor height in pixel.
+	int32_t curoy;		// cursor offset (y).
+
 	if (!p->cursor.on) {
 		return;
 	}
+
 	if (p->cursor.shown != b) {
+		// cursor style --> cursor height.
+		curhi = p->cursor.height;
+		switch (p->cursor.style) {
+		case CUR_STYLE_000:
+			goto NOTHINGTODRAW;
+		case CUR_STYLE_005:
+			curhi = curhi / 20;
+			break;
+		case CUR_STYLE_033:
+			curhi = curhi / 3;
+			break;
+		case CUR_STYLE_050:
+			curhi = curhi / 2;
+			break;
+		case CUR_STYLE_066:
+			curhi = curhi / 3 * 2;
+			break;
+		case CUR_STYLE_100:
+		default:
+			break;
+		}
+		if (curhi < 2 ) {
+			curhi = 2;
+		}
+		curoy = p->cursor.height - curhi;
+
 #ifdef JFB_REVERSEVIDEO
 /* -- kei --
 	On this implementation, JFB_REVERSEVIDEO is effective on
@@ -247,23 +277,26 @@ void tvterm_show_cursor(TVterm * p, TBool b)
 		if (gFramebuffer.cap.bitsPerPixel == 2) {
 			gFramebuffer.cap.reverse(&gFramebuffer,
 						 gFontsWidth * p->cursor.x,
-						 gFontsHeight * p->cursor.y,
-						 p->cursor.width + (p->cursor.wide ? p->cursor.width : 0), p->cursor.height, 0x0);
+						 gFontsHeight * p->cursor.y + curoy,
+						 p->cursor.width + (p->cursor.wide ? p->cursor.width : 0), curhi, 0x0);
 		}
 		else {
 			gFramebuffer.cap.reverse(&gFramebuffer,
 						 gFontsWidth * p->cursor.x,
-						 gFontsHeight * p->cursor.y,
-						 p->cursor.width + (p->cursor.wide ? p->cursor.width : 0), p->cursor.height, 0xf);
+						 gFontsHeight * p->cursor.y + curoy,
+						 p->cursor.width + (p->cursor.wide ? p->cursor.width : 0), curhi, 0xf);
 		}
 #else
 		gFramebuffer.cap.reverse(&gFramebuffer,
 					 gFontsWidth * p->cursor.x,
-					 gFontsHeight * p->cursor.y,
-					 p->cursor.width + (p->cursor.wide ? p->cursor.width : 0), p->cursor.height, 0xf);
+					 gFontsHeight * p->cursor.y + curoy,
+					 p->cursor.width + (p->cursor.wide ? p->cursor.width : 0), curhi, 0xf);
 #endif
+NOTHINGTODRAW:
 		p->cursor.shown = b;
 	}
+
+	return;
 }
 
 /*---------------------------------------------------------------------------*/

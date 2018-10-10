@@ -32,8 +32,8 @@
 #ifndef INCLUDE_VTERM_H
 #define INCLUDE_VTERM_H
 
-#include	<stdint.h>
-#include	<sys/types.h>
+#include <stdint.h>
+#include <sys/types.h>
 
 #include "config.h"
 #include "mytypes.h"
@@ -76,6 +76,14 @@ typedef struct Raw_TCodingSystem
 
 #endif
 
+#define CUR_STYLE_000	1	//   0% (none)
+#define CUR_STYLE_005	2	//   5% (underline)
+#define CUR_STYLE_033	3	//  25% (1/3)
+#define CUR_STYLE_050	4	//  50% (half)
+#define CUR_STYLE_066	5	//  75% (2/3)
+#define CUR_STYLE_100	6	// 100% (full)
+#define CUR_STYLE_DEFAULT	CUR_STYLE_005
+
 typedef struct Raw_TCursor
 {
 	uint32_t x;
@@ -83,9 +91,9 @@ typedef struct Raw_TCursor
 	TBool on;
 	TBool shown;
 	TBool wide;
+	uint8_t style;
 	uint32_t width;
 	uint32_t height;
-
 } TCursor;
 
 typedef struct Raw_TVterm

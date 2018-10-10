@@ -447,6 +447,7 @@ void tvterm_start(TVterm * p)
 	p->cursor.on = TBOOL_TRUE;
 	p->cursor.shown = TBOOL_FALSE;
 	p->cursor.wide = TBOOL_FALSE;
+	p->cursor.style = CUR_STYLE_DEFAULT;
 	p->cursor.width = gFontsWidth;
 	p->cursor.height = gFontsHeight;
 
