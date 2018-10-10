@@ -156,6 +156,10 @@ typedef struct Raw_TVterm
 	TBool release;
 	TBool textClear;
 	void (*esc) (struct Raw_TVterm * p, uint8_t ch);
+	//
+#define	MAX_NARG	8
+	uint16_t varg[MAX_NARG];
+	uint16_t narg;
 	/* カーソル */
 	TCursor cursor;
 

@@ -51,7 +51,9 @@
 
 static void tvterm_set_default_encoding(TVterm * p, const char *en);
 static void tvterm_esc_start(TVterm * p, uint8_t ch);
-static void tvterm_esc_bracket(TVterm *, uint8_t);
+static void tvterm_esc_bracket0(TVterm * p, uint8_t ch);
+static void tvterm_esc_bracket(TVterm * p, uint8_t ch);
+static void tvterm_esc_question(TVterm * p, uint8_t ch);
 #ifdef JFB_OTHER_CODING_SYSTEM
 static void tvterm_esc_rbracket(TVterm *, uint8_t);
 #endif
@@ -955,7 +957,7 @@ static void tvterm_esc_start(TVterm * p, uint8_t ch)
 	p->esc = NULL;
 	switch (ch) {
 	case Fe(ISO_CSI):	/* 5/11 [ */
-		p->esc = tvterm_esc_bracket;
+		p->esc = tvterm_esc_bracket0;
 		break;
 #ifdef JFB_OTHER_CODING_SYSTEM
 	case Fe(ISO_OSC):	/* 5/13 ] */
@@ -1234,29 +1236,41 @@ static void tvterm_esc_status_line(TVterm * p, uint8_t mode)
 		p->sl = SL_NONE;
 		break;
 	default:
-		p->esc = tvterm_esc_bracket;
-		tvterm_esc_bracket(p, mode);
+		p->esc = tvterm_esc_question;
+		tvterm_esc_question(p, mode);
 		return;
 	}
 	p->wrap = TBOOL_FALSE;
 	p->esc = NULL;
 }
 
-#define	MAX_NARG	8
+
+static void tvterm_esc_bracket0(TVterm * p, uint8_t ch)
+{
+	p->narg = p->varg[0] = p->varg[1] = 0;
+
+	if (ch == '?') {
+		p->esc = tvterm_esc_status_line;
+	}
+	else {
+		p->esc = tvterm_esc_bracket;
+		tvterm_esc_bracket(p, ch);
+	}
+	return;
+}
 
 static void tvterm_esc_bracket(TVterm * p, uint8_t ch)
 {
 	uint8_t n;
-	static uint16_t varg[MAX_NARG], narg, question;
 
 	if (ch >= '0' && ch <= '9') {
-		varg[narg] = (varg[narg] * 10) + (ch - '0');
+		p->varg[p->narg] = (p->varg[p->narg] * 10) + (ch - '0');
 	}
 	else if (ch == ';') {
 		/* 引数は MAX_NARG までしかサポートしない!! */
-		if (narg < MAX_NARG) {
-			narg++;
-			varg[narg] = 0;
+		if (p->narg < MAX_NARG - 1) {
+			p->narg++;
+			p->varg[p->narg] = 0;
 		}
 		else {
 			p->esc = NULL;
@@ -1266,69 +1280,69 @@ static void tvterm_esc_bracket(TVterm * p, uint8_t ch)
 		p->esc = NULL;
 		switch (ch) {
 		case 'K':
-			tvterm_text_clear_eol(p, varg[0]);
+			tvterm_text_clear_eol(p, p->varg[0]);
 			break;
 		case 'J':
-			tvterm_text_clear_eos(p, varg[0]);
+			tvterm_text_clear_eos(p, p->varg[0]);
 			break;
 		case ISO_CS_NO_CUU:
-			p->pen.y -= varg[0] ? varg[0] : 1;
+			p->pen.y -= p->varg[0] ? p->varg[0] : 1;
 			if (p->pen.y < p->ymin) {
 				p->scroll -= p->pen.y - p->ymin;
 				p->pen.y = p->ymin;
 			}
 			break;
 		case ISO_CS_NO_CUD:
-			p->pen.y += varg[0] ? varg[0] : 1;
+			p->pen.y += p->varg[0] ? p->varg[0] : 1;
 			if (p->pen.y >= p->ymax) {
 				p->scroll += p->pen.y - p->ymin;
 				p->pen.y = p->ymax - 1;
 			}
 			break;
 		case ISO_CS_NO_CUF:
-			p->pen.x += varg[0] ? varg[0] : 1;
+			p->pen.x += p->varg[0] ? p->varg[0] : 1;
 			p->wrap = TBOOL_FALSE;
 			break;
 		case ISO_CS_NO_CUB:
-			p->pen.x -= varg[0] ? varg[0] : 1;
+			p->pen.x -= p->varg[0] ? p->varg[0] : 1;
 			p->wrap = TBOOL_FALSE;
 			break;
 		case 'G':
-			p->pen.x = varg[0] ? varg[0] - 1 : 0;
+			p->pen.x = p->varg[0] ? p->varg[0] - 1 : 0;
 			p->wrap = TBOOL_FALSE;
 			break;
 		case 'P':
-			tvterm_delete_n_chars(p, varg[0] ? varg[0] : 1);
+			tvterm_delete_n_chars(p, p->varg[0] ? p->varg[0] : 1);
 			break;
 		case '@':
-			tvterm_insert_n_chars(p, varg[0] ? varg[0] : 1);
+			tvterm_insert_n_chars(p, p->varg[0] ? p->varg[0] : 1);
 			break;
 		case 'L':
-			tvterm_text_move_down(p, p->pen.y, p->ymax, varg[0] ? varg[0] : 1);
+			tvterm_text_move_down(p, p->pen.y, p->ymax, p->varg[0] ? p->varg[0] : 1);
 			break;
 		case 'M':
-			tvterm_text_move_up(p, p->pen.y, p->ymax, varg[0] ? varg[0] : 1);
+			tvterm_text_move_up(p, p->pen.y, p->ymax, p->varg[0] ? p->varg[0] : 1);
 			break;
 		case 'H':
 		case 'f':
-			if (varg[1]) {
-				p->pen.x = varg[1] - 1;
+			if (p->varg[1]) {
+				p->pen.x = p->varg[1] - 1;
 			}
 			else {
 				p->pen.x = 0;
 			}
 			p->wrap = TBOOL_FALSE;
 		case 'd':
-			p->pen.y = varg[0] ? varg[0] - 1 : 0;
+			p->pen.y = p->varg[0] ? p->varg[0] - 1 : 0;
 			/* XXX: resize(1) specify large x,y */
 			break;
 		case 'm':
-			for (n = 0; n <= narg; n++) {
-				tvterm_esc_set_attr(p, varg[n]);
+			for (n = 0; n <= p->narg; n++) {
+				tvterm_esc_set_attr(p, p->varg[n]);
 			}
 			break;
 		case 'r':
-			n = varg[1];
+			n = p->varg[1];
 			if (n == 0)
 				n = p->ycap;
 			if (p->sl != SL_NONE) {
@@ -1336,24 +1350,20 @@ static void tvterm_esc_bracket(TVterm * p, uint8_t ch)
 					n--;
 				}
 			}
-			tvterm_set_region(p, varg[0] ? (varg[0] - 1) : 0, n);
+			tvterm_set_region(p, p->varg[0] ? (p->varg[0] - 1) : 0, n);
 			break;
 		case 'l':
-			for (n = 0; n <= narg; n++) {
-				tvterm_set_mode(p, varg[n], TBOOL_FALSE);
+			for (n = 0; n <= p->narg; n++) {
+				tvterm_set_mode(p, p->varg[n], TBOOL_FALSE);
 			}
 			break;
 		case 'h':
-			for (n = 0; n <= narg; n++) {
-				tvterm_set_mode(p, varg[n], TBOOL_TRUE);
+			for (n = 0; n <= p->narg; n++) {
+				tvterm_set_mode(p, p->varg[n], TBOOL_TRUE);
 			}
 			break;
 		case '?':
 			p->esc = tvterm_esc_status_line;
-#if 0
-			question = TBOOL_TRUE;
-			p->esc = tvterm_esc_bracket;
-#endif
 			break;
 		case 's':
 			tvterm_push_current_pen(p, TBOOL_TRUE);
@@ -1363,18 +1373,47 @@ static void tvterm_esc_bracket(TVterm * p, uint8_t ch)
 			break;
 		case 'n':
 		case 'c':
-			if (question != TBOOL_TRUE) {
-				tvterm_esc_report(p, ch, varg[0]);
-			}
+			tvterm_esc_report(p, ch, p->varg[0]);
 			break;
 		case 'R':
 			break;
 		case 'X':
-			tvterm_clear_n_chars(p, varg[0] ? varg[0] : 1);
+			tvterm_clear_n_chars(p, p->varg[0] ? p->varg[0] : 1);
 			break;
 		}
-		if (p->esc == NULL) {
-			question = narg = varg[0] = varg[1] = 0;
+	}
+}
+
+static void tvterm_esc_question(TVterm * p, uint8_t ch)
+{
+//	uint8_t n;
+
+	if (ch >= '0' && ch <= '9') {
+		p->varg[p->narg] = (p->varg[p->narg] * 10) + (ch - '0');
+	}
+	else if (ch == ';') {
+		/* 引数は MAX_NARG までしかサポートしない!! */
+		if (p->narg < MAX_NARG - 1) {
+			p->narg++;
+			p->varg[p->narg] = 0;
+		}
+		else {
+			p->esc = NULL;
+		}
+	}
+	else {
+		p->esc = NULL;
+		switch (ch) {
+		case 'c':	// ESC [ ? Pn1 c
+			// set cursor style.
+			if (p->varg[0] == 0) {
+				p->cursor.style = CUR_STYLE_DEFAULT;
+			} else {
+				p->cursor.style = p->varg[0] & 7;
+			}
+			break;
+		default:
+			break;
 		}
 	}
 }
