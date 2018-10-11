@@ -29,6 +29,7 @@
 #ifndef INCLUDE_UTIL_H
 #define INCLUDE_UTIL_H
 
+#include <stdarg.h>
 #include <stdint.h>
 #include <sys/types.h>
 #include <stdlib.h>
@@ -43,7 +44,9 @@ int util_privilege_ioperm(unsigned long from, unsigned int num, int turn_on);
 uid_t util_getuid();
 void util_privilege_drop();
 
-char *util_strdup(const char *s);
+char *util_strdupC(const char *s);
+char *util_sprintfC(const char *fmt, ...);
+char *util_vsprintfC(const char *fmt, va_list ap);
 #define util_free(p) do {free(p); (p) = NULL;} while (0)
 
 void util_euc_to_sjis(uint8_t * ch, uint8_t * cl);

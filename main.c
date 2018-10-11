@@ -316,24 +316,24 @@ void ShowCaps(void)
 
 }
 
-char *tapp_setup_encoding(const char *qen)
+char *tapp_setup_encodingC(const char *qen)
 {
 	char *en;			//
 
 	/* if quoted, remove it */
 	if (qen && ((qen[0] == '"' && qen[strlen(qen) - 1] == '"')
 		   || (qen[0] == '\'' && qen[strlen(qen) - 1] == '\''))) {
-		en = util_strdup(qen + 1);
+		en = util_strdupC(qen + 1);
 		en[strlen(en) - 1] = '\0';
 	}
 	else {
-		en = util_strdup(qen);
+		en = util_strdupC(qen);
 	}
 
 	if (en == NULL || strcmp(en, "locale") == 0) {
 		setlocale(LC_ALL, "");
 		util_free(en);
-		en = util_strdup(nl_langinfo(CODESET));
+		en = util_strdupC(nl_langinfo(CODESET));
 		print_message("ENCODING: locale = %s\n", en ? en : "(NULL)");
 	}
 
@@ -345,11 +345,7 @@ char *tapp_setup_encoding(const char *qen)
 			iconv_t cd = iconv_open("UCS-2BE", encname);
 			if (cd != (iconv_t) (-1)) {
 				iconv_close(cd);
-				en = (char *) malloc(strlen("other,iconv,UTF-8") + 1 + strlen(encname));
-				if (en == NULL) {
-					die("not enough memory: encode");
-				}
-				sprintf(en, "other,%s,iconv,UTF-8", encname);
+				en = util_sprintfC("other,%s,iconv,UTF-8", encname);
 			}
 			else {
 				print_error("%s not found, fallback to default\n", encname);
@@ -357,13 +353,13 @@ char *tapp_setup_encoding(const char *qen)
 			}
 		}
 		else {
-			en = util_strdup(capent);
+			en = util_strdupC(capent);
 		}
 		util_free(encname);
 	}
 
 	if (en == NULL) {
-		en = util_strdup("G0,G1,ansix3.4-1968,ansix3.4-1968,iso8859.1-1987,ansix3.4-1968");
+		en = util_strdupC("G0,G1,ansix3.4-1968,ansix3.4-1968,iso8859.1-1987,ansix3.4-1968");
 	}
 
 	return en;
@@ -395,7 +391,7 @@ int main(int argc, char *argv[])
 
 	tcaps_read(&(gApp.gCaps), gApp.gConfFile);
 	if (gApp.gOptReset) {
-		en = tapp_setup_encoding(gApp.gOptReset);
+		en = tapp_setup_encodingC(gApp.gOptReset);
 		FILE *tf = fopen("/dev/tty", "w");
 		if (tf == NULL)
 			tf = stderr;	/* XXX */
@@ -409,7 +405,7 @@ int main(int argc, char *argv[])
 	if (gApp.gConfEncoding) {
 		en = gApp.gConfEncoding;
 	}
-	en = tapp_setup_encoding(en);
+	en = tapp_setup_encodingC(en);
 
 	fcap = tcaps_find(&(gApp.gCaps), "fontset");
 	if (!fcap || !(fcap->values)) {

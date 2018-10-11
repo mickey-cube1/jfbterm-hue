@@ -91,7 +91,7 @@ void util_privilege_drop()
 	setreuid(runner_uid, runner_uid);
 }
 
-char *util_strdup(const char *s)
+char *util_strdupC(const char *s)
 {
 	char *r = NULL;			// out string.
 
@@ -103,6 +103,35 @@ char *util_strdup(const char *s)
 	}
 
 	return r;
+}
+
+char *util_sprintfC(const char *fmt, ...)
+{
+	char *ret;
+	va_list ap;
+
+	va_start(ap, fmt);
+	ret = util_vsprintfC(fmt, ap);
+	va_end(ap);
+
+	return ret;
+}
+
+char *util_vsprintfC(const char *fmt, va_list ap)
+{
+	char buf[1024];
+	int l;
+
+	l = vsnprintf(buf, sizeof(buf), fmt, ap);
+
+	if (l < 0) {
+		die("error in: vsnprintf");
+	}
+	else if (sizeof(buf) <= l) {
+		die("error in: util_vsprintfC");
+	}
+
+	return util_strdupC(buf);
 }
 
 void util_euc_to_sjis(uint8_t * ch, uint8_t * cl)
