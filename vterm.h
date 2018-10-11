@@ -157,7 +157,7 @@ typedef struct Raw_TVterm
 	TBool textClear;
 	void (*esc) (struct Raw_TVterm * p, uint8_t ch);
 	//
-#define	MAX_NARG	8
+#define	MAX_NARG	16
 	uint16_t varg[MAX_NARG];
 	uint16_t narg;
 	/* カーソル */

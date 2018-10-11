@@ -1408,8 +1408,12 @@ static void tvterm_esc_question(TVterm * p, uint8_t ch)
 			// set cursor style.
 			if (p->varg[0] == 0) {
 				p->cursor.style = CUR_STYLE_DEFAULT;
-			} else {
-				p->cursor.style = p->varg[0] & 7;
+			}
+			else if (p->varg[0] < CUR_STYLE_100) {
+				p->cursor.style = p->varg[0];
+			}
+			else {
+				p->cursor.style = CUR_STYLE_100;
 			}
 			break;
 		default:
